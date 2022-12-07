@@ -13,9 +13,7 @@ function Register({ history }) {
         email: '',
         password: '',
         confirmPassword: '',
-        acceptTerms: false,
-        tradeAccountId: undefined,
-        multiplier: 1
+        acceptTerms: false
     };
 
     const validationSchema = Yup.object().shape({
@@ -35,9 +33,7 @@ function Register({ history }) {
             .oneOf([Yup.ref('password'), null], 'Passwords must match')
             .required('Confirm Password is required'),
         acceptTerms: Yup.bool()
-            .oneOf([true], 'Accept Terms & Conditions is required'),
-        tradeAccountId: Yup.number().nullable(),
-        multiplier: Yup.number().min(1)
+            .oneOf([true], 'Accept Terms & Conditions is required')
     });
 
     function onSubmit(fields, { setStatus, setSubmitting }) {
@@ -103,18 +99,6 @@ function Register({ history }) {
                             <Field type="checkbox" name="acceptTerms" id="acceptTerms" className={'form-check-input ' + (errors.acceptTerms && touched.acceptTerms ? ' is-invalid' : '')} />
                             <label htmlFor="acceptTerms" className="form-check-label">Accept Terms & Conditions</label>
                             <ErrorMessage name="acceptTerms" component="div" className="invalid-feedback" />
-                        </div>
-                        <div className="form-row">
-                            <div className="form-group col">
-                                <label>Trade account ID</label>
-                                <Field name="tradeAccountId" type="number" className={'form-control' + (errors.tradeAccountId && touched.tradeAccountId ? ' is-invalid' : '')} />
-                                <ErrorMessage name="tradeAccountId" component="div" className="invalid-feedback" />
-                            </div>
-                            <div className="form-group col">
-                                <label>Mnoznik</label>
-                                <Field name="multiplier" type="number" className={'form-control' + (errors.multiplier && touched.multiplier ? ' is-invalid' : '')} />
-                                <ErrorMessage name="multiplier" component="div" className="invalid-feedback" />
-                            </div>
                         </div>
                         <div className="form-group">
                             <button type="submit" disabled={isSubmitting} className="btn btn-primary">

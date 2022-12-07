@@ -5,7 +5,6 @@ import { render } from 'react-dom';
 import { history } from './_helpers';
 import { accountService } from './_services';
 import { App } from './app';
-import { SignalRProvider } from "./_helpers/context";
 
 import './styles.less';
 
@@ -19,9 +18,7 @@ accountService.refreshToken().finally(startApp);
 function startApp() { 
     render(
         <Router history={history}>
-            <SignalRProvider>
                 <App />
-            </SignalRProvider>
         </Router>,
         document.getElementById('app')
     );

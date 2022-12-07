@@ -36,10 +36,10 @@ module.exports = (env) => {
         externals: {
             // global app config object
             config: JSON.stringify({
-                apiUrl: process.env.REACT_APP_API_URL
+                //apiUrl: process.env.REACT_APP_API_URL
                 // apiUrl: 'http://192.168.2.61:7010'
                 //apiUrl: 'http://dmkk.freeddns.org:7000'
-                //apiUrl: 'http://localhost:52171'
+                apiUrl: 'http://localhost:52171'
             })
         }
     }

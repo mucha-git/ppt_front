@@ -16,9 +16,7 @@ function AddEdit({ history, match }) {
         email: '',
         role: '',
         password: '',
-        confirmPassword: '',
-        tradeAccountId: undefined,
-        multiplier: 1
+        confirmPassword: ''
     };
 
     const validationSchema = Yup.object().shape({
@@ -40,9 +38,7 @@ function AddEdit({ history, match }) {
             .when('password', (password, schema) => {
                 if (password) return schema.required('Confirm Password is required');
             })
-            .oneOf([Yup.ref('password')], 'Passwords must match'),
-        tradeAccountId: Yup.number().nullable(),
-        multiplier: Yup.number().min(1)
+            .oneOf([Yup.ref('password')], 'Passwords must match')
     });
 
     function onSubmit(fields, { setStatus, setSubmitting }) {
@@ -85,7 +81,7 @@ function AddEdit({ history, match }) {
                     if (!isAddMode) {
                         // get user and set form fields
                         accountService.getById(id).then(user => {
-                            const fields = ['title', 'firstName', 'lastName', 'email', 'role', 'multiplier', 'tradeAccountId'];
+                            const fields = ['title', 'firstName', 'lastName', 'email', 'role'];
                             fields.forEach(field => setFieldValue(field, user[field], false));
                         });
                     }
@@ -149,18 +145,6 @@ function AddEdit({ history, match }) {
                                 <label>Confirm Password</label>
                                 <Field name="confirmPassword" type="password" className={'form-control' + (errors.confirmPassword && touched.confirmPassword ? ' is-invalid' : '')} />
                                 <ErrorMessage name="confirmPassword" component="div" className="invalid-feedback" />
-                            </div>
-                        </div>
-                        <div className="form-row">
-                            <div className="form-group col">
-                                <label>Trade account ID</label>
-                                <Field name="tradeAccountId" type="number" className={'form-control' + (errors.tradeAccountId && touched.tradeAccountId ? ' is-invalid' : '')} />
-                                <ErrorMessage name="tradeAccountId" component="div" className="invalid-feedback" />
-                            </div>
-                            <div className="form-group col">
-                                <label>Mnoznik</label>
-                                <Field name="multiplier" type="number" className={'form-control' + (errors.multiplier && touched.multiplier ? ' is-invalid' : '')} />
-                                <ErrorMessage name="multiplier" component="div" className="invalid-feedback" />
                             </div>
                         </div>
                         <div className="form-group">

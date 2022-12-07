@@ -13,9 +13,7 @@ function Update({ history }) {
         lastName: user.lastName,
         email: user.email,
         password: '',
-        confirmPassword: '',
-        tradeAccountId: user.tradeAccountId,
-        multiplier: user.multiplier
+        confirmPassword: ''
     };
 
     const validationSchema = Yup.object().shape({
@@ -34,9 +32,7 @@ function Update({ history }) {
             .when('password', (password, schema) => {
                 if (password) return schema.required('Confirm Password is required');
             })
-            .oneOf([Yup.ref('password')], 'Passwords must match'),
-        tradeAccountId: Yup.number().nullable(),
-        multiplier: Yup.number().min(1)
+            .oneOf([Yup.ref('password')], 'Passwords must match')
     });
 
     function onSubmit(fields, { setStatus, setSubmitting }) {
@@ -94,18 +90,7 @@ function Update({ history }) {
                         <Field name="email" type="text" className={'form-control' + (errors.email && touched.email ? ' is-invalid' : '')} />
                         <ErrorMessage name="email" component="div" className="invalid-feedback" />
                     </div>
-                    <div className="form-row">
-                        <div className="form-group col">
-                            <label>Trade account ID</label>
-                            <Field name="tradeAccountId" type="number" className={'form-control' + (errors.tradeAccountId && touched.tradeAccountId ? ' is-invalid' : '')} />
-                            <ErrorMessage name="tradeAccountId" component="div" className="invalid-feedback" />
-                        </div>
-                        <div className="form-group col">
-                            <label>Mnoznik</label>
-                            <Field name="multiplier" type="number" className={'form-control' + (errors.multiplier && touched.multiplier ? ' is-invalid' : '')} />
-                            <ErrorMessage name="multiplier" component="div" className="invalid-feedback" />
-                        </div>
-                    </div>
+                    
                     <h3 className="pt-3">Change Password</h3>
                     <p>Leave blank to keep the same password</p>
                     <div className="form-row">
