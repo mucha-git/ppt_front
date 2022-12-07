@@ -1,0 +1,4 @@
+BUDOWANIE IMAGE (mozliwe ze wczesniej trzeba zbudowac apke: npm run build)
+docker build . -t kamkik/mt5fullfront:latest
+
+Wypchnąc image z docker desktop do dockerhuba (jesli budujemy apke pod windowsem)
