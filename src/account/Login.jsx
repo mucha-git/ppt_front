@@ -1,11 +1,13 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import { Link } from 'react-router-dom';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import {AppContext} from '../_helpers/context'
 
 import { accountService, alertService } from '@/_services';
 
 function Login({ history, location }) {
+    const { setContext } = useContext(AppContext);
     const initialValues = {
         email: '',
         password: ''
@@ -22,6 +24,7 @@ function Login({ history, location }) {
         alertService.clear();
         accountService.login(email, password)
             .then(() => {
+                setContext(1) // to trzeba będzie zmienić
                 const { from } = location.state || { from: { pathname: "/" } };
                 history.push(from);
             })

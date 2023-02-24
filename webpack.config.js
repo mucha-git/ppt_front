@@ -17,7 +17,15 @@ module.exports = (env) => {
                         { loader: 'css-loader' },
                         { loader: 'less-loader' }
                     ]
-                }
+                },
+                {
+                  test: /\.css$/,
+                  use: ["style-loader", "css-loader"],
+                },
+                {
+                  test: /\.(eot|svg|ttf|woff|woff2)(\??\#?v=[.0-9]+)?$/,
+                  loader: "file-loader?name=/fonts/[name].[ext]",
+                },
             ]
         },
         resolve: {
@@ -36,10 +44,10 @@ module.exports = (env) => {
         externals: {
             // global app config object
             config: JSON.stringify({
-                apiUrl: process.env.REACT_APP_API_URL
-                // apiUrl: 'http://192.168.2.61:7010'
+                //apiUrl: process.env.REACT_APP_API_URL
+                //apiUrl: 'http://localhost:7010'
                 //apiUrl: 'http://dmkk.freeddns.org:7000'
-                //apiUrl: 'http://localhost:52171'
+                apiUrl: 'http://localhost:52171'
             })
         }
     }
