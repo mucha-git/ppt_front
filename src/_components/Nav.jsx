@@ -38,7 +38,7 @@ function Nav() {
                         <NavLink exact to="/maps" className="nav-item nav-link">Maps</NavLink>
                     }
                     <NavLink to="/profile" className="nav-item nav-link">Profile</NavLink>
-                    {user.role === Role.Admin || user.role === Role.Manager &&
+                    {(user.role === Role.Admin || user.role === Role.Manager) &&
                         <NavLink to="/admin" className="nav-item nav-link">Admin</NavLink>
                     }
                     {user.role === Role.Admin &&

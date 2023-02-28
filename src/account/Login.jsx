@@ -26,7 +26,7 @@ function Login({ history, location }) {
         accountService.sendLogin(email).then((s) => {
             accountService.login(
                 email, 
-                bcrypt.hashSync(password, s.salt)
+                bcrypt.hashSync(bcrypt.hashSync(password, s.salt) + s.random, 11)
             )
             .then((e) => {
                 setContext(e.pilgrimageId) // to trzeba będzie zmienić
