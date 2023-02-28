@@ -13,6 +13,7 @@
     "dependencies": {
         "@babel/runtime": "^7.19.0",
         "@microsoft/signalr": "^6.0.9",
+        "bcryptjs": "^2.4.3",
         "date-fns": "^2.29.3",
         "formik": "^2.2.9",
         "history": "^4.10.1",

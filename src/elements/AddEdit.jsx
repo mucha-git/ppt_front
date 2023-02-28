@@ -86,7 +86,6 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
         ? (values.yearId = yearId)
         : values.yearId = location.state.yearId;
       //if(values.mapId != null )values.mapId = parseInt(values.mapId, 10)
-      console.log(values)
       elementsService
         .create(values)
         .then((x) => {

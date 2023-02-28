@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { AppContext } from '../../_helpers/context';
 
 import { accountService } from '@/_services';
 
 function List({ match }) {
+    const { pilgrimages } = useContext(AppContext)
     const { path } = match;
     const [users, setUsers] = useState(null);
 
@@ -29,9 +31,10 @@ function List({ match }) {
             <table className="table table-striped">
                 <thead>
                     <tr>
-                        <th style={{ width: '30%' }}>Name</th>
-                        <th style={{ width: '30%' }}>Email</th>
-                        <th style={{ width: '30%' }}>Role</th>
+                        <th style={{ width: '25%' }}>Name</th>
+                        <th style={{ width: '25%' }}>Email</th>
+                        <th style={{ width: '15%' }}>Role</th>
+                        <th style={{ width: '25%' }}>Pielgrzymka</th>
                         <th style={{ width: '10%' }}></th>
                     </tr>
                 </thead>
@@ -41,6 +44,7 @@ function List({ match }) {
                             <td>{user.title} {user.firstName} {user.lastName}</td>
                             <td>{user.email}</td>
                             <td>{user.role}</td>
+                            <td>{pilgrimages.find( p => p.id === user.pilgrimageId)?.name}</td>
                             <td style={{ whiteSpace: 'nowrap' }}>
                                 <Link to={`${path}/edit/${user.id}`} className="btn btn-sm btn-primary mr-1">Edit</Link>
                                 <button onClick={() => deleteUser(user.id)} className="btn btn-sm btn-danger" style={{ width: '60px' }} disabled={user.isDeleting}>

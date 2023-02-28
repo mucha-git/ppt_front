@@ -4,6 +4,7 @@ import queryString from 'query-string';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
+import bcrypt from "bcryptjs";
 import { accountService, alertService } from '@/_services';
 
 function ResetPassword({ history }) {
@@ -49,15 +50,23 @@ function ResetPassword({ history }) {
 
         function onSubmit({ password, confirmPassword }, { setSubmitting }) {
             alertService.clear();
-            accountService.resetPassword({ token, password, confirmPassword })
+            accountService.sendToken(token).then((b) => {
+                accountService.resetPassword({
+                    token,
+                    password: bcrypt.hashSync(password, b.salt),
+                    confirmPassword: bcrypt.hashSync(confirmPassword, b.salt),
+                  })
                 .then(() => {
-                    alertService.success('Password reset successful, you can now login', { keepAfterRouteChange: true });
-                    history.push('login');
-                })
+                    alertService.success(t("alerts.success.passwordChanged"), {
+                      keepAfterRouteChange: true,
+                    });
+                    history.push("login");
+                  })
                 .catch(error => {
                     setSubmitting(false);
                     alertService.error(error);
                 });
+            })
         }
 
         return (

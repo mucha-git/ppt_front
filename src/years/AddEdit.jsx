@@ -56,6 +56,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
       popup
         ? (values.yearId = yearId)
         : values.yearId = location.state.yearId;
+        console.log(values)
       mapsService
         .create(values)
         .then((x) => {
@@ -106,6 +107,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
 
   let file = null
   function fileChanged(e) {
+    console.log(e)
     file = e.target.files[0]
     parseDocument(file)
   }
@@ -153,6 +155,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
         if(markersList.length != 0){
           var title = item.getElementsByTagName('name')[0].childNodes[0].nodeValue.trim()
           let it = item.getElementsByTagName('description')
+          console.log(it)
           var description = it.length == 0? "" : it[0].childNodes[0].nodeValue.trim()
           for (const marker of markersList) {
             var coords = marker.getElementsByTagName('coordinates')[0].childNodes[0].nodeValue.trim()
@@ -169,6 +172,10 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
         }    
         
       }
+    console.log(latMin)
+    console.log(latMax)
+    console.log(lonMin)
+    console.log(lonMax)
     setLatitude(latMin + (latMax - latMin) / 2)
     setLongitude(lonMin + (lonMax - lonMin) / 2)
 

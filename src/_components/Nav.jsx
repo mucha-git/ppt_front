@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { NavLink, Route } from 'react-router-dom';
 import { Role } from '@/_helpers';
 import { accountService, alertService  } from '@/_services';
+import { AppContext } from "../_helpers/context";
 
 function Nav() {
+    const { resetContext } = useContext(AppContext);
     const [user, setUser] = useState({});
 
     useEffect(() => {
@@ -29,11 +31,18 @@ function Nav() {
             <nav className="navbar navbar-expand navbar-dark bg-dark">
                 <div className="navbar-nav w-75">
                     <NavLink exact to="/" className="nav-item nav-link">Home</NavLink>
-                    <NavLink exact to="/views" className="nav-item nav-link">Views</NavLink>
-                    <NavLink exact to="/maps" className="nav-item nav-link">Maps</NavLink>
+                    {user.role != Role.Admin &&
+                        <NavLink exact to="/views" className="nav-item nav-link">Views</NavLink>
+                    }
+                    {user.role != Role.Admin &&
+                        <NavLink exact to="/maps" className="nav-item nav-link">Maps</NavLink>
+                    }
                     <NavLink to="/profile" className="nav-item nav-link">Profile</NavLink>
-                    {user.role === Role.Admin &&
+                    {user.role === Role.Admin || user.role === Role.Manager &&
                         <NavLink to="/admin" className="nav-item nav-link">Admin</NavLink>
+                    }
+                    {user.role === Role.Admin &&
+                        <NavLink to="/pilgrimages" className="nav-item nav-link">Pielgrzymki</NavLink>
                     }
                     <a onClick={logout} className="nav-item nav-link">Logout</a>
                 

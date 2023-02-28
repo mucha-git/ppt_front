@@ -13,6 +13,8 @@ import { AppContextProvider } from '../_helpers/context';
 import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
 import { Elements } from '@/elements';
 import { Maps } from '../maps/Index';
+import { Pilgrimages } from '../pilgrimages/Index';
+import { Years } from '../years/Index';
 
 function App() {
     const { pathname } = useLocation();  
@@ -34,8 +36,10 @@ function App() {
                 <PrivateRoute path="/views" component={Views} />
                 <PrivateRoute path="/elements" component={Elements} />
                 <PrivateRoute path="/maps" component={Maps} />
+                <PrivateRoute path="/pilgrimages" component={Pilgrimages} roles={[Role.Admin]} />
+                <PrivateRoute path="/years" component={Years} />
                 <PrivateRoute path="/profile" component={Profile} />
-                <PrivateRoute path="/admin" roles={[Role.Admin]} component={Admin} />
+                <PrivateRoute path="/admin" roles={[Role.Admin, Role.Manager]} component={Admin} />
                 <Route path="/account" component={Account} />
                 <Redirect from="*" to="/" />
             </Switch>

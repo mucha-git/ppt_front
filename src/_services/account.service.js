@@ -7,6 +7,7 @@ const userSubject = new BehaviorSubject(null);
 const baseUrl = `${config.apiUrl}/accounts`;
 
 export const accountService = {
+    sendLogin,
     login,
     logout,
     refreshToken,
@@ -19,17 +20,31 @@ export const accountService = {
     getById,
     create,
     update,
+    isAuthorize,
     delete: _delete,
     user: userSubject.asObservable(),
     get userValue () { return userSubject.value }
 };
 
+function isAuthorize(list) {
+    const filteredArray =
+      userSubject.value &&
+      userSubject.value.roleList.filter((value) => list.includes(value));
+    return filteredArray && filteredArray.length > 0;
+  }
+
+function sendLogin(email) {
+    return fetchWrapper.post(`${baseUrl}/getSalt`, { email: email });
+  }
+
 function login(email, password) {
     return fetchWrapper.post(`${baseUrl}/authenticate`, { email, password })
         .then(user => {
             // publish user to subscribers and start timer to refresh token
-            userSubject.next(user);
-            startRefreshTokenTimer();
+            //if (user.id != 0) {
+                userSubject.next(user);
+                startRefreshTokenTimer();
+            //  }
             return user;
         });
 }

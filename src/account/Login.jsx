@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import {AppContext} from '../_helpers/context'
+import bcrypt from "bcryptjs";
 
 import { accountService, alertService } from '@/_services';
 
@@ -22,9 +23,13 @@ function Login({ history, location }) {
 
     function onSubmit({ email, password }, { setSubmitting }) {
         alertService.clear();
-        accountService.login(email, password)
-            .then(() => {
-                setContext(1) // to trzeba będzie zmienić
+        accountService.sendLogin(email).then((s) => {
+            accountService.login(
+                email, 
+                bcrypt.hashSync(password, s.salt)
+            )
+            .then((e) => {
+                setContext(e.pilgrimageId) // to trzeba będzie zmienić
                 const { from } = location.state || { from: { pathname: "/" } };
                 history.push(from);
             })
@@ -32,6 +37,7 @@ function Login({ history, location }) {
                 setSubmitting(false);
                 alertService.error(error);
             });
+        })
     }
 
     return (
@@ -56,7 +62,6 @@ function Login({ history, location }) {
                                     {isSubmitting && <span className="spinner-border spinner-border-sm mr-1"></span>}
                                     Login
                                 </button>
-                                {/*<Link to="register" className="btn btn-link">Register</Link>*/}
                             </div>
                             <div className="form-group col text-right">
                                 <Link to="forgot-password" className="btn btn-link pr-0">Forgot Password?</Link>

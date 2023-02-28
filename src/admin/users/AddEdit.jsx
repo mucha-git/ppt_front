@@ -1,14 +1,17 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
 import { accountService, alertService } from '@/_services';
+import { Role } from '../../_helpers/role';
+import { AppContext } from '../../_helpers/context';
 
 function AddEdit({ history, match }) {
+    const { pilgrimages } = useContext(AppContext);
+    console.log(pilgrimages)
     const { id } = match.params;
     const isAddMode = !id;
-    
     const initialValues = {
         title: '',
         firstName: '',
@@ -16,7 +19,8 @@ function AddEdit({ history, match }) {
         email: '',
         role: '',
         password: '',
-        confirmPassword: ''
+        confirmPassword: '',
+        pilgrimageId: ''
     };
 
     const validationSchema = Yup.object().shape({
@@ -31,6 +35,8 @@ function AddEdit({ history, match }) {
             .required('Email is required'),
         role: Yup.string()
             .required('Role is required'),
+        pilgrimageId: Yup.string()
+            .required('Trzeba wybrać pielgrzymkę'),
         password: Yup.string()
             .concat(isAddMode ? Yup.string().required('Password is required') : null)
             .min(6, 'Password must be at least 6 characters'),
@@ -42,6 +48,7 @@ function AddEdit({ history, match }) {
     });
 
     function onSubmit(fields, { setStatus, setSubmitting }) {
+        fields.pilgrimageId = parseInt(fields.pilgrimageId)
         setStatus();
         if (isAddMode) {
             createUser(fields, setSubmitting);
@@ -81,7 +88,7 @@ function AddEdit({ history, match }) {
                     if (!isAddMode) {
                         // get user and set form fields
                         accountService.getById(id).then(user => {
-                            const fields = ['title', 'firstName', 'lastName', 'email', 'role'];
+                            const fields = ['title', 'firstName', 'lastName', 'email', 'role', 'pilgrimageId'];
                             fields.forEach(field => setFieldValue(field, user[field], false));
                         });
                     }
@@ -124,7 +131,19 @@ function AddEdit({ history, match }) {
                                 <Field name="role" as="select" className={'form-control' + (errors.role && touched.role ? ' is-invalid' : '')}>
                                     <option value=""></option>
                                     <option value="User">User</option>
-                                    <option value="Admin">Admin</option>
+                                    {accountService.userValue.role == Role.Admin && <option value="Admin">Admin</option>}
+                                    <option value="Manager">Manager</option>
+                                </Field>
+                                <ErrorMessage name="role" component="div" className="invalid-feedback" />
+                            </div>
+                        </div>
+                        <div className='form-row'>
+                        <div className="form-group col">
+                                <label>Pielgrzymka</label>
+                                <Field name="pilgrimageId" as="select" className={'form-control' + (errors.pilgrimageId && touched.pilgrimageId ? ' is-invalid' : '')}>
+                                    <option value=""></option>
+                                    {pilgrimages.map(element => <option value={element.id} >{element.name}</option>
+                                    )}
                                 </Field>
                                 <ErrorMessage name="role" component="div" className="invalid-feedback" />
                             </div>
