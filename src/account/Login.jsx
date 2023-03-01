@@ -8,7 +8,7 @@ import bcrypt from "bcryptjs";
 import { accountService, alertService } from '@/_services';
 
 function Login({ history, location }) {
-    const { setContext } = useContext(AppContext);
+    const { isSet } = useContext(AppContext);
     const initialValues = {
         email: '',
         password: ''
@@ -28,8 +28,8 @@ function Login({ history, location }) {
                 email, 
                 bcrypt.hashSync(bcrypt.hashSync(password, s.salt) + s.random, 11)
             )
-            .then((e) => {
-                setContext(e.pilgrimageId) // to trzeba będzie zmienić
+            .then(() => 
+                isSet()).then( () => {
                 const { from } = location.state || { from: { pathname: "/" } };
                 history.push(from);
             })

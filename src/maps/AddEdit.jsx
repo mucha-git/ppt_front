@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import FormikControl from "@/_components/Formik/FormikControl";
@@ -9,7 +9,13 @@ import { ScreenType } from "../_helpers/ScreenType";
 import { AppContext } from "../_helpers/context";
 
 function AddEdit({ history, popup, close, lista, setLista, yearId }) {
-  const {updateViews} = useContext(AppContext)
+  const {updateMaps, set} = useContext(AppContext)
+  useEffect(() => {
+    if(!set){
+      const { from } = {from: { pathname: "/maps"}}
+      history.push(from);
+    } 
+  }, []);
   let location = useLocation();
   const isAddMode = location.state.row == null || popup ? true : false;
   const [submitting, setSubmitting] = useState(false);
@@ -59,7 +65,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
       mapsService
         .create(values)
         .then((x) => {
-          updateViews(1)
+          updateMaps(values.yearId)
           alertService.success("Sukces", {
             keepAfterRouteChange: true,
           });
@@ -88,7 +94,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
       mapsService
         .update(values)
         .then(() => {
-          updateViews(yearId)
+          updateMaps(values.yearId)
           alertService.success("Sukces", {
             keepAfterRouteChange: true,
           });

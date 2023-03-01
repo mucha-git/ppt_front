@@ -5,6 +5,7 @@ import { isWymagane } from "@/_helpers";
 
 function Select(props) {
   const { label, name, options, className, wymagane, showLabel, ...rest } = props;
+  console.log(options)
   return (
     <div className={className != null ? className : "form-group col"}>
       {showLabel != false && (<label htmlFor={name}>

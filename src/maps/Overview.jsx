@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { mapsService } from "@/_services";
 import { useLocation } from "react-router-dom";
 import { Formik, Form } from "formik";
@@ -8,17 +8,20 @@ import { MapsTable } from "./elements/MapsTable";
 import {AppContext} from '../_helpers/context'
 
 function Overview({ match }) {
-  const {setContext} = useContext(AppContext)
+  const {isSet, setData, yearId, years} = useContext(AppContext)
   const { path } = match;
-  let location = useLocation();
-  const [yearId, setYearId] = useState(location.state? location.state.yearId: 1);
+  const [year, setYearId] = useState(yearId);
+
+  useEffect(() => {
+    isSet()
+  }, []);
 
   const onSubmitForm = (values) => {
-    mapsService.getMaps(values.year).then(e => {setYearId(values.year); setContext(values.year)});
+    mapsService.getMaps(values.year).then(e => {setYearId(values.year); setData(values.year)});
   };
 
   const initialValues = {
-    year: 1,
+    year: yearId,
   };
 
   const validationSchema = Yup.object({
@@ -29,6 +32,7 @@ function Overview({ match }) {
   return (
     <div className="p-4">
       <div className="container">
+        {years.length > 1 && 
           <Formik initialValues={initialValues} onSubmit={onSubmitForm} validationSchema={validationSchema}>
             {(formik) => (
               <Form>
@@ -39,7 +43,7 @@ function Overview({ match }) {
                         label={"Rok"}
                         name="year"
                         showLabel={false}
-                        options={[{key: 2022, value: 1}]}
+                        options={years.map(y => {return {key: y.year, value: y.id}})}
                         className="form-item-width left"
                         wymagane={true}
                     />
@@ -54,7 +58,8 @@ function Overview({ match }) {
               </Form>
             )}
           </Formik>
-        <MapsTable yearId={yearId} path={path} />
+        }
+        <MapsTable yearId={year} path={path} />
       </div>
     </div>
   );

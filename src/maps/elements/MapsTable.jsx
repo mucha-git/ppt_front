@@ -9,10 +9,7 @@ import { Elements } from "./Elements";
 import { AppContext } from '../../_helpers/context';
 
 function MapsTable({ yearId, path }) {
-    const { maps, isSet } = useContext(AppContext);
-    useEffect(() => {
-        isSet(yearId)
-    }, [])
+    const { maps } = useContext(AppContext);
     function viewFilter(e) {
         return e.filter(v => v.yearId == yearId)
       }

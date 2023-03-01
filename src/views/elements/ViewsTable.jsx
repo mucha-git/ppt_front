@@ -12,10 +12,8 @@ import { Elements } from "./Elements";
 import { AppContext } from '../../_helpers/context';
 
 function ViewsTable({ parentViewId, yearId, path }) {
-    const { views, isSet } = useContext(AppContext);
-    useEffect(() => {
-        isSet(yearId)
-    }, [])
+    const { views } = useContext(AppContext);
+    
     function viewFilter(e) {
         return e.filter(v => v.viewId == parentViewId)
       }

@@ -9,6 +9,8 @@ export const Provider = (props) => {
   // Initial values are obtained from the props
   const {
     pilgrimages: initialPilgrimages,
+    years: initialYears,
+    yearId: initialYearId,
     views: initialViews,
     mapPins: initialMapPins,
     maps: initialMaps,
@@ -19,19 +21,28 @@ export const Provider = (props) => {
 
   // Use State to keep the values
   const [pilgrimages, setPilgrimages] = useState(initialPilgrimages);
+  const [years, setYears] = useState(initialYears);
+  const [yearId, setYearId] = useState(initialYearId);
   const [views, setViews] = useState(initialViews);
   const [mapPins, setMapPins] = useState(initialMapPins);
   const [maps, setMaps] = useState(initialMaps);
   const [elements, setElements] = useState(initialElements);
   const [set, setSet] = useState(initialSet);
 
-  function addContext(a) {
-      updatePilgrimages()
+  async function setContext() {
+      let id = await updatePilgrimages()
+      console.log(id)
       if(accountService.userValue.role != Role.Admin){
+        setData(id)
+      }
+      setSet(true);
+  }
+
+  function setData(a){
+        setYearId(a);
         updateViews(a)
         updateElements(a)
         updateMaps(a)
-      }
   }
 
   function updateViews(a) {
@@ -46,12 +57,26 @@ export const Provider = (props) => {
     mapsService.getMaps(a).then(setMaps);
   }
 
-  function updatePilgrimages() {
-    pilgrimagesService.getPilgrimages().then(setPilgrimages);
+  function updateYears(a) {
+    yearsService.getYears(a).then(setYears);
+  }
+
+  async function updatePilgrimages() {
+    let ret = 0;
+    await pilgrimagesService.getPilgrimages().then(p => {
+      setPilgrimages(p);
+      if(accountService.userValue.role != Role.Admin){
+        setYears(p[0].years);
+        ret = p[0].years[p[0].years.length -1].id
+      }
+    });
+    return ret;
   }
 
   const resetContext = () => {
     setPilgrimages([]);
+    setYears([]);
+    setYearId(null);
     setViews([]);
     setMapPins([]);
     setMaps([]);
@@ -59,13 +84,10 @@ export const Provider = (props) => {
     setSet(false);
   };
 
-  function setContext(a) {
-    addContext(a);
-    setSet(true);
-  }
-
-  function isSet(a) {
-    if (!set) return setContext(a);
+  function isSet() {
+    if (!set) {
+      return setContext();
+    }
   }
 
   // Make the context object:
@@ -79,10 +101,13 @@ export const Provider = (props) => {
     updateElements,
     pilgrimages,
     updatePilgrimages,
+    years,
+    updateYears,
+    yearId,
+    setData,
     setContext,
     resetContext,
     isSet,
-    setSet,
     set
   };
 
@@ -97,7 +122,8 @@ Provider.propTypes = {
   mapPins: PropTypes.array,
   maps: PropTypes.array,
   elements: PropTypes.array,
-  pilgrimages: PropTypes.array
+  pilgrimages: PropTypes.array,
+  years: PropTypes.array
 };
 
 Provider.defaultProps = {
@@ -106,5 +132,7 @@ Provider.defaultProps = {
   maps: [],
   elements: [],
   pilgrimages: [],
+  years: [],
+  yearId: null,
   set: false
 };
