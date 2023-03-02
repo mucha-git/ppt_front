@@ -36,6 +36,7 @@ function Update({ history }) {
     });
 
     function onSubmit(fields, { setStatus, setSubmitting }) {
+        fields.pilgrimageId = user.pilgrimageId
         setStatus();
         accountService.update(user.id, fields)
             .then(() => {
