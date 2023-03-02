@@ -10,6 +10,7 @@ import {kolumny} from './ViewsColumns'
 import {Actions} from './ViewActions';
 import { Elements } from "./Elements";
 import { AppContext } from '../../_helpers/context';
+import { yearsService } from "../../_services";
 
 function ViewsTable({ parentViewId, yearId, path }) {
     const { views } = useContext(AppContext);
@@ -71,6 +72,10 @@ const akcje = (cell, row, rowIndex) => {
         }] 
       };
 
+      const saveChangesToApp = () => {
+        yearsService.resetYearInRedis({yearId: yearId})
+      }
+
   return (
     <div>
     <NavLink to={{pathname: `${path}/dodaj`, state: {yearId: yearId, parentViewId: parentViewId} }} className="nav-item center-divs">
@@ -78,6 +83,9 @@ const akcje = (cell, row, rowIndex) => {
             Dodaj nowy widok
           </button>
         </NavLink>
+        <button className="button edytuj m-2" onClick={saveChangesToApp}>
+            Wyślij zmiany do Aplikacji
+          </button>
     <BootstrapTable
     bootstrap4
     keyField="id"

@@ -7,7 +7,8 @@ export const yearsService = {
     getYears,
     create,
     update,
-    _delete
+    _delete,
+    resetYearInRedis
 };
 
 function getYears(pilgrimage) {
@@ -25,5 +26,9 @@ function update(params) {
 // prefixed with underscore because 'delete' is a reserved word in javascript
 function _delete(id) {
     return fetchWrapper.delete(`${baseUrl}/${id}`);
+}
+
+function resetYearInRedis(params) {
+    return fetchWrapper.post(`${baseUrl}/resetYearInRedis`, params);
 }
 
