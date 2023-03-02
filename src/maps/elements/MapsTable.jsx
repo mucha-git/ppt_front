@@ -7,6 +7,8 @@ import {kolumny} from './MapsColumns'
 import {Actions} from './MapsActions';
 import { Elements } from "./Elements";
 import { AppContext } from '../../_helpers/context';
+import { yearsService } from "../../_services";
+import SendToApp from "../../_components/SendToApp";
 
 function MapsTable({ yearId, path }) {
     const { maps } = useContext(AppContext);
@@ -59,6 +61,8 @@ const akcje = (cell, row, rowIndex) => {
         )
       };
 */
+
+
   return (
     <div>
     <NavLink to={{pathname: `${path}/dodaj`, state: {yearId: yearId } }} className="nav-item center-divs">
@@ -66,6 +70,7 @@ const akcje = (cell, row, rowIndex) => {
             Dodaj nową mapę
           </button>
         </NavLink>
+        <SendToApp />
     <BootstrapTable
     bootstrap4
     keyField="id"
