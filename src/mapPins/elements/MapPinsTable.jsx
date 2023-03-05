@@ -2,22 +2,16 @@ import React, { useContext, useEffect } from "react";
 import BootstrapTable from "react-bootstrap-table-next";
 import { NavLink } from "react-router-dom";
 import paginationFactory from "react-bootstrap-table2-paginator";
-import filterFactory, {
-    selectFilter,
-  textFilter
-} from "react-bootstrap-table2-filter";
-import {kolumny} from './ViewsColumns'
-import {Actions} from './ViewActions';
-import { Elements } from "./Elements";
+import filterFactory, {textFilter} from "react-bootstrap-table2-filter";
+import {kolumny} from './MapPinsColumns'
+import {Actions} from './MapPinsActions';
 import { AppContext } from '../../_helpers/context';
 import SendToApp from "../../_components/SendToApp";
 
-function ViewsTable({ parentViewId, yearId, path }) {
-    const { views } = useContext(AppContext);
-    
+function MapPinsTable({ yearId, path }) {
+    const { mapPins } = useContext(AppContext);
     function viewFilter(e) {
-        console.log(e)
-        return e.filter(v => v.viewId == parentViewId)
+        return e.filter(v => v.yearId == yearId)
       }
 
 const akcje = (cell, row, rowIndex) => {
@@ -27,27 +21,30 @@ const akcje = (cell, row, rowIndex) => {
       };
 
     const columns = [
-        kolumny.KolumnaWidok(),
+      kolumny.KolumnaTitle(textFilter),
+        kolumny.KolumnaPinSrc(),
         kolumny.KolumnaAkcje(akcje)
       ]
+
+      
+    
 
     const emptyTable = () => {
         return (
           <div>
               <p>
-                Brak widoków
+                Brak Pinesek Map
               </p>
           </div>
         );
       };
 
-      const rowsNotToExpand = () => {
+      /*const rowsNotToExpand = () => {
         let rows = viewFilter(views).filter(r => r.type != "Text" && r.type != "Graphic").map(e => e.id)
-
         return rows
-      }
+      }*/
 
-    const expandRow = {
+    /*const expandRow = {
         parentClassName: "parent-expand-foo",
         className: "blue-light",
         onlyOneExpanding: true,
@@ -56,27 +53,21 @@ const akcje = (cell, row, rowIndex) => {
             <Elements view={row} path={path} />
         )
       };
+*/
 
-      const options = {
-        sizePerPageList: [{
-          text: '25', value: 25
-        }, {
-          text: '50', value: 50
-        }] 
-      };
 
   return (
     <div>
-    <NavLink to={{pathname: `${path}/dodaj`, state: {yearId: yearId, parentViewId: parentViewId} }} className="nav-item center-divs">
+    <NavLink to={{pathname: `${path}/dodaj`, state: {yearId: yearId } }} className="nav-item center-divs">
           <button className="button edytuj m-2">
-            Dodaj nowy widok
+            Dodaj nową pinezkę
           </button>
         </NavLink>
         <SendToApp />
     <BootstrapTable
     bootstrap4
     keyField="id"
-    data={viewFilter(views)}
+    data={viewFilter(mapPins)}
     columns={columns}
     filter={filterFactory()}
     filterPosition="top"
@@ -84,11 +75,11 @@ const akcje = (cell, row, rowIndex) => {
     hover
     condensed
     noDataIndication={emptyTable}
-    pagination={paginationFactory(options)}
-    expandRow={expandRow}
+    pagination={paginationFactory()}
+    //expandRow={expandRow}
   />
   </div>
   );
 }
 
-export { ViewsTable };
+export { MapPinsTable };

@@ -80,10 +80,11 @@ function KolumnaScreenType(selectFilter){
 function KolumnaMapSrc(){return{
         dataField: "mapSrc",
         text: "Mapa",
-        formatter: () => {
-            //return cell != null
-            //    ? <iframe width={600} height={400} src={"https://www.traseo.pl/mapa/265094/m/0/mc/0/i/0/g/0/ch/0/hd/1/ce/0/"} style={"border:1px solid #000;"}></iframe>
-            return <iframe width={600} height={400} src={"https://www.traseo.pl/mapa/264094/m/0/mc/0/i/0/g/0/ch/0/hd/1/ce/0/"} ></iframe>;
+        formatter: (cell) => {
+            console.log(cell)
+            return (cell != null && cell.startsWith("http"))
+                ? <iframe width={600} height={400} src={cell}></iframe> :
+            "Aby wyświetlić podgląd mapy trzeba podać wartość pola src z udostępnienia mapy na stronie";
         },
         headerClasses: "header-class",
     }}

@@ -1,6 +1,6 @@
 import React, { createContext, useState } from "react";
 import PropTypes from "prop-types";
-import { viewsService, elementsService, mapsService, pilgrimagesService, yearsService, accountService } from "../../_services";
+import { viewsService, elementsService, mapsService, mapPinsService, pilgrimagesService, yearsService, accountService } from "../../_services";
 import { Role } from "../role";
 export const Context = createContext({});
 
@@ -43,6 +43,7 @@ export const Provider = (props) => {
         updateViews(a)
         updateElements(a)
         updateMaps(a)
+        updateMapPins(a)
   }
 
   function updateViews(a) {
@@ -55,6 +56,10 @@ export const Provider = (props) => {
 
   function updateMaps(a) {
     mapsService.getMaps(a).then(setMaps);
+  }
+
+  function updateMapPins(a) {
+    mapPinsService.getMapPins(a).then(setMapPins);
   }
 
   function updateYears(a) {
@@ -95,6 +100,7 @@ export const Provider = (props) => {
     views,
     updateViews,
     mapPins,
+    updateMapPins,
     maps,
     updateMaps,
     elements,

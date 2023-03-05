@@ -15,6 +15,7 @@ import { Elements } from '@/elements';
 import { Maps } from '../maps/Index';
 import { Pilgrimages } from '../pilgrimages/Index';
 import { Years } from '../years/Index';
+import { MapPins } from '../mapPins/Index';
 
 function App() {
     const { pathname } = useLocation();  
@@ -36,6 +37,7 @@ function App() {
                 <PrivateRoute path="/views" component={Views} />
                 <PrivateRoute path="/elements" component={Elements} />
                 <PrivateRoute path="/maps" component={Maps} />
+                <PrivateRoute path="/mapPins" component={MapPins} />
                 <PrivateRoute path="/pilgrimages" component={Pilgrimages} roles={[Role.Admin]} />
                 <PrivateRoute path="/years" component={Years} />
                 <PrivateRoute path="/profile" component={Profile} />

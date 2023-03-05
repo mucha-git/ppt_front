@@ -7,6 +7,7 @@ import DatePicker from "./DatePicker";
 import YearPicker from "./YearPicker";
 import InputNumber from "./InputNumber";
 import TypeAndSelect from "./TypeAndSelect";
+import ColorPicker from "./ColorPicker"
 
 function FormikControl(props) {
   const { control, ...rest } = props;
@@ -27,6 +28,8 @@ function FormikControl(props) {
       return <DatePicker {...rest} />;
     case "month":
       return <YearPicker {...rest} />;
+    case "color":
+      return <ColorPicker {...rest} />;
     default:
       return null;
   }

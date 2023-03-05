@@ -9,7 +9,7 @@ import { ScreenType } from "../_helpers/ScreenType";
 import { AppContext } from "../_helpers/context";
 
 function AddEdit({ history, popup, close, lista, setLista, yearId }) {
-  const {updateMaps, set} = useContext(AppContext)
+  const {updateMaps, mapPins, set} = useContext(AppContext)
   useEffect(() => {
     if(!set){
       const { from } = {from: { pathname: "/maps"}}
@@ -29,7 +29,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
   const initialValues = isAddMode
     ? {
         name: "",
-        strokeColor: "",
+        strokeColor: "#00ff00",
         strokeWidth: 1,
         mapSrc: null,
         delta: 2.5
@@ -50,6 +50,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
   });
 
   const onSubmitMaps = (values, openNew) => {
+    console.log(values)
     setSubmitting(true)
     values.provider = "google"
     values.markers = markers
@@ -170,7 +171,9 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
 
             if(lon > lonMax) lonMax = lon
             if(lon < lonMin || lonMin == 0) lonMin = lon
-            markers.push({ latitude: lat, longitude: lon, title: title, description: description, footerText: "tekst stopki", footerColor: "#ff0000", strokeWidth: 1, pinId: 0 })
+            let mapPin = mapPins.find(p => p.name.toUpperCase() == title.toUpperCase())
+            let pinId = mapPin? mapPin.id : mapPins.length > 0? mapPins[0].id : alertService.error("Brak pinów mapy")
+            markers.push({ latitude: lat, longitude: lon, title: title, description: description, footerText: "tekst stopki", footerColor: "#ff0000", strokeWidth: 1, pinId: pinId })
           }
         }    
         
@@ -211,8 +214,8 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
               wymagane={true}
             />
             <FormikControl
-              control="input"
-              type="text"
+              control="color"
+              //type="text"
               label={"Kolor linii"}
               name="strokeColor"
               className="form-item-width"

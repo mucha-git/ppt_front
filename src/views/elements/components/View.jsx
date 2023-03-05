@@ -3,6 +3,7 @@ import { TextView } from './TextView';
 import { GraphicView } from './GraphicView'
 
 function View({row}){
+    console.log(row)
     switch (row.type) {
         case "Text":
             return <TextView row={row} />
