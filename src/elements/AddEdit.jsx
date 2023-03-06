@@ -161,8 +161,8 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
             {(formik.values.type === "Divider") &&
             <>
             <FormikControl
-              control="input"
-              type="text"
+              control="color"
+              //type="text"
               label={"Kolor"}
               name="color"
               className="form-item-width"
