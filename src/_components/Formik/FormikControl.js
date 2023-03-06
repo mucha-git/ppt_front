@@ -8,6 +8,7 @@ import YearPicker from "./YearPicker";
 import InputNumber from "./InputNumber";
 import TypeAndSelect from "./TypeAndSelect";
 import ColorPicker from "./ColorPicker"
+import HtmlEditor from "./HtmlEditor";
 
 function FormikControl(props) {
   const { control, ...rest } = props;
@@ -30,6 +31,8 @@ function FormikControl(props) {
       return <YearPicker {...rest} />;
     case "color":
       return <ColorPicker {...rest} />;
+    case "html":
+      return <HtmlEditor {...rest} />;
     default:
       return null;
   }

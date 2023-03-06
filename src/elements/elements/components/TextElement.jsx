@@ -1,9 +1,8 @@
 import React from "react";
+import { TextEditor } from "../../../_components/Formik/Editor";
 
 function TextElement({row}){
-return (
-    <p>{row.text}</p>
-)
+return <TextEditor value={row.text} disabled={true} />
 }
 
 export { TextElement }

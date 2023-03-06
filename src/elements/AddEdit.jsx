@@ -183,7 +183,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
             }
             {(formik.values.type === "Text" || formik.values.type === "GraphicWithText") &&
             <FormikControl
-              control="textarea"
+              control="html"
               //type="text"
               label={"Tekst"}
               name="text"
