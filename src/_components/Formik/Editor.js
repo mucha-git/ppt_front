@@ -37,14 +37,15 @@ export const TextEditor = ({ value, setFieldValue = (val) => {}, disabled = fals
         onEditorStateChange={onEditorStateChange}
         toolbar={{
           inline: { options: ['bold', 'italic', 'underline']},
-          blockType: { options: [], className: 'd-none'},
-          fontSize: { options: [], className: 'd-none'},
-          fontFamily: { options: [], className: 'd-none'},
-          list: { options: [], className: 'd-none'},
-          textAlign: { options: [], className: 'd-none'},
-          colorPicker: { colors: [], className: 'd-none'},
-          link: { options: [], className: 'd-none'},
-          emoji: { icon: null, emojis: [], className: 'd-none'},
+          blockType: { className: 'd-none'},
+          fontSize: { className: 'd-none'},
+          fontFamily: { className: 'd-none'},
+          list: { className: 'd-none'},
+          textAlign: { className: 'd-none'},
+          colorPicker: { className: 'd-none'},
+          link: { className: 'd-none'},
+          emoji: { className: 'd-none'},
+          image: { className: 'd-none'},
           embedded: { options: [], className: 'd-none'}
           }}
       />
