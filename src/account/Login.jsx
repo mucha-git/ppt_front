@@ -58,13 +58,13 @@ function Login({ history, location }) {
                         </div>
                         <div className="form-row">
                             <div className="form-group col">
-                                <button type="submit" disabled={isSubmitting} className="btn btn-primary">
+                                <button type="submit" disabled={isSubmitting} className="btn m-1 btn-primary">
                                     {isSubmitting && <span className="spinner-border spinner-border-sm mr-1"></span>}
                                     Login
                                 </button>
                             </div>
                             <div className="form-group col text-right">
-                                <Link to="forgot-password" className="btn btn-link pr-0">Forgot Password?</Link>
+                                <Link to="forgot-password" className="btn m-1 btn-link pr-0">Forgot Password?</Link>
                             </div>
                         </div>
                     </div>

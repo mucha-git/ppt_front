@@ -81,7 +81,6 @@ function KolumnaMapSrc(){return{
         dataField: "mapSrc",
         text: "Mapa",
         formatter: (cell) => {
-            console.log(cell)
             return (cell != null && cell.startsWith("http"))
                 ? <iframe width={600} height={400} src={cell}></iframe> :
             "Aby wyświetlić podgląd mapy trzeba podać wartość pola src z udostępnienia mapy na stronie";
@@ -94,7 +93,7 @@ function KolumnaAkcje(akcje){return{
         text: "Akcje",
         formatter: akcje,
         headerClasses: "header-class",
-        headerStyle: { width: "130px" },
+        headerStyle: { width: "200px"},
         events: {
             onClick: (e, column, columnIndex, row, rowIndex) => {
               e.stopPropagation();

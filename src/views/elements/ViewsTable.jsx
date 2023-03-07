@@ -16,7 +16,6 @@ function ViewsTable({ parentViewId, yearId, path }) {
     const { views } = useContext(AppContext);
     
     function viewFilter(e) {
-        console.log(e)
         return e.filter(v => v.viewId == parentViewId)
       }
 
@@ -68,7 +67,7 @@ const akcje = (cell, row, rowIndex) => {
   return (
     <div>
     <NavLink to={{pathname: `${path}/dodaj`, state: {yearId: yearId, parentViewId: parentViewId} }} className="nav-item center-divs">
-          <button className="button edytuj m-2">
+          <button className="btn m-1 btn-success">
             Dodaj nowy widok
           </button>
         </NavLink>

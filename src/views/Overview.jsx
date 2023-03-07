@@ -16,7 +16,6 @@ function Overview({ match }) {
   }, []);
 
   const onSubmitForm = (values) => {
-    console.log(values)
     viewsService.getViews(values.year).then(e => {setYearId(values.year); setData(values.year)});
   };
 
@@ -49,7 +48,7 @@ function Overview({ match }) {
                     />
                   </div>
                   <div className="left">
-                    <button className="button edytuj" type="submit">
+                    <button className="btn btn-success" type="submit">
                       Szukaj
                     </button>
                   </div>

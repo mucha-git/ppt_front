@@ -1,13 +1,11 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import BootstrapTable from "react-bootstrap-table-next";
 import { NavLink } from "react-router-dom";
 import paginationFactory from "react-bootstrap-table2-paginator";
 import filterFactory, {textFilter} from "react-bootstrap-table2-filter";
 import {kolumny} from './MapsColumns'
 import {Actions} from './MapsActions';
-import { Elements } from "./Elements";
 import { AppContext } from '../../_helpers/context';
-import { yearsService } from "../../_services";
 import SendToApp from "../../_components/SendToApp";
 
 function MapsTable({ yearId, path }) {
@@ -66,7 +64,7 @@ const akcje = (cell, row, rowIndex) => {
   return (
     <div>
     <NavLink to={{pathname: `${path}/dodaj`, state: {yearId: yearId } }} className="nav-item center-divs">
-          <button className="button edytuj m-2">
+          <button className="btn m-1 btn-success">
             Dodaj nową mapę
           </button>
         </NavLink>

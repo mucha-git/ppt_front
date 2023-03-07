@@ -45,7 +45,7 @@ function Overview({ match }) {
                     />
                   </div>
                   <div className="left">
-                    <button className="button edytuj" type="submit">
+                    <button className="btn btn-success" type="submit">
                       Szukaj
                     </button>
                   </div>

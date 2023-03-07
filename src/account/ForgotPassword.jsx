@@ -37,11 +37,11 @@ function ForgotPassword() {
                         </div>
                         <div className="form-row">
                             <div className="form-group col">
-                                <button type="submit" disabled={isSubmitting} className="btn btn-primary">
+                                <button type="submit" disabled={isSubmitting} className="btn m-1 btn-primary">
                                     {isSubmitting && <span className="spinner-border spinner-border-sm mr-1"></span>}
                                     Submit
                                 </button>
-                                <Link to="login" className="btn btn-link">Cancel</Link>
+                                <Link to="login" className="btn m-1 btn-link">Cancel</Link>
                             </div>
                         </div>
                     </div>

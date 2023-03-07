@@ -48,7 +48,7 @@ function KolumnaAkcje(akcje){return{
         text: "Akcje",
         formatter: akcje,
         headerClasses: "header-class",
-        headerStyle: { width: "130px" },
+        headerStyle: { width: "160px" },
         events: {
             onClick: (e, column, columnIndex, row, rowIndex) => {
               e.stopPropagation();

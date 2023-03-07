@@ -8,7 +8,7 @@ function Actions(props) {
     return (
         <div className={"buttons"}>
                 <button
-                    className="button usun"
+                    className="btn m-1 btn-danger"
                     onClick={() => {
                         pilgrimagesService._delete(props.cell).then(() => {
                             updatePilgrimages()
@@ -23,7 +23,7 @@ function Actions(props) {
                     state: {row: props.row},
                 }}
             >
-                <button className="button edytuj">Edytuj</button>
+                <button className="btn m-1 btn-success">Edytuj</button>
             </NavLink>
         </div>
     );

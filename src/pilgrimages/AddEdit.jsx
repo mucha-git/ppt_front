@@ -107,7 +107,7 @@ function AddEdit({ history }) {
               className="form-item-width"
             />
             <button
-              className="button edytuj"
+              className="btn m-1 btn-success"
               type="submit"
               disabled={submitting ? true : false}
             >
@@ -118,7 +118,7 @@ function AddEdit({ history }) {
             </button>
             
               <Link to={"/pilgrimages"} >
-                <button className="button usun" type="submit">
+                <button className="btn m-1 btn-danger" type="submit">
                   Anuluj
                 </button>
               </Link>

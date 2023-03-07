@@ -31,7 +31,6 @@ export const Provider = (props) => {
 
   async function setContext() {
       let id = await updatePilgrimages()
-      console.log(id)
       if(accountService.userValue.role != Role.Admin){
         setData(id)
       }

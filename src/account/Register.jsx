@@ -101,11 +101,11 @@ function Register({ history }) {
                             <ErrorMessage name="acceptTerms" component="div" className="invalid-feedback" />
                         </div>
                         <div className="form-group">
-                            <button type="submit" disabled={isSubmitting} className="btn btn-primary">
+                            <button type="submit" disabled={isSubmitting} className="btn m-1 btn-primary">
                                 {isSubmitting && <span className="spinner-border spinner-border-sm mr-1"></span>}
                                 Register
                             </button>
-                            <Link to="login" className="btn btn-link">Cancel</Link>
+                            <Link to="login" className="btn m-1 btn-link">Cancel</Link>
                         </div>
                     </div>
                 </Form>

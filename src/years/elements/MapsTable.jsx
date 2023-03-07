@@ -65,7 +65,7 @@ const akcje = (cell, row, rowIndex) => {
   return (
     <div>
     <NavLink to={{pathname: `${path}/dodaj`, state: {yearId: yearId } }} className="nav-item center-divs">
-          <button className="button edytuj m-2">
+          <button className="btn m-1 btn-success">
             Dodaj nową mapę
           </button>
         </NavLink>

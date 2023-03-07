@@ -130,7 +130,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
               className="form-item-width"
             />
             <button
-              className="button edytuj"
+              className="btn m-1 btn-success"
               type="submit"
               onClick={() => onSubmitMapPins(formik.values, false)}
               disabled={submitting ? true : false}
@@ -141,7 +141,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
               Zapisz 
             </button>
             {(!popup && isAddMode) && <button
-              className="button edytuj"
+              className="btn m-1 btn-success"
               onClick={() => onSubmitMapPins(formik.values, true)}
               disabled={submitting ? true : false}
             >
@@ -153,7 +153,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
             }
             {popup ? (
               <a onClick={close}>
-                <button className="button usun">
+                <button className="btn m-1 btn-danger">
                   Anuluj
                 </button>
               </a>
@@ -164,7 +164,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                   ? yearId
                   : location.state.yearId },
             }} >
-                <button className="button usun" type="submit">
+                <button className="btn m-1 btn-danger" type="submit">
                   Anuluj
                 </button>
               </Link>

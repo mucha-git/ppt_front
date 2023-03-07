@@ -56,7 +56,6 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
       popup
         ? (values.yearId = yearId)
         : values.yearId = location.state.yearId;
-        console.log(values)
       mapsService
         .create(values)
         .then((x) => {
@@ -107,7 +106,6 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
 
   let file = null
   function fileChanged(e) {
-    console.log(e)
     file = e.target.files[0]
     parseDocument(file)
   }
@@ -155,7 +153,6 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
         if(markersList.length != 0){
           var title = item.getElementsByTagName('name')[0].childNodes[0].nodeValue.trim()
           let it = item.getElementsByTagName('description')
-          console.log(it)
           var description = it.length == 0? "" : it[0].childNodes[0].nodeValue.trim()
           for (const marker of markersList) {
             var coords = marker.getElementsByTagName('coordinates')[0].childNodes[0].nodeValue.trim()
@@ -172,10 +169,6 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
         }    
         
       }
-    console.log(latMin)
-    console.log(latMax)
-    console.log(lonMin)
-    console.log(lonMax)
     setLatitude(latMin + (latMax - latMin) / 2)
     setLongitude(lonMin + (lonMax - lonMin) / 2)
 
@@ -240,7 +233,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
             />
             <input type='file' accept=".kml" onChange={fileChanged}></input>
             <button
-              className="button edytuj"
+              className="btn m-1 btn-success"
               type="submit"
               onClick={() => onSubmitMaps(formik.values, false)}
               disabled={submitting ? true : false}
@@ -251,7 +244,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
               Zapisz 
             </button>
             {(!popup && isAddMode) && <button
-              className="button edytuj"
+              className="btn m-1 btn-success"
               onClick={() => onSubmitMaps(formik.values, true)}
               disabled={submitting ? true : false}
             >
@@ -263,7 +256,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
             }
             {popup ? (
               <a onClick={close}>
-                <button className="button usun">
+                <button className="btn m-1 btn-danger">
                   Anuluj
                 </button>
               </a>
@@ -274,7 +267,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                   ? yearId
                   : location.state.yearId },
             }} >
-                <button className="button usun" type="submit">
+                <button className="btn m-1 btn-danger" type="submit">
                   Anuluj
                 </button>
               </Link>

@@ -9,7 +9,7 @@ export default function SendToApp() {
       }
 
   return (
-    <button className="button edytuj m-2" onClick={saveChangesToApp}>
+    <button className="btn m-1 btn-success" onClick={saveChangesToApp}>
         Wyślij zmiany do Aplikacji
     </button>
   );

@@ -9,7 +9,6 @@ import { AppContext } from '../../_helpers/context';
 
 function AddEdit({ history, match }) {
     const { pilgrimages } = useContext(AppContext);
-    console.log(pilgrimages)
     const { id } = match.params;
     const isAddMode = !id;
     const initialValues = {
@@ -167,11 +166,11 @@ function AddEdit({ history, match }) {
                             </div>
                         </div>
                         <div className="form-group">
-                            <button type="submit" disabled={isSubmitting} className="btn btn-primary">
+                            <button type="submit" disabled={isSubmitting} className="btn m-1 btn-primary">
                                 {isSubmitting && <span className="spinner-border spinner-border-sm mr-1"></span>}
                                 Save
                             </button>
-                            <Link to={isAddMode ? '.' : '..'} className="btn btn-link">Cancel</Link>
+                            <Link to={isAddMode ? '.' : '..'} className="btn m-1 btn-link">Cancel</Link>
                         </div>
                     </Form>
                 );
