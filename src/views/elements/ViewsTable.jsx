@@ -42,7 +42,7 @@ const akcje = (cell, row, rowIndex) => {
 
       const rowsNotToExpand = () => {
         let rows = viewFilter(views).filter(r => r.type != "Text" && r.type != "Graphic").map(e => e.id)
-
+        
         return rows
       }
 
@@ -51,6 +51,22 @@ const akcje = (cell, row, rowIndex) => {
         className: "blue-light",
         onlyOneExpanding: true,
         nonExpandable: rowsNotToExpand(),
+        showExpandColumn: true,
+        expandHeaderColumnRenderer: () => {
+          return <p></p>;
+        },
+        expandColumnRenderer: ({ expanded, rowKey, expandable }) => {
+          if(expandable){
+            if (expanded) {
+              return <button className="btn btn-danger">
+                  Zwiń
+                </button>;
+            }
+            return <button className="btn btn-success">
+                Rozwiń
+              </button>;
+          }
+        },
         renderer: (row) => (
             <Elements view={row} path={path} />
         )
@@ -71,10 +87,10 @@ const akcje = (cell, row, rowIndex) => {
             Dodaj nowy widok
           </button>
         </NavLink>
-        <SendToApp />
+        {!parentViewId && <SendToApp />}
     <BootstrapTable
     bootstrap4
-    keyField="id"
+    keyField='id'
     data={viewFilter(views)}
     columns={columns}
     filter={filterFactory()}
