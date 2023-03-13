@@ -8,7 +8,11 @@ module.exports = (env) => {
             rules: [
                 {
                     test: /\.jsx?$/,
-                    loader: 'babel-loader'
+                    use: [
+                        {
+                            loader: 'babel-loader'
+                        }
+                    ]
                 },
                 {
                     test: /\.less$/,
@@ -24,7 +28,16 @@ module.exports = (env) => {
                 },
                 {
                   test: /\.(eot|svg|ttf|woff|woff2)(\??\#?v=[.0-9]+)?$/,
-                  loader: "file-loader?name=/fonts/[name].[ext]",
+                  use: [
+                    {
+                        loader: 'file-loader',
+                        options: {
+                            limit: 1000,
+                            name : '/fonts/[name].[ext]'
+                        }
+                    }
+                ]
+                  //loader: "file-loader?name=/fonts/[name].[ext]",
                 },
             ]
         },
@@ -33,6 +46,10 @@ module.exports = (env) => {
             extensions: ['.js', '.jsx'],
             alias: {
                 '@': path.resolve(__dirname, 'src/'),
+            },
+            fallback: { 
+                "crypto": false, //require.resolve("crypto-browserify"),
+                "stream": false//require.resolve("stream-browserify")  
             }
         },
         plugins: [new HtmlWebpackPlugin({

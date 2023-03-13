@@ -1,8 +1,8 @@
 import React, { useContext, useEffect } from "react";
-import BootstrapTable from "react-bootstrap-table-next";
+import BootstrapTable from "@murasoftware/react-bootstrap-table-next";
 import { NavLink } from "react-router-dom";
-import paginationFactory from "react-bootstrap-table2-paginator";
-import filterFactory, {textFilter} from "react-bootstrap-table2-filter";
+import paginationFactory from "@murasoftware/react-bootstrap-table2-paginator";
+import filterFactory, {textFilter} from "@murasoftware/react-bootstrap-table2-filter";
 import {kolumny} from './PilgrimagesColumns'
 import {Actions} from './PilgrimagesActions';
 import { AppContext } from '../../_helpers/context';
@@ -20,7 +20,7 @@ const akcje = (cell, row, rowIndex) => {
       };
 
     const columns = [
-        kolumny.KolumnaName(textFilter),
+        kolumny.KolumnaName(),
         kolumny.KolumnaIsActive(),
         kolumny.KolumnaLogoSrc(),
         kolumny.KolumnaAkcje(akcje)

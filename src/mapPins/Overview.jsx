@@ -6,6 +6,10 @@ import FormikControl from "@/_components/Formik/FormikControl";
 import * as Yup from "yup";
 import { MapPinsTable } from "./elements/MapPinsTable";
 import {AppContext} from '../_helpers/context'
+import MuiButton from "../_components/MuiButton";
+import { MuiBtnType } from "../_helpers/MuiBtnType";
+import SendToApp from "../_components/SendToApp";
+
 
 function Overview({ match }) {
   const {isSet, setData, yearId, years} = useContext(AppContext)
@@ -32,12 +36,12 @@ function Overview({ match }) {
   return (
     <div className="p-4">
       <div className="container">
+      <div className="d-flex justify-content-between">
         {years.length > 1 && 
           <Formik initialValues={initialValues} onSubmit={onSubmitForm} validationSchema={validationSchema}>
             {(formik) => (
               <Form>
-                <div className="center-divs w-50">
-                  <div className="left">
+                
                     <FormikControl
                         control="select"
                         label={"Rok"}
@@ -47,18 +51,14 @@ function Overview({ match }) {
                         className="form-item-width left"
                         wymagane={true}
                     />
-                  </div>
-                  <div className="left">
-                    <button className="btn btn-success" type="submit">
-                      Szukaj
-                    </button>
-                  </div>
-                  <div className="clear" />
-                </div>
+                  <MuiButton icon={MuiBtnType.Search} text={"Zmień"} />
               </Form>
             )}
           </Formik>
         }
+        <div><h2>Pinezki map</h2></div>
+        <div><SendToApp /></div>
+        </div>
         <MapPinsTable yearId={year} path={path} />
       </div>
     </div>

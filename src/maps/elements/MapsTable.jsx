@@ -1,12 +1,13 @@
 import React, { useContext } from "react";
-import BootstrapTable from "react-bootstrap-table-next";
+import BootstrapTable from "@murasoftware/react-bootstrap-table-next";
 import { NavLink } from "react-router-dom";
-import paginationFactory from "react-bootstrap-table2-paginator";
-import filterFactory, {textFilter} from "react-bootstrap-table2-filter";
+import paginationFactory from "@murasoftware/react-bootstrap-table2-paginator";
+import filterFactory, {textFilter} from "@murasoftware/react-bootstrap-table2-filter";
 import {kolumny} from './MapsColumns'
 import {Actions} from './MapsActions';
 import { AppContext } from '../../_helpers/context';
-import SendToApp from "../../_components/SendToApp";
+import MuiButton from "../../_components/MuiButton";
+import { MuiBtnType } from "../../_helpers/MuiBtnType";
 
 function MapsTable({ yearId, path }) {
     const { maps } = useContext(AppContext);
@@ -60,15 +61,11 @@ const akcje = (cell, row, rowIndex) => {
       };
 */
 
-
   return (
     <div>
     <NavLink to={{pathname: `${path}/dodaj`, state: {yearId: yearId } }} className="nav-item center-divs">
-          <button className="btn m-1 btn-success">
-            Dodaj nową mapę
-          </button>
-        </NavLink>
-        <SendToApp />
+      <MuiButton icon={MuiBtnType.Add} text="Dodaj nową mapę" className="p-2 pr-4 pl-4" />
+    </NavLink>
     <BootstrapTable
     bootstrap4
     keyField="id"

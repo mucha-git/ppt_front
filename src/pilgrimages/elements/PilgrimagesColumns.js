@@ -7,13 +7,13 @@ export const kolumny = {
     KolumnaAkcje
 }
 
-function KolumnaName(textFilter){   return {
+function KolumnaName(){   return {
         dataField: "name",
         text: "Nazwa",
         sort: true,
-        filter: textFilter({
-            placeholder: "Szukaj...",
-        }),
+        //filter: textFilter({
+        //    placeholder: "Szukaj...",
+        //}),
         headerClasses: "header-class",
     }}
 

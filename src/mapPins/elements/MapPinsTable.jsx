@@ -1,12 +1,13 @@
 import React, { useContext, useEffect } from "react";
-import BootstrapTable from "react-bootstrap-table-next";
+import BootstrapTable from "@murasoftware/react-bootstrap-table-next";
 import { NavLink } from "react-router-dom";
-import paginationFactory from "react-bootstrap-table2-paginator";
-import filterFactory, {textFilter} from "react-bootstrap-table2-filter";
+import paginationFactory from "@murasoftware/react-bootstrap-table2-paginator";
+import filterFactory, {textFilter} from "@murasoftware/react-bootstrap-table2-filter";
 import {kolumny} from './MapPinsColumns'
 import {Actions} from './MapPinsActions';
 import { AppContext } from '../../_helpers/context';
-import SendToApp from "../../_components/SendToApp";
+import MuiButton from "../../_components/MuiButton";
+import { MuiBtnType } from "../../_helpers/MuiBtnType";
 
 function MapPinsTable({ yearId, path }) {
     const { mapPins } = useContext(AppContext);
@@ -21,7 +22,7 @@ const akcje = (cell, row, rowIndex) => {
       };
 
     const columns = [
-      kolumny.KolumnaTitle(textFilter),
+        kolumny.KolumnaTitle(),
         kolumny.KolumnaPinSrc(),
         kolumny.KolumnaAkcje(akcje)
       ]
@@ -59,11 +60,8 @@ const akcje = (cell, row, rowIndex) => {
   return (
     <div>
     <NavLink to={{pathname: `${path}/dodaj`, state: {yearId: yearId } }} className="nav-item center-divs">
-          <button className="btn m-1 btn-success">
-            Dodaj nową pinezkę
-          </button>
-        </NavLink>
-        <SendToApp />
+      <MuiButton icon={MuiBtnType.Add} text="Dodaj nową pinezkę" className="p-2 pr-4 pl-4" />
+    </NavLink>
     <BootstrapTable
     bootstrap4
     keyField="id"

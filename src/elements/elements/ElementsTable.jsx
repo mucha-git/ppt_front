@@ -1,21 +1,31 @@
-import React, { useContext, useEffect } from "react";
-import BootstrapTable from "react-bootstrap-table-next";
+import React, { useContext, useEffect, useState } from "react";
+import BootstrapTable from "@murasoftware/react-bootstrap-table-next";
 import { NavLink } from "react-router-dom";
-import paginationFactory from "react-bootstrap-table2-paginator";
+import paginationFactory from "@murasoftware/react-bootstrap-table2-paginator";
+import cellEditFactory from "@musicstory/react-bootstrap-table2-editor";
 import filterFactory, {
     selectFilter,
   textFilter
-} from "react-bootstrap-table2-filter";
+} from "@murasoftware/react-bootstrap-table2-filter";
 import {kolumny} from './ElementsColumns'
 import {Actions} from './ElementActions';
 import { Elements } from "../../views/elements/Elements";
 import { AppContext } from '../../_helpers/context';
+import { elementsService } from "@/_services";
+import MuiButton from "../../_components/MuiButton";
+import { MuiBtnType } from "../../_helpers/MuiBtnType";
 
 function ElementsTable({ parentViewId, yearId, path }) {
-    const { elements, views, isSet } = useContext(AppContext);
+    const { elements, views, updateElements, isSet } = useContext(AppContext);
+    const [filteredElements, setFilteredElements] = useState(viewFilter(elements))
+    //useEffect(() => {
+    //    isSet(yearId)
+    //}, [])
+
     useEffect(() => {
-        isSet(yearId)
-    }, [])
+      setFilteredElements(viewFilter(elements))
+    }, [elements])
+
     function viewFilter(e) {
         return e.filter(v => v.viewId == parentViewId)
       }
@@ -27,8 +37,9 @@ const akcje = (cell, row, rowIndex) => {
       };
 
     const columns = [
-        kolumny.KolumnaElement(),
-        kolumny.KolumnaAkcje(akcje)
+      kolumny.KolumnaOrder(),
+      kolumny.KolumnaElement(),
+      kolumny.KolumnaAkcje(akcje)
       ]
 
     const emptyTable = () => {
@@ -42,7 +53,7 @@ const akcje = (cell, row, rowIndex) => {
       };
 
       const rowsNotToExpand = () => {
-        let rows = viewFilter(elements).filter(r => r.type != "Navigation").map(e => e.id)
+        let rows = filteredElements.filter(r => r.type != "Navigation").map(e => e.id)
         return rows
       }
 
@@ -57,17 +68,36 @@ const akcje = (cell, row, rowIndex) => {
         }
       };
 
+      function beforeSaveCell(oldValue, newValue, row, column, done) {
+        setTimeout(() => {
+          row.order = newValue
+          oldValue != newValue && elementsService
+            .update(row)
+            .then(() => {
+              setFilteredElements(viewFilter(updateElements(yearId)))
+            }).then(() => done(true))
+            .catch((e) => {
+              console.log(e)
+              done(false)
+            })
+        }, 0);
+        return { async: true };
+      }
+
+      const defaultSorted = [{
+        dataField: 'order',
+        order: 'asc'
+      }];
+
   return (
     <div>
     <NavLink to={{pathname: `/elements/dodaj`, state: {yearId: yearId, parentViewId: parentViewId} }} className="nav-item center-divs">
-          <button className="btn m-1 btn-success">
-            Dodaj nowy element
-          </button>
-        </NavLink>
+      <MuiButton icon={MuiBtnType.Add} text="Dodaj nowy element" className="p-2 pr-4 pl-4" />
+    </NavLink>
     <BootstrapTable
     bootstrap4
     keyField="id"
-    data={viewFilter(elements)}
+    data={filteredElements}
     columns={columns}
     filter={filterFactory()}
     filterPosition="top"
@@ -77,6 +107,12 @@ const akcje = (cell, row, rowIndex) => {
     noDataIndication={emptyTable}
     pagination={paginationFactory()}
     expandRow={expandRowElement}
+    cellEdit={cellEditFactory({
+      mode: "click",
+      blurToSave: true,
+      beforeSaveCell,
+    })}
+    defaultSorted={ defaultSorted }
   />
   </div>
   );

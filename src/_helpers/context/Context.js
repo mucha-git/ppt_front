@@ -46,11 +46,17 @@ export const Provider = (props) => {
   }
 
   function updateViews(a) {
-    viewsService.getViews(a).then(setViews);
+    viewsService.getViews(a).then((a) => {
+      setViews(a)
+      return a
+    });
   }
 
   function updateElements(a) {
-    elementsService.getElements(a).then(setElements);
+    elementsService.getElements(a).then((a) => {
+      setElements(a)
+      return a
+    });
   }
 
   function updateMaps(a) {

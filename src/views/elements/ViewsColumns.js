@@ -11,7 +11,8 @@ export const kolumny = {
     KolumnaScreenType,
     KolumnaWidok,
     KolumnaAkcje,
-    KolumnaParentView
+    KolumnaParentView,
+    KolumnaOrder
 }
 
 function KolumnaWidok(){   return {
@@ -21,6 +22,22 @@ function KolumnaWidok(){   return {
         return <View row={row} />
     },
     headerClasses: "header-class",
+    editable: false,
+}}
+
+function KolumnaOrder(){   return {
+    dataField: "order",
+    text: "Kol.",
+    editCellClasses: "pl-1 pt-2",
+    classes: "p-3",
+    headerClasses: "header-class",
+    headerStyle: { width: "50px" },
+    editable: true,
+    events: {
+        onClick: (e, column, columnIndex, row, rowIndex) => {
+          e.stopPropagation();
+        },
+    },
 }}
 
 function KolumnaTitle(textFilter){   return {
@@ -93,13 +110,15 @@ function KolumnaAkcje(akcje){return{
         dataField: "id",
         text: "Akcje",
         formatter: akcje,
+        classes: "height1",
         headerClasses: "header-class",
-        headerStyle: { width: "200px" },
+        headerStyle: { width: "210px" },
         events: {
             onClick: (e, column, columnIndex, row, rowIndex) => {
               e.stopPropagation();
             },
         },
+        editable: false,
     }}
 
 function KolumnaParentView(selectFilter, views){  

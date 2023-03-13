@@ -43,19 +43,88 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
         externalUrl: row.externalUrl
       };
 
-  const validationSchema = Yup.object({
+  const validationSchema = Yup.object().shape({
     title: Yup.string()
       .required("Wymagany"),
-    headerText: Yup.string().nullable(),
-    type: Yup.string(),
-    screenType: Yup.string().nullable(),
-    imgSrc: Yup.string().nullable(),
-    externalUrl: Yup.string().nullable()
+    headerText: Yup.string().min(1)
+      .when('type', {
+        is: 'Text',
+        then: fieldSchema => fieldSchema.required('Wymagane'),
+      })
+      .when('type', {
+        is: 'Graphic',
+        then: fieldSchema => fieldSchema.required('Wymagane'),
+      })
+      .when('type', {
+        is: 'TextExternalLink',
+        then: fieldSchema => fieldSchema.nullable(),
+      })
+      .when('type', {
+        is: 'GraphicExternalLink',
+        then: fieldSchema => fieldSchema.nullable(),
+      }),
+      //(type, field, val) => {
+       //   console.log(val)
+       //   (type == 'Text' || type == 'Graphic')? val.required("wymagane") : val
+      //  }),
+    type: Yup.string().required("Wymagany"),
+    screenType: Yup.string()
+      .when('type', {
+        is: 'Text',
+        then: fieldSchema => fieldSchema.required('Wymagane'),
+      })
+      .when('type', {
+        is: 'Graphic',
+        then: fieldSchema => fieldSchema.required('Wymagane'),
+      })
+      .when('type', {
+        is: 'TextExternalLink',
+        then: fieldSchema => fieldSchema.nullable(),
+      })
+      .when('type', {
+        is: 'GraphicExternalLink',
+        then: fieldSchema => fieldSchema.nullable(),
+      }),
+    imgSrc: Yup.string()
+      .when('type', {
+        is: 'Text',
+        then: fieldSchema => fieldSchema.nullable(),
+      })
+      .when('type', {
+        is: 'Graphic',
+        then: fieldSchema => fieldSchema.required('Wymagane'),
+      })
+      .when('type', {
+        is: 'TextExternalLink',
+        then: fieldSchema => fieldSchema.nullable(),
+      })
+      .when('type', {
+        is: 'GraphicExternalLink',
+        then: fieldSchema => fieldSchema.required('Wymagane'),
+      }),
+    externalUrl: Yup.string()
+      .when('type', {
+        is: 'Text',
+        then: fieldSchema => fieldSchema.nullable(),
+      })
+      .when('type', {
+        is: 'Graphic',
+        then: fieldSchema => fieldSchema.nullable(),
+      })
+      .when('type', {
+        is: 'TextExternalLink',
+        then: fieldSchema => fieldSchema.required('Wymagane'),
+      })
+      .when('type', {
+        is: 'GraphicExternalLink',
+        then: fieldSchema => fieldSchema.required('Wymagane'),
+      })
   });
 
   const onSubmitViews = (values, openNew) => {
     values.screenType === ""? values.screenType = null: null;
     if (isAddMode) {
+      values.order=2;
       popup
         ? (values.yearId = yearId)
         : values.yearId = location.state.yearId;
@@ -122,7 +191,8 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
         onSubmit={() => {}}
       >
         {(formik) => (
-          <Form>
+          
+          <Form>{console.log(formik.isValid)}
             <FormikControl
               control="input"
               type="text"
@@ -183,17 +253,17 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
             <button
               className="btn m-1 btn-success"
               type="submit"
-              onClick={() => onSubmitViews(formik.values, false)}
-              disabled={submitting ? true : false}
+              onClick={() => formik.isValid && onSubmitViews(formik.values, false)}
+              disabled={formik.isSubmitting}// ? true : false}
             >
-              {submitting && (
+              {formik.isSubmitting && (
                 <span className="spinner-border spinner-border-sm"></span>
               )}
               Zapisz
             </button>
             {(!popup && isAddMode) && <button
               className="btn m-1 btn-success"
-              onClick={() => onSubmitViews(formik.values, true)}
+              onClick={() => formik.isValid && onSubmitViews(formik.values, true)}
               disabled={submitting ? true : false}
             >
               {submitting && (

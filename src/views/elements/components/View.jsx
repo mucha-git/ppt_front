@@ -1,9 +1,28 @@
 import React from 'react'
-import { TextView } from './TextView';
-import { GraphicView } from './GraphicView'
+//import { TextView } from './TextView';
+//mport { GraphicView } from './GraphicView'
+
+import MuiButton from "../../../_components/MuiButton";
+import { showView } from "../../../_helpers";
+//import { ListType } from "../../../_helpers/ListType";
+import { MuiBtnType } from "../../../_helpers/MuiBtnType";
 
 function View({row}){
-    switch (row.type) {
+    return (
+        <div>
+            <div className="d-flex align-items-top">
+                <div>
+                    <MuiButton icon={MuiBtnType.DragAndDrop} />
+                </div>
+                <div className='mt-2'>
+                    <h4>{row.title}</h4>
+                    {showView(row)}
+                </div>
+            </div>
+            
+        </div> 
+    )
+    /*switch (row.type) {
         case "Text":
             return <TextView row={row} />
         case "Graphic":
@@ -15,7 +34,7 @@ function View({row}){
         default:
             break;
     }
-    return null
+    return null*/
 }
 
 export {View}

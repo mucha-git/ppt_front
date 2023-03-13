@@ -12,8 +12,43 @@ a { cursor: pointer; }
     border-bottom: 1px solid #ccc;
 }
 
-.table-bordered, .table-bordered td, .table-bordered th {
-  border: none !important
+.rowClasses {
+  border-top: 12px solid #1976D2 !important;
+    border-left: 2px solid #1976D2 !important;
+    border-right: 2px solid #1976D2 !important;
+}
+
+.parent-expand-foo {
+  border-bottom: 2px solid #1976D2 !important;
+}
+
+.table-bordered, .table-bordered th, .table-bordered td {
+  border: 0 !important;
+}
+
+.table-bordered tr {
+  padding-top: 20px;
+  border-left: 2px solid #1976D2 !important;
+  border-right: 2px solid #1976D2 !important;
+}
+
+.table-bordered tr:last-child  {
+  border-bottom: 2px solid #1976D2 !important;
+  
+}
+
+.table-bordered td  {
+  background-color: rgba(0,123,255,0.04);
+}
+
+.page-item {
+  border-radius: 5px !important;
+  margin:  5px;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.19);
+}
+
+.pagination .active {
+  box-shadow: 4px 4px 5px 0px rgba(0, 0, 0, 0.2), 4px 4px 5px 0px rgba(0, 0, 0, 0.4);
 }
 
 .header-class {
@@ -23,7 +58,7 @@ a { cursor: pointer; }
 }
 
 .react-bootstrap-table th[data-row-selection]{
-  width: 85px !important
+  width: 40px !important
 }
 
 .width100 {
@@ -63,7 +98,12 @@ a { cursor: pointer; }
 }
 
 .blue-light {
-  background-color: rgba(0,123,255,0.1);
+  //position:relative;
+  //left:20px;
+  //border: none !important;
+  //background-color: rgba(0,123,255,0.1);
+  background-color: white !important;
+  border-bottom: 2px solid #1976D2 !important;
 }
 
 .button {
@@ -144,6 +184,10 @@ a { cursor: pointer; }
 
   .form-style {
     text-align: center;
+  }
+
+  .height1 {
+    height: 1px;
   }
 
   // text editor start

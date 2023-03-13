@@ -10,7 +10,7 @@ import { Admin } from '@/admin';
 import { Account } from '@/account';
 import { Views } from '@/views';
 import { AppContextProvider } from '../_helpers/context';
-import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
+import "@murasoftware/react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
 import { Elements } from '@/elements';
 import { Maps } from '../maps/Index';
 import { Pilgrimages } from '../pilgrimages/Index';
@@ -32,7 +32,7 @@ function App() {
             <Nav />
             <Alert />
             <Switch>
-                <Redirect from="/:url*(/+)" to={pathname.slice(0, -1)} />
+                
                 <PrivateRoute exact path="/" component={Home} />
                 <PrivateRoute path="/views" component={Views} />
                 <PrivateRoute path="/elements" component={Elements} />
@@ -43,6 +43,7 @@ function App() {
                 <PrivateRoute path="/profile" component={Profile} />
                 <PrivateRoute path="/admin" roles={[Role.Admin, Role.Manager]} component={Admin} />
                 <Route path="/account" component={Account} />
+                <Redirect from="/:url*(/+)" to={pathname} />
                 <Redirect from="*" to="/" />
             </Switch>
             </AppContextProvider>
