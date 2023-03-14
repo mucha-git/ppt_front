@@ -6,6 +6,8 @@ import filterFactory, {textFilter} from "@murasoftware/react-bootstrap-table2-fi
 import {kolumny} from './PilgrimagesColumns'
 import {Actions} from './PilgrimagesActions';
 import { AppContext } from '../../_helpers/context';
+import MuiButton from "../../_components/MuiButton";
+import { MuiBtnType } from "../../_helpers/MuiBtnType";
 
 function PilgrimagesTable({ path }) {
     const { pilgrimages, isSet } = useContext(AppContext);
@@ -37,11 +39,11 @@ const akcje = (cell, row, rowIndex) => {
       };
   return (
     <div>
+      <div class="d-flex justify-content-center mt-3">
     <NavLink to={{pathname: `${path}/dodaj`}} className="nav-item center-divs">
-          <button className="btn m-1 btn-success">
-            Dodaj nową pielgrzymkę
-          </button>
+      <MuiButton icon={MuiBtnType.Add} text="Dodaj nową pielgrzymkę" className="p-2 pr-4 pl-4" />
         </NavLink>
+        </div>
     <BootstrapTable
     bootstrap4
     keyField="id"
@@ -52,9 +54,11 @@ const akcje = (cell, row, rowIndex) => {
     filtersClasses="top-filter-class"
     hover
     condensed
-    noDataIndication={emptyTable}
+    //noDataIndication={emptyTable}
     pagination={paginationFactory()}
     //expandRow={expandRow}
+
+    rowClasses="rowClasses"
   />
   </div>
   );

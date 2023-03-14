@@ -91,9 +91,11 @@ const akcje = (cell, row, rowIndex) => {
 
   return (
     <div>
+      <div class="d-flex justify-content-center mt-3">
     <NavLink to={{pathname: `/elements/dodaj`, state: {yearId: yearId, parentViewId: parentViewId} }} className="nav-item center-divs">
       <MuiButton icon={MuiBtnType.Add} text="Dodaj nowy element" className="p-2 pr-4 pl-4" />
     </NavLink>
+    </div>
     <BootstrapTable
     bootstrap4
     keyField="id"
@@ -104,7 +106,7 @@ const akcje = (cell, row, rowIndex) => {
     filtersClasses="top-filter-class"
     hover
     condensed
-    noDataIndication={emptyTable}
+    //noDataIndication={emptyTable}
     pagination={paginationFactory()}
     expandRow={expandRowElement}
     cellEdit={cellEditFactory({
@@ -113,6 +115,7 @@ const akcje = (cell, row, rowIndex) => {
       beforeSaveCell,
     })}
     defaultSorted={ defaultSorted }
+    rowClasses="elementClasses blue-light"
   />
   </div>
   );

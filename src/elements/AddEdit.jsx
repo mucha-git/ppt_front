@@ -80,6 +80,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
     values.autoplay != null ? values.autoplay = values.autoplay == "1": null;
     if(destinationViewId != -1 ) values.destinationViewId = destinationViewId
     if(mapId != -1 ) values.mapId = mapId
+    values.order=isAddMode? null : row.order
     if (isAddMode) {
       values.viewId = parentViewId
       popup

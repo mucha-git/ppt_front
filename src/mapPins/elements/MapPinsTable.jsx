@@ -59,9 +59,11 @@ const akcje = (cell, row, rowIndex) => {
 
   return (
     <div>
-    <NavLink to={{pathname: `${path}/dodaj`, state: {yearId: yearId } }} className="nav-item center-divs">
-      <MuiButton icon={MuiBtnType.Add} text="Dodaj nową pinezkę" className="p-2 pr-4 pl-4" />
-    </NavLink>
+      <div class="d-flex justify-content-center mt-3">
+        <NavLink to={{pathname: `${path}/dodaj`, state: {yearId: yearId } }} className="nav-item center-divs">
+          <MuiButton icon={MuiBtnType.Add} text="Dodaj nową pinezkę" className="p-2 pr-4 pl-4" />
+        </NavLink>
+      </div>
     <BootstrapTable
     bootstrap4
     keyField="id"
@@ -72,9 +74,10 @@ const akcje = (cell, row, rowIndex) => {
     filtersClasses="top-filter-class"
     hover
     condensed
-    noDataIndication={emptyTable}
+    //noDataIndication={emptyTable}
     pagination={paginationFactory()}
     //expandRow={expandRow}
+    rowClasses="rowClasses"
   />
   </div>
   );

@@ -15,7 +15,7 @@ function Actions(props) {
                     state: {row: props.row},
                 }}
             >
-                <MuiButton icon={MuiBtnType.Edit} onClick={() => {}} />
+                <MuiButton icon={MuiBtnType.Edit} />
             </NavLink>
             <MuiButton 
                 icon={MuiBtnType.Delete} 

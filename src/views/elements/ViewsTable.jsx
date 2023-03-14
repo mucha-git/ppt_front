@@ -122,7 +122,7 @@ const akcje = (cell, row, rowIndex) => {
 
   return (
     <div>
-      <div class="d-flex justify-content-end mt-3">
+      <div class="d-flex justify-content-center mt-3">
         <NavLink to={{pathname: `${path}/dodaj`, state: {yearId: yearId, parentViewId: parentViewId} }} className="nav-item center-divs">
           <MuiButton icon={MuiBtnType.Add} text="Dodaj nowy widok" className="p-2 pr-4 pl-4" />
         </NavLink>
@@ -139,7 +139,7 @@ const akcje = (cell, row, rowIndex) => {
     filtersClasses="top-filter-class"
     hover
     condensed
-    noDataIndication={emptyTable}
+    //noDataIndication={emptyTable}
     pagination={paginationFactory(options)}
     expandRow={expandRow}
     cellEdit={cellEditFactory({

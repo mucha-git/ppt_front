@@ -123,8 +123,8 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
 
   const onSubmitViews = (values, openNew) => {
     values.screenType === ""? values.screenType = null: null;
+    values.order=isAddMode? null : row.order
     if (isAddMode) {
-      values.order=2;
       popup
         ? (values.yearId = yearId)
         : values.yearId = location.state.yearId;
