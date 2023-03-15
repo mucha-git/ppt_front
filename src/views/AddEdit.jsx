@@ -63,10 +63,6 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
         is: 'GraphicExternalLink',
         then: fieldSchema => fieldSchema.nullable(),
       }),
-      //(type, field, val) => {
-       //   console.log(val)
-       //   (type == 'Text' || type == 'Graphic')? val.required("wymagane") : val
-      //  }),
     type: Yup.string().required("Wymagany"),
     screenType: Yup.string()
       .when('type', {
@@ -192,7 +188,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
       >
         {(formik) => (
           
-          <Form>{console.log(formik.isValid)}
+          <Form>
             <FormikControl
               control="input"
               type="text"

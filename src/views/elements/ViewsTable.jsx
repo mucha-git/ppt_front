@@ -41,7 +41,6 @@ const akcje = (cell, row, rowIndex) => {
       ]
 
       const rowsNotToExpand = () => {
-        console.log(views.filter( v => v.viewId == 112).length)
         let rows = filteredViews.filter(r => 
                                         (r.type != "Text" && 
                                         r.type != "Graphic") ||
