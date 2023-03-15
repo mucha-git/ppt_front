@@ -21,7 +21,7 @@ function MuiSelect(props) {
           const { value } = field;
           return (
             <FormControl variant="filled" sx={{ m: 1, minWidth: 120 }}>
-              <InputLabel id={name + "-label"}>label</InputLabel>
+              <InputLabel id={name + "-label"}>{label}</InputLabel>
               <Select
                 labelId={name + "-label"}
                 id={name}

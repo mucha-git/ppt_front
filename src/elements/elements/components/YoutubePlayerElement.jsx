@@ -3,7 +3,7 @@ import React from "react";
 function YoutubePlayerElement({row}){
     const playlistSrc = row.playlist.length> 20?
         "https://www.youtube.com/embed/videoseries?list=" + row.playlist 
-        : "https://youtu.be/" + row.playlist
+        : "https://www.youtube.com/embed/" + row.playlist
     return (
         <div className="d-flex justify-content-start">
             <div className="box-shadow p-2 rounded">

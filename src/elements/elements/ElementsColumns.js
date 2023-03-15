@@ -21,7 +21,7 @@ function KolumnaAkcje(akcje){return{
         dataField: "id",
         text: "Akcje",
         formatter: akcje,
-        classes: "pt-5 pb-5",
+        classes: "pt-4 pb-4",
         headerClasses: "header-class",
         headerStyle: { width: "110px" },
         events: {
