@@ -11,7 +11,7 @@ function GraphicWithTextElement({row}){
             <div className="left" >
                 <img src={row.imgSrc} width={width} height={height} />
             </div>
-            <div style={{width: '90%'}} className="left m-2" >
+            <div style={{width: '90%'}} className="left ml-2" >
                 <TextEditor value={row.text} disabled={true} />
             </div>
             <div className="clear" />

@@ -6,6 +6,7 @@ import { alertService, elementsService } from "@/_services";
 import { useLocation, Link } from "react-router-dom";
 import { ElementType } from "../_helpers/ElementType";
 import { AppContext } from "../_helpers/context";
+import { arrayFromEnum } from "../_helpers";
 
 function AddEdit({ history, popup, close, lista, setLista, yearId }) {
   const {updateElements, views, updateViews, maps, updateMaps} = useContext(AppContext)
@@ -155,7 +156,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
               control="select"
               label={"Typ"}
               name="type"
-              options={ElementType}
+              options={arrayFromEnum(ElementType)}
               className="form-item-width"
               wymagane={true}
             />

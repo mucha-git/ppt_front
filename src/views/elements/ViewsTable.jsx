@@ -11,7 +11,6 @@ import {kolumny} from './ViewsColumns'
 import {Actions} from './ViewActions';
 import { Elements } from "./Elements";
 import { AppContext } from '../../_helpers/context';
-import SendToApp from "../../_components/SendToApp";
 import MuiButton from "../../_components/MuiButton";
 import { MuiBtnType } from "../../_helpers/MuiBtnType";
 import { viewsService } from "@/_services";
@@ -69,7 +68,7 @@ const akcje = (cell, row, rowIndex) => {
         expanded: expanded,
         onExpand: handleOnExpand,
         parentClassName: "parent-expand-foo",
-        className: "blue-light",
+        className: "blue-light pt-5 pb-5",
         onlyOneExpanding: true,
         nonExpandable: rowsNotToExpand(),
         showExpandColumn: false,
@@ -122,34 +121,31 @@ const akcje = (cell, row, rowIndex) => {
 
   return (
     <div>
-      <div class="d-flex justify-content-center mt-3">
+      {parentViewId && <div class="d-flex justify-content-center mt-3">
         <NavLink to={{pathname: `${path}/dodaj`, state: {yearId: yearId, parentViewId: parentViewId} }} className="nav-item center-divs">
           <MuiButton icon={MuiBtnType.Add} text="Dodaj nowy widok" className="p-2 pr-4 pl-4" />
         </NavLink>
-      </div>
-    
-        
-    <BootstrapTable
-    bootstrap4
-    keyField='id'
-    data={filteredViews}
-    columns={columns}
-    filter={filterFactory()}
-    filterPosition="top"
-    filtersClasses="top-filter-class"
-    hover
-    condensed
-    //noDataIndication={emptyTable}
-    pagination={paginationFactory(options)}
-    expandRow={expandRow}
-    cellEdit={cellEditFactory({
-      mode: "click",
-      blurToSave: true,
-      beforeSaveCell,
-    })}
-    defaultSorted={ defaultSorted }
-    rowClasses="rowClasses"
-  />
+      </div>}
+      <BootstrapTable
+        bootstrap4
+        keyField='id'
+        data={filteredViews}
+        columns={columns}
+        filter={filterFactory()}
+        filterPosition="top"
+        filtersClasses="top-filter-class"
+        hover
+        condensed
+        pagination={paginationFactory(options)}
+        expandRow={expandRow}
+        cellEdit={cellEditFactory({
+          mode: "click",
+          blurToSave: true,
+          beforeSaveCell,
+        })}
+        defaultSorted={ defaultSorted }
+        rowClasses="rowClasses"
+      />
   </div>
   );
 }

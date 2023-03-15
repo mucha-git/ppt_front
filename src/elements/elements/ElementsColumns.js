@@ -21,6 +21,7 @@ function KolumnaAkcje(akcje){return{
         dataField: "id",
         text: "Akcje",
         formatter: akcje,
+        classes: "pt-5 pb-5",
         headerClasses: "header-class",
         headerStyle: { width: "110px" },
         events: {
@@ -34,8 +35,9 @@ function KolumnaAkcje(akcje){return{
 function KolumnaOrder(){   return {
         dataField: "order",
         text: "Kol.",
-        editCellClasses: "pl-1 pt-2",
-        classes: "p-3",
+        editorClasses: 'pr-0',
+        editCellClasses: "padding-order-edit",
+        classes: "padding-order",
         headerClasses: "header-class",
         headerStyle: { width: "50px" },
         editable: true,

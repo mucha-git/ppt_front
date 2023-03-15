@@ -16,9 +16,9 @@ function Login({ history, location }) {
 
     const validationSchema = Yup.object().shape({
         email: Yup.string()
-            .email('Email is invalid')
-            .required('Email is required'),
-        password: Yup.string().required('Password is required')
+            .email('Email jest niepoprawny')
+            .required('podaj email'),
+        password: Yup.string().required('Podaj hasło')
     });
 
     function onSubmit({ email, password }, { setSubmitting }) {
@@ -44,7 +44,7 @@ function Login({ history, location }) {
         <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
             {({ errors, touched, isSubmitting }) => (
                 <Form>
-                    <h3 className="card-header">Login</h3>
+                    <h3 className="card-header">Logowanie</h3>
                     <div className="card-body">
                         <div className="form-group">
                             <label>Email</label>
@@ -52,7 +52,7 @@ function Login({ history, location }) {
                             <ErrorMessage name="email" component="div" className="invalid-feedback" />
                         </div>
                         <div className="form-group">
-                            <label>Password</label>
+                            <label>Hasło</label>
                             <Field name="password" type="password" className={'form-control' + (errors.password && touched.password ? ' is-invalid' : '')} />
                             <ErrorMessage name="password" component="div" className="invalid-feedback" />
                         </div>
@@ -60,11 +60,11 @@ function Login({ history, location }) {
                             <div className="form-group col">
                                 <button type="submit" disabled={isSubmitting} className="btn m-1 btn-primary">
                                     {isSubmitting && <span className="spinner-border spinner-border-sm mr-1"></span>}
-                                    Login
+                                    Zaloguj
                                 </button>
                             </div>
                             <div className="form-group col text-right">
-                                <Link to="forgot-password" className="btn m-1 btn-link pr-0">Forgot Password?</Link>
+                                <Link to="forgot-password" className="btn m-1 btn-link pr-0">Zapomniałeś hasła?</Link>
                             </div>
                         </div>
                     </div>

@@ -41,11 +41,11 @@ function ResetPassword({ history }) {
 
         const validationSchema = Yup.object().shape({
             password: Yup.string()
-                .min(6, 'Password must be at least 6 characters')
-                .required('Password is required'),
+                .min(6, 'Hasło musi zawierać przynajmniej 6 znaków')
+                .required('Podaj hasło'),
             confirmPassword: Yup.string()
-                .oneOf([Yup.ref('password'), null], 'Passwords must match')
-                .required('Confirm Password is required'),
+                .oneOf([Yup.ref('password'), null], 'Hasła muszą być identyczne')
+                .required('Musisz powtórzyć hasło'),
         });
 
         function onSubmit({ password, confirmPassword }, { setSubmitting }) {
@@ -57,7 +57,7 @@ function ResetPassword({ history }) {
                     confirmPassword: bcrypt.hashSync(confirmPassword, b.salt),
                   })
                 .then(() => {
-                    alertService.success(t("alerts.success.passwordChanged"), {
+                    alertService.success("Hasło zostało zmienione", {
                       keepAfterRouteChange: true,
                     });
                     history.push("login");
@@ -74,12 +74,12 @@ function ResetPassword({ history }) {
                 {({ errors, touched, isSubmitting }) => (
                     <Form>
                         <div className="form-group">
-                            <label>Password</label>
+                            <label>Hasło</label>
                             <Field name="password" type="password" className={'form-control' + (errors.password && touched.password ? ' is-invalid' : '')} />
                             <ErrorMessage name="password" component="div" className="invalid-feedback" />
                         </div>
                         <div className="form-group">
-                            <label>Confirm Password</label>
+                            <label>Powtórz hasło</label>
                             <Field name="confirmPassword" type="password" className={'form-control' + (errors.confirmPassword && touched.confirmPassword ? ' is-invalid' : '')} />
                             <ErrorMessage name="confirmPassword" component="div" className="invalid-feedback" />
                         </div>
@@ -87,9 +87,9 @@ function ResetPassword({ history }) {
                             <div className="form-group col">
                                 <button type="submit" disabled={isSubmitting} className="btn m-1 btn-primary">
                                     {isSubmitting && <span className="spinner-border spinner-border-sm mr-1"></span>}
-                                    Reset Password
+                                    Zmień hasło
                                 </button>
-                                <Link to="login" className="btn m-1 btn-link">Cancel</Link>
+                                <Link to="login" className="btn m-1 btn-link">Anuluj</Link>
                             </div>
                         </div>
                     </Form>

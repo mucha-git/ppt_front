@@ -20,7 +20,7 @@ function VerifyEmail({ history }) {
 
         accountService.verifyEmail(token)
             .then(() => {
-                alertService.success('Verification successful, you can now login', { keepAfterRouteChange: true });
+                alertService.success('Weryfikacja pomyślna, mozesz juz się zalogować', { keepAfterRouteChange: true });
                 history.push('login');
             })
             .catch(() => {
@@ -31,15 +31,15 @@ function VerifyEmail({ history }) {
     function getBody() {
         switch (emailStatus) {
             case EmailStatus.Verifying:
-                return <div>Verifying...</div>;
+                return <div>Weryfikuję...</div>;
             case EmailStatus.Failed:
-                return <div>Verification failed, you can also verify your account using the <Link to="forgot-password">forgot password</Link> page.</div>;
+                return <div>Weryfikacja nieudana, mozesz równiez zweryfikować konto poprzez stronę <Link to="forgot-password">zapomniałem hasła</Link>.</div>;
         }
     }
 
     return (
         <div>
-            <h3 className="card-header">Verify Email</h3>
+            <h3 className="card-header">Weryfikacja maila</h3>
             <div className="card-body">{getBody()}</div>
         </div>
     )

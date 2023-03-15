@@ -1,4 +1,5 @@
 import React from 'react';
+import DefaultTableView from '../../_components/DefaultTableView';
 
 export const kolumny = {
     KolumnaName,
@@ -11,9 +12,6 @@ function KolumnaName(){   return {
         dataField: "name",
         text: "Nazwa",
         sort: true,
-        //filter: textFilter({
-        //    placeholder: "Szukaj...",
-        //}),
         headerClasses: "header-class",
     }}
 
@@ -35,10 +33,11 @@ function KolumnaIsActive(){
 function KolumnaLogoSrc(){return{
         dataField: "logoSrc",
         text: "Logo",
-        formatter: (cell) => {
-            return cell != null
-                ? <img src={cell} height={100} />
-                : "brak grafiki";
+        formatter: (cell, row) => {
+            return <DefaultTableView text={row.name} displayOrder={false}>
+              <div><strong>Aktywna: </strong>{row.isActive? "Tak":"Nie"}</div>
+              <div>{cell != null? <img src={cell} height={100} /> : "brak grafiki"}</div>
+            </DefaultTableView>
         },
         headerClasses: "header-class",
     }}
@@ -47,6 +46,7 @@ function KolumnaAkcje(akcje){return{
         dataField: "id",
         text: "Akcje",
         formatter: akcje,
+        classes: "height1 pt-3 pb-3",
         headerClasses: "header-class",
         headerStyle: { width: "110px" },
         events: {

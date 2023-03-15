@@ -59,7 +59,7 @@ const akcje = (cell, row, rowIndex) => {
 
     const expandRowElement = {
         parentClassName: "parent-expand-foo",
-        className: "blue-light",
+        className: "blue-light pt-5 pb-5",
         onlyOneExpanding: true,
         nonExpandable: rowsNotToExpand(),
         renderer: (row) => {
@@ -115,7 +115,7 @@ const akcje = (cell, row, rowIndex) => {
       beforeSaveCell,
     })}
     defaultSorted={ defaultSorted }
-    rowClasses="elementClasses blue-light"
+    rowClasses="elementClasses blue-light mt-2 mb-2"
   />
   </div>
   );

@@ -8,20 +8,26 @@ export function showView (row) {
     switch (row.type) {
         case ListType[0].value: 
             return <div>
-                {/* <p><strong>Typ: </strong>{ListType[0].key}</p>
-                <p><strong>Tekst nagłówka: </strong>{row.headerText}</p> */}
             </div>
         case ListType[1].value: 
             return <img src={row.imgSrc} width={"100%"} />
         case ListType[2].value: 
             return <div>
-            <p><strong>Link zewnętrzny: </strong>{row.externalUrl}</p>
+            <strong>Link zewnętrzny: </strong>{row.externalUrl}
         </div>
         case ListType[3].value: 
             return <div>
-            <p><strong>Link zewnętrzny: </strong>{row.externalUrl}</p>
+            <strong>Link zewnętrzny: </strong>{row.externalUrl}
             <img src={row.imgSrc} width={"100%"} />
         </div>
         
     }
 }
+
+export function arrayFromEnum(enumObject){
+    var all = [];
+    for(var key in enumObject){
+       all.push({key: key, value: enumObject[key]});
+    }
+    return all
+ }

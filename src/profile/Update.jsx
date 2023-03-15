@@ -18,21 +18,21 @@ function Update({ history }) {
 
     const validationSchema = Yup.object().shape({
         title: Yup.string()
-            .required('Title is required'),
+            .required('Podaj tytuł'),
         firstName: Yup.string()
-            .required('First Name is required'),
+            .required('Podaj imię'),
         lastName: Yup.string()
-            .required('Last Name is required'),
+            .required('Podaj nazwisko'),
         email: Yup.string()
-            .email('Email is invalid')
-            .required('Email is required'),
+            .email('Email jest niepoprawny')
+            .required('Podaj email'),
         password: Yup.string()
-            .min(6, 'Password must be at least 6 characters'),
+            .min(6, 'Hasło musi zawierać przynajmniej 6 znakó∑'),
         confirmPassword: Yup.string()
             .when('password', (password, schema) => {
-                if (password) return schema.required('Confirm Password is required');
+                if (password != "" && password != null) return schema.required('Powtórz hasło');
             })
-            .oneOf([Yup.ref('password')], 'Passwords must match')
+            .oneOf([Yup.ref('password')], 'HAsła muszą być identyczne')
     });
 
     function onSubmit(fields, { setStatus, setSubmitting }) {
@@ -40,7 +40,7 @@ function Update({ history }) {
         setStatus();
         accountService.update(user.id, fields)
             .then(() => {
-                alertService.success('Update successful', { keepAfterRouteChange: true });
+                alertService.success('Zapisano zmiany', { keepAfterRouteChange: true });
                 history.push('.');
             })
             .catch(error => {
@@ -51,10 +51,10 @@ function Update({ history }) {
 
     const [isDeleting, setIsDeleting] = useState(false);
     function onDelete() {
-        if (confirm('Are you sure?')) {
+        if (confirm('Czy na pewno chcesz usunąć konto?')) {
             setIsDeleting(true);
             accountService.delete(user.id)
-                .then(() => alertService.success('Account deleted successfully'));
+                .then(() => alertService.success('Konto zostało usunięte'));
         }
     }
 
@@ -62,26 +62,25 @@ function Update({ history }) {
         <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
             {({ errors, touched, isSubmitting }) => (
                 <Form>
-                    <h1>Update Profile</h1>
+                    <h1>Edycja konta</h1>
                     <div className="form-row">
                         <div className="form-group col">
-                            <label>Title</label>
+                            <label>Tytuł</label>
                             <Field name="title" as="select" className={'form-control' + (errors.title && touched.title ? ' is-invalid' : '')}>
                                 <option value=""></option>
-                                <option value="Mr">Mr</option>
-                                <option value="Mrs">Mrs</option>
-                                <option value="Miss">Miss</option>
-                                <option value="Ms">Ms</option>
+                                <option value="Pan">Pan</option>
+                                <option value="Pani">Pani</option>
+                                <option value="Ks.">Ks.</option>
                             </Field>
                             <ErrorMessage name="title" component="div" className="invalid-feedback" />
                         </div>
                         <div className="form-group col-5">
-                            <label>First Name</label>
+                            <label>Imię</label>
                             <Field name="firstName" type="text" className={'form-control' + (errors.firstName && touched.firstName ? ' is-invalid' : '')} />
                             <ErrorMessage name="firstName" component="div" className="invalid-feedback" />
                         </div>
                         <div className="form-group col-5">
-                            <label>Last Name</label>
+                            <label>Nazwisko</label>
                             <Field name="lastName" type="text" className={'form-control' + (errors.lastName && touched.lastName ? ' is-invalid' : '')} />
                             <ErrorMessage name="lastName" component="div" className="invalid-feedback" />
                         </div>
@@ -92,16 +91,16 @@ function Update({ history }) {
                         <ErrorMessage name="email" component="div" className="invalid-feedback" />
                     </div>
                     
-                    <h3 className="pt-3">Change Password</h3>
-                    <p>Leave blank to keep the same password</p>
+                    <h3 className="pt-3">Zmiana hasła</h3>
+                    <p>Pozostaw puste aby pozostawić aktualne hasło</p>
                     <div className="form-row">
                         <div className="form-group col">
-                            <label>Password</label>
+                            <label>Hasło</label>
                             <Field name="password" type="password" className={'form-control' + (errors.password && touched.password ? ' is-invalid' : '')} />
                             <ErrorMessage name="password" component="div" className="invalid-feedback" />
                         </div>
                         <div className="form-group col">
-                            <label>Confirm Password</label>
+                            <label>Powtórz hasło</label>
                             <Field name="confirmPassword" type="password" className={'form-control' + (errors.confirmPassword && touched.confirmPassword ? ' is-invalid' : '')} />
                             <ErrorMessage name="confirmPassword" component="div" className="invalid-feedback" />
                         </div>
@@ -109,15 +108,15 @@ function Update({ history }) {
                     <div className="form-group">
                         <button type="submit" disabled={isSubmitting} className="btn m-1 btn-primary mr-2">
                             {isSubmitting && <span className="spinner-border spinner-border-sm mr-1"></span>}
-                            Update
+                            Zapisz
                         </button>
                         <button type="button" onClick={() => onDelete()} className="btn m-1 btn-danger" style={{ width: '75px' }} disabled={isDeleting}>
                             {isDeleting
                                 ? <span className="spinner-border spinner-border-sm"></span>
-                                : <span>Delete</span>
+                                : <span>Usuń</span>
                             }
                         </button>
-                        <Link to="." className="btn m-1 btn-link">Cancel</Link>
+                        <Link to="." className="btn m-1 btn-link">Anuluj</Link>
                     </div>
                 </Form>
             )}

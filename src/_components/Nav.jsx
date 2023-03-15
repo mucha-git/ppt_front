@@ -30,24 +30,24 @@ function Nav() {
         <div>
             <nav className="navbar navbar-expand navbar-dark bg-dark">
                 <div className="navbar-nav w-75">
-                    <NavLink exact to="/" className="nav-item nav-link">Home</NavLink>
+                    <NavLink exact to="/" className="nav-item nav-link">Strona główna</NavLink>
                     {user.role != Role.Admin &&
-                        <NavLink exact to="/views" className="nav-item nav-link">Views</NavLink>
+                        <NavLink exact to="/views" className="nav-item nav-link">Widoki</NavLink>
                     }
                     {user.role != Role.Admin &&
-                        <NavLink exact to="/maps" className="nav-item nav-link">Maps</NavLink>
+                        <NavLink exact to="/maps" className="nav-item nav-link">Mapy</NavLink>
                     }
                     {user.role != Role.Admin &&
-                        <NavLink exact to="/mapPins" className="nav-item nav-link">MapPins</NavLink>
+                        <NavLink exact to="/mapPins" className="nav-item nav-link">Pinezki Map</NavLink>
                     }
-                    <NavLink to="/profile" className="nav-item nav-link">Profile</NavLink>
+                    <NavLink to="/profile" className="nav-item nav-link">Konto</NavLink>
                     {(user.role === Role.Admin || user.role === Role.Manager) &&
-                        <NavLink to="/admin" className="nav-item nav-link">Admin</NavLink>
+                        <NavLink to="/admin" className="nav-item nav-link">Panel Administracyjny</NavLink>
                     }
                     {user.role === Role.Admin &&
                         <NavLink to="/pilgrimages" className="nav-item nav-link">Pielgrzymki</NavLink>
                     }
-                    <a onClick={logout} className="nav-item nav-link">Logout</a>
+                    <a onClick={logout} className="nav-item nav-link">Wyloguj</a>
                 
                     
                 </div>
@@ -63,7 +63,7 @@ function AdminNav({ match }) {
     return (
         <nav className="admin-nav navbar navbar-expand navbar-light">
             <div className="navbar-nav">
-                <NavLink to={`${path}/users`} className="nav-item nav-link">Users</NavLink>
+                <NavLink to={`${path}/users`} className="nav-item nav-link">Użytkownicy</NavLink>
             </div>
         </nav>
     );

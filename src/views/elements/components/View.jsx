@@ -1,4 +1,5 @@
 import React from 'react'
+import DefaultTableView from '../../../_components/DefaultTableView';
 //import { TextView } from './TextView';
 //mport { GraphicView } from './GraphicView'
 
@@ -8,19 +9,9 @@ import { showView } from "../../../_helpers";
 import { MuiBtnType } from "../../../_helpers/MuiBtnType";
 
 function View({row}){
-    return (
-        <div>
-            <div className="d-flex align-items-top">
-                <div>
-                    <MuiButton icon={MuiBtnType.DragAndDrop} />
-                </div>
-                <div className='mt-2'>
-                    <h4>{row.title}</h4>
-                    {showView(row)}
-                </div>
-            </div>
-            
-        </div> 
+    return (<DefaultTableView text={row.title}>
+        {showView(row)}
+    </DefaultTableView>
     )
     /*switch (row.type) {
         case "Text":

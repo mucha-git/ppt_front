@@ -6,9 +6,9 @@ function Overview({ match }) {
 
     return (
         <div>
-            <h1>Admin</h1>
-            <p>This section can only be accessed by administrators.</p>
-            <p><Link to={`${path}/users`}>Manage Users</Link></p>
+            <h1>Administrator</h1>
+            <p>Ta sekcja jest dostępna wyłącznie dla adnimistratorów</p>
+            <p><Link to={`${path}/users`}>Zarządzaj użytkownikami</Link></p>
         </div>
     );
 }

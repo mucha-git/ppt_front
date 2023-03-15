@@ -12,14 +12,14 @@ function ForgotPassword() {
 
     const validationSchema = Yup.object().shape({
         email: Yup.string()
-            .email('Email is invalid')
-            .required('Email is required')
+            .email('Email jest niepoprawny')
+            .required('Podaj email')
     });
 
     function onSubmit({ email }, { setSubmitting }) {
         alertService.clear();
         accountService.forgotPassword(email)
-            .then(() => alertService.success('Please check your email for password reset instructions'))
+            .then(() => alertService.success('Proszę sprawdź swoją skrzynkę mailową w celu dalszych instrukcji odzyskiwania hasła'))
             .catch(error => alertService.error(error))
             .finally(() => setSubmitting(false));
     }
@@ -28,7 +28,7 @@ function ForgotPassword() {
         <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
             {({ errors, touched, isSubmitting }) => (
                 <Form>
-                    <h3 className="card-header">Forgot Password</h3>
+                    <h3 className="card-header">Odzyskiwanie hasła</h3>
                     <div className="card-body">
                         <div className="form-group">
                             <label>Email</label>
@@ -39,9 +39,9 @@ function ForgotPassword() {
                             <div className="form-group col">
                                 <button type="submit" disabled={isSubmitting} className="btn m-1 btn-primary">
                                     {isSubmitting && <span className="spinner-border spinner-border-sm mr-1"></span>}
-                                    Submit
+                                    Wyślij
                                 </button>
-                                <Link to="login" className="btn m-1 btn-link">Cancel</Link>
+                                <Link to="login" className="btn m-1 btn-link">Anuluj</Link>
                             </div>
                         </div>
                     </div>

@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import { viewsService } from "@/_services";
 import { Formik, Form } from "formik";
+import { NavLink } from "react-router-dom";
 import FormikControl from "@/_components/Formik/FormikControl";
 import * as Yup from "yup";
 import { ViewsTable } from "./elements/ViewsTable";
@@ -32,20 +33,21 @@ function Overview({ match }) {
   });
 
   return (
-    <div className="p-4">
-      <div className="container">
-        <div className="d-flex justify-content-between">
+    <div className="p-4 box-shadow-main">
+      <div className="container ">
+        <div><h2>Widoki</h2></div>
+        <div className="d-flex">
+        <div className="mr-auto">
         {years.length > 1 && 
           <Formik initialValues={initialValues} onSubmit={onSubmitForm} validationSchema={validationSchema}>
             {(formik) => (
               <Form>
-                
                     <FormikControl
                         control="select"
                         label={"Rok"}
                         name="year"
                         showLabel={false}
-                        options={years.map(y => {return {key: y.year, value: y.id}})}
+                        options={years.map(y => {return {key: y.id, value: y.year}})}
                         className="form-item-width left"
                         wymagane={true}
                     />
@@ -54,7 +56,12 @@ function Overview({ match }) {
             )}
           </Formik>
         }
-        <div><h2>Widoki</h2></div>
+        </div>
+        <div>
+          <NavLink to={{pathname: `${path}/dodaj`, state: {yearId: year, parentViewId: null} }} className="nav-item center-divs">
+            <MuiButton icon={MuiBtnType.Add} text="Dodaj nowy widok" className="p-2 pr-4 pl-4" />
+          </NavLink>
+        </div>
         <div><SendToApp /></div>
         </div>
         <ViewsTable parentViewId={null} yearId={year} path={path} />

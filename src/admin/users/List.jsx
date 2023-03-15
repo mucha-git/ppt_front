@@ -25,15 +25,15 @@ function List({ match }) {
 
     return (
         <div>
-            <h1>Users</h1>
-            <p>All users from secure (admin only) api end point:</p>
-            <Link to={`${path}/add`} className="btn m-1 btn-sm btn-success mb-2">Add User</Link>
+            <h1>Użytkownicy</h1>
+            <p>Lista wszystkich twoich użytkowników:</p>
+            <Link to={`${path}/add`} className="btn m-1 btn-sm btn-success mb-2">Dodaj użytkownika</Link>
             <table className="table table-striped">
                 <thead>
                     <tr>
-                        <th style={{ width: '25%' }}>Name</th>
+                        <th style={{ width: '25%' }}>Nazwa</th>
                         <th style={{ width: '25%' }}>Email</th>
-                        <th style={{ width: '15%' }}>Role</th>
+                        <th style={{ width: '15%' }}>Rola</th>
                         <th style={{ width: '25%' }}>Pielgrzymka</th>
                         <th style={{ width: '10%' }}></th>
                     </tr>
@@ -46,11 +46,11 @@ function List({ match }) {
                             <td>{user.role}</td>
                             <td>{pilgrimages.find( p => p.id === user.pilgrimageId)?.name}</td>
                             <td style={{ whiteSpace: 'nowrap' }}>
-                                <Link to={`${path}/edit/${user.id}`} className="btn m-1 btn-sm btn-primary mr-1">Edit</Link>
+                                <Link to={`${path}/edit/${user.id}`} className="btn m-1 btn-sm btn-primary mr-1">Edytuj</Link>
                                 <button onClick={() => deleteUser(user.id)} className="btn m-1 btn-sm btn-danger" style={{ width: '60px' }} disabled={user.isDeleting}>
                                     {user.isDeleting 
                                         ? <span className="spinner-border spinner-border-sm"></span>
-                                        : <span>Delete</span>
+                                        : <span>Usuń</span>
                                     }
                                 </button>
                             </td>
