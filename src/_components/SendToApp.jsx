@@ -11,6 +11,6 @@ export default function SendToApp() {
       }
 
   return (
-    <MuiButton icon={MuiBtnType.Send} text={"wyślij do aplikacji"} onClick={saveChangesToApp} className="p-2 pr-4 pl-4" />
+    <MuiButton icon={MuiBtnType.Send} text={"Wyślij do aplikacji"} onClick={saveChangesToApp} className="p-2 pr-4 pl-4" />
   );
 }

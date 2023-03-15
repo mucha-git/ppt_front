@@ -39,7 +39,7 @@ function KolumnaAkcje(akcje){return{
         dataField: "id",
         text: "Akcje",
         formatter: akcje,
-        classes: "height1 pt-3 pb-3",
+        classes: "height1 pt-3 pb-4",
         headerClasses: "header-class",
         headerStyle: { width: "210px" },
         events: {

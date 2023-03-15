@@ -1,6 +1,6 @@
 export const ScreenType = [
     {key: "", value: null},
-    {key: 'Lista', value: 'ListScreen'},
+    {key: 'ListScreen', value: 'Lista'},
     //{key: 'Youtube', value: 'YoutubeScreen'},
-    {key: 'Treści', value: 'TextScreen'}
+    {key: 'TextScreen', value: 'Treści'}
 ]

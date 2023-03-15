@@ -16,7 +16,7 @@ import { MuiBtnType } from "../../_helpers/MuiBtnType";
 import { viewsService } from "@/_services";
 
 function ViewsTable({ parentViewId, yearId, path }) {
-    const { views, updateViews } = useContext(AppContext);
+    const { views, elements, updateViews } = useContext(AppContext);
     const [expanded, setExpanded] =useState([]);
     const [filteredViews, setFilteredViews] = useState(viewFilter(views))
     function viewFilter(e) {
@@ -40,19 +40,14 @@ const akcje = (cell, row, rowIndex) => {
         kolumny.KolumnaAkcje(akcje)
       ]
 
-    const emptyTable = () => {
-        return (
-          <div>
-              <p>
-                Brak widoków
-              </p>
-          </div>
-        );
-      };
-
       const rowsNotToExpand = () => {
-        let rows = filteredViews.filter(r => r.type != "Text" && r.type != "Graphic").map(e => e.id)
-        
+        console.log(views.filter( v => v.viewId == 112).length)
+        let rows = filteredViews.filter(r => 
+                                        (r.type != "Text" && 
+                                        r.type != "Graphic") ||
+                                        (elements.filter(e => e.viewId == r.id).length == 0 &&
+                                        views.filter( v => v.viewId == r.id).length == 0)
+        ).map(e => e.id)
         return rows
       }
 
