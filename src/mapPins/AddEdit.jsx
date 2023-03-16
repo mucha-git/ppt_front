@@ -19,8 +19,6 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
   const [submitting, setSubmitting] = useState(false);
   //material ui // domyślne wartości w formularzach
   let {row } = location.state
-  console.log("row")
-  console.log(row)
 
   const initialValues = isAddMode
     ? {
@@ -47,11 +45,9 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
     setSubmitting(true)
     // pobrać wysokość i szerokość z grafiki
     if (isAddMode) {
-      console.log("create")
       popup
         ? (values.yearId = yearId)
         : values.yearId = location.state.yearId;
-        console.log(values)
       mapPinsService
         .create(values)
         .then((x) => {
@@ -74,8 +70,6 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
       values.id = row.id;
       values.yearId = row.yearId; 
       values.iconSrc = row.iconSrc;
-      console.log("update")
-      console.log(values)
       mapPinsService
         .update(values)
         .then(() => {
