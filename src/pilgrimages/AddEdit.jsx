@@ -21,25 +21,29 @@ function AddEdit({ history }) {
         name: "",
         isActive: false,
         logoSrc: null,
-        oneSignal: ""
+        oneSignal: "",
+        oneSignalApiKey: ""
       }
     : {
         name: row.name,
         isActive: row.isActive,
         logoSrc: row.logoSrc,
-        oneSignal: row.oneSignal
+        oneSignal: row.oneSignal,
+        oneSignalApiKey: row.oneSignalApiKey
       };
 
   const validationSchema = Yup.object({
     name: Yup.string().max(500, "Maksymalnie 500 znaków").required("Wymagany"),
     isActive: Yup.bool().required("Wymagany"),
     logoSrc: Yup.string().max(1000, "Maksymalnie 1000 znaków").nullable(),
-    oneSignal: Yup.string().max(50, "Maksymalnie 50 znaków").nullable()
+    oneSignal: Yup.string().max(50, "Maksymalnie 50 znaków").nullable(),
+    oneSignalApiKey: Yup.string().max(50, "Maksymalnie 50 znaków").nullable(),
   });
 
   const onSubmitPilgrimage = (values) => {
     setSubmitting(true)
     if(values.oneSignal == "") values.oneSignal = null
+    if(values.oneSignalApiKey == "") values.oneSignalApiKey = null
     if(typeof values.isActive === "string") values.isActive = values.isActive == "true"
     if (isAddMode) {
       pilgrimagesService
@@ -116,6 +120,13 @@ function AddEdit({ history }) {
               type="text"
               label={"Id aplikacji OneSignal"}
               name="oneSignal"
+              className="form-item-width"
+            />
+            <FormikControl
+              control="input"
+              type="text"
+              label={"Id Api OneSignal"}
+              name="oneSignalApiKey"
               className="form-item-width"
             />
             <button
