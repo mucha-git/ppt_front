@@ -10,31 +10,36 @@ import { pilgrimagesService } from "../_services";
 function AddEdit({ history }) {
   const {updatePilgrimages} = useContext(AppContext)
   let location = useLocation();
-  
+  console.log(location)
   const isAddMode = location.state == undefined;
   const [submitting, setSubmitting] = useState(false);
   //material ui // domyślne wartości w formularzach
-  let row = isAddMode? null: location.state
+  let row = isAddMode? null: location.state.row
 
   const initialValues = isAddMode
     ? {
         name: "",
         isActive: false,
-        logoSrc: null
+        logoSrc: null,
+        oneSignal: ""
       }
     : {
         name: row.name,
         isActive: row.isActive,
-        logoSrc: row.logoSrc
+        logoSrc: row.logoSrc,
+        oneSignal: row.oneSignal
       };
 
   const validationSchema = Yup.object({
-    name: Yup.string().required("Wymagany"),
-    logoSrc: Yup.string().nullable()
+    name: Yup.string().max(500, "Maksymalnie 500 znaków").required("Wymagany"),
+    isActive: Yup.bool().required("Wymagany"),
+    logoSrc: Yup.string().max(1000, "Maksymalnie 1000 znaków").nullable(),
+    oneSignal: Yup.string().max(50, "Maksymalnie 50 znaków").nullable()
   });
 
   const onSubmitPilgrimage = (values) => {
     setSubmitting(true)
+    if(values.oneSignal == "") values.oneSignal = null
     if(typeof values.isActive === "string") values.isActive = values.isActive == "true"
     if (isAddMode) {
       pilgrimagesService
@@ -104,6 +109,13 @@ function AddEdit({ history }) {
               type="text"
               label={"Logo Src"}
               name="logoSrc"
+              className="form-item-width"
+            />
+            <FormikControl
+              control="input"
+              type="text"
+              label={"Id aplikacji OneSignal"}
+              name="oneSignal"
               className="form-item-width"
             />
             <button
