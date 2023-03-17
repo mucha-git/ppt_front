@@ -6,6 +6,7 @@ const baseUrl = `${config.apiUrl}/pilgrimages`;
 export const pilgrimagesService = {
     getPilgrimages,
     create,
+    postMessage,
     update,
     _delete
 };
@@ -16,6 +17,10 @@ function getPilgrimages() {
 
 function create(params) {
     return fetchWrapper.post(baseUrl, params);
+}
+
+function postMessage(params) {
+    return fetchWrapper.post(`${baseUrl}/oneSignal`, params);
 }
 
 function update(params) {
