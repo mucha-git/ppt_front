@@ -1,60 +1,30 @@
-import React, { useState, useContext } from "react";
-import { mapsService } from "@/_services";
-import { useLocation } from "react-router-dom";
-import { Formik, Form } from "formik";
-import FormikControl from "@/_components/Formik/FormikControl";
-import * as Yup from "yup";
-import { MapsTable } from "./elements/MapsTable";
-import {AppContext} from '../_helpers/context'
+import React from "react";
+import { YearsTable } from "./elements/YearsTable";
+import { NavLink } from "react-router-dom";
+import MuiButton from "../_components/MuiButton";
+import { MuiBtnType } from "../_helpers/MuiBtnType";
+import { accountService } from "../_services";
+import { Role } from "../_helpers";
 
 function Overview({ match }) {
-  const {setContext} = useContext(AppContext)
   const { path } = match;
-  let location = useLocation();
-  const [yearId, setYearId] = useState(location.state? location.state.yearId: 1);
-
-  const onSubmitForm = (values) => {
-    mapsService.getMaps(values.year).then(e => {setYearId(values.year); setContext(values.year)});
-  };
-
-  const initialValues = {
-    year: 1,
-  };
-
-  const validationSchema = Yup.object({
-    year: Yup.number()
-        .required("Wymagane")
-  });
-
+  const user = accountService.userValue;
   return (
-    <div className="p-4">
+    <div className="p-4 box-shadow-main">
       <div className="container">
-          <Formik initialValues={initialValues} onSubmit={onSubmitForm} validationSchema={validationSchema}>
-            {(formik) => (
-              <Form>
-                <div className="center-divs w-50">
-                  <div className="left">
-                    <FormikControl
-                        control="select"
-                        label={"Rok"}
-                        name="year"
-                        showLabel={false}
-                        options={[{key: 2022, value: 1}]}
-                        className="form-item-width left"
-                        wymagane={true}
-                    />
-                  </div>
-                  <div className="left">
-                    <button className="btn btn-success" type="submit">
-                      Szukaj
-                    </button>
-                  </div>
-                  <div className="clear" />
-                </div>
-              </Form>
-            )}
-          </Formik>
-        <MapsTable yearId={yearId} path={path} />
+        <div>
+          <h2>Roczniki</h2>
+        </div>
+        
+        {user.role == Role.Manager && <div className="d-flex justify-content-end">
+          <div>
+            <NavLink to={{pathname: `${path}/dodaj`, pilgrimageId: user.pilgrimageId }} className="nav-item center-divs">
+              <MuiButton icon={MuiBtnType.Add} text="Dodaj nowy rocznik" className="p-2 pr-4 pl-4" />
+            </NavLink>
+          </div>
+        </div>
+        }
+        <YearsTable path={path} />
       </div>
     </div>
   );

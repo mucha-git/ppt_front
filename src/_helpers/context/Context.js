@@ -67,8 +67,8 @@ export const Provider = (props) => {
     mapPinsService.getMapPins(a).then(setMapPins);
   }
 
-  function updateYears(a) {
-    yearsService.getYears(a).then(setYears);
+  function updateYears() {
+    yearsService.getYears().then(setYears);
   }
 
   async function updatePilgrimages() {

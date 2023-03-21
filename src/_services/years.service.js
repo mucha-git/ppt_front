@@ -11,8 +11,8 @@ export const yearsService = {
     resetYearInRedis
 };
 
-function getYears(pilgrimage) {
-    return fetchWrapper.get(`${baseUrl}/${pilgrimage}`);
+function getYears() {
+    return fetchWrapper.get(baseUrl);
 }
 
 function create(params) {

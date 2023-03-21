@@ -47,6 +47,9 @@ function Nav() {
                     {(user.role === Role.Admin || user.role === Role.Manager) &&
                         <NavLink to="/pilgrimages" className="nav-item nav-link">Pielgrzymki</NavLink>
                     }
+                    {(user.role === Role.Manager) &&
+                        <NavLink to="/years" className="nav-item nav-link">Roczniki</NavLink>
+                    }
                     <a onClick={logout} className="nav-item nav-link">Wyloguj</a>
                 
                     

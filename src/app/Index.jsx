@@ -39,7 +39,7 @@ function App() {
                 <PrivateRoute path="/maps" component={Maps} />
                 <PrivateRoute path="/mapPins" component={MapPins} />
                 <PrivateRoute path="/pilgrimages" component={Pilgrimages} roles={[Role.Admin, Role.Manager]} />
-                <PrivateRoute path="/years" component={Years} />
+                <PrivateRoute path="/years" component={Years} roles={[Role.Manager]} />
                 <PrivateRoute path="/profile" component={Profile} />
                 <PrivateRoute path="/admin" roles={[Role.Admin, Role.Manager]} component={Admin} />
                 <Route path="/account" component={Account} />
