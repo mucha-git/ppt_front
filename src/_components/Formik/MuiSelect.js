@@ -26,7 +26,8 @@ function MuiSelect(props) {
                 labelId={name + "-label"}
                 id={name}
                 value={value}
-                onChange={(val) => setFieldValue(name, val) }
+                onChange={(val) => {
+                  setFieldValue(name, val.target.value) }}
               >
                 {options.map((option) => {
                   return <MenuItem value={option.value}>{option.key}</MenuItem>

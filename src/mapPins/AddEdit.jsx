@@ -22,8 +22,8 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
 
   const initialValues = isAddMode
     ? {
-        name: null,
-        pinSrc: null,
+        name: "",
+        pinSrc: "",
         width: 0,
         height: 0
       }
@@ -133,7 +133,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
             <button
               className="btn m-1 btn-success"
               type="submit"
-              onClick={() => onSubmitMapPins(formik.values, false)}
+              onClick={() => formik.isValid && onSubmitMapPins(formik.values, false)}
               disabled={submitting ? true : false}
             >
               {submitting && (
@@ -143,7 +143,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
             </button>
             {(!popup && isAddMode) && <button
               className="btn m-1 btn-success"
-              onClick={() => onSubmitMapPins(formik.values, true)}
+              onClick={() => formik.isValid && onSubmitMapPins(formik.values, true)}
               disabled={submitting ? true : false}
             >
               {submitting && (

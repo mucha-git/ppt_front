@@ -25,13 +25,14 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
   const [polylines, setPolylines] = useState(isAddMode? "": row.polylines)
   const [latitude, setLatitude] = useState(isAddMode? 0.0: row.latitude)
   const [longitude, setLongitude] = useState(isAddMode? 0.0: row.longitude)
+  const [map, setMap] = useState(!isAddMode)
 
   const initialValues = isAddMode
     ? {
         name: "",
         strokeColor: "#00ff00",
         strokeWidth: 1,
-        mapSrc: null,
+        mapSrc: "",
         delta: 2.5
       }
     : {
@@ -44,12 +45,17 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
 
   const validationSchema = Yup.object({
     name: Yup.string().required("Wymagany"),
-    mapSrc: Yup.string().nullable(),
-    strokeColor: Yup.string()
-      .required("Wymagany")
+    mapSrc: Yup.string().required("Wymagany"),
+    strokeColor: Yup.string().required("Wymagany"),
+    delta: Yup.number().required("Wymagany"),
+    strokeWidth: Yup.number().required("Wymagany"),
   });
 
   const onSubmitMaps = (values, openNew) => {
+    if(!map) {
+      alertService.error("Nie wczytano pliku mapy!!");
+      return;
+    }
     setSubmitting(true)
     values.provider = "google"
     values.markers = markers
@@ -186,15 +192,15 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
 
     setMarkers(markers)
     setPolylines(polylines)
-    
+    setMap(true)
   }
 
   return (
     <div className="form-style">
       <h2>
         {isAddMode
-          ? "Nowy widok"
-          : "Edycja widoku"}
+          ? "Nowa mapa"
+          : "Edycja mapy"}
       </h2>
       <br></br>
       <Formik
@@ -238,6 +244,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
               label={"Link do nawigacji"}
               name="mapSrc"
               className="form-item-width"
+              wymagane={true}
             />
             <input type='file' accept=".kml" onChange={fileChanged}></input>
             <button

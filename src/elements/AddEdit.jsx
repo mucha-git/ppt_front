@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import FormikControl from "@/_components/Formik/FormikControl";
@@ -13,8 +13,9 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
   let location = useLocation();
   const isAddMode = location.state.row == null || popup ? true : false;
   const [submitting, setSubmitting] = useState(false);
-
-
+  const mapsList = maps.map(o => {
+    return {key: o.name, value: o.id}
+  })
   let {row, parentViewId } = location.state
   const [destinationViewId, setDestinationViewId] = useState(
     isAddMode ? -1 : row.destinationViewId
@@ -23,17 +24,21 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
     isAddMode ? -1 : row.mapId
   );
 
+  useEffect(() => {
+    if(mapId == -1 || mapId == undefined)  setMapId(mapsList[0]?.value)
+  }, [mapsList])
+
   function viewFilter(e) {
     return e.filter(v => v.viewId == parentViewId)
   }
 
   const initialValues = isAddMode
     ? {
-        type: "Text",
+        type: null,
         // Divider
         color: '#000000',
-        margin: null,
-        height: null,
+        margin: 0,
+        height: 0,
         // Graphic and text
         text: null,
         imgSrc: null,
@@ -41,7 +46,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
         autoplay: null,
         playlist: null,
         // Map
-        mapHeight: null,
+        mapHeight: 0,
         mapId: null,
         // Navigation
         destinationViewId: null,
@@ -51,13 +56,13 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
     : {
         type: row.type,
         color: row.color,
-        margin: row.margin,
-        height: row.height,
+        margin: row.margin == null? 0 : row.margin,
+        height: row.height == null? 0 : row.height,
         text: row.text,
         imgSrc: row.imgSrc,
         autoplay: row.autoplay,
         playlist: row.playlist,
-        mapHeight: row.mapHeight,
+        mapHeight: row.mapHeight == null? 0 : row.mapHeight,
         mapId: row.mapId,
         destinationViewId: row.destinationViewId
       };
@@ -65,22 +70,65 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
   const validationSchema = Yup.object({
     type: Yup.string()
       .required("Wymagany"),
-    color: Yup.string().nullable(),
-    margin: Yup.number().nullable(),
-    height: Yup.number().nullable(),
-    text: Yup.string().nullable(),
-    imgSrc: Yup.string().nullable(),
-    autoplay: Yup.boolean().nullable(),
-    playlist: Yup.string().nullable(),
-    mapHeight: Yup.number().nullable(),
-    mapId: Yup.number().nullable(),
-    destinationViewId: Yup.number().nullable()
+    color: Yup.string().when('type', {
+      is: "Divider",
+      then: fieldSchema => fieldSchema.required('Wymagane'),
+      otherwise: fieldSchema => fieldSchema.nullable()
+    }),
+    margin: Yup.number().when('type', {
+      is: "Divider",
+      then: fieldSchema => fieldSchema.min(1, "Minimum 1").required('Wymagane'),
+      otherwise: fieldSchema => fieldSchema.nullable()
+    }),
+    height: Yup.number().when('type', {
+      is: "Divider",
+      then: fieldSchema => fieldSchema.min(1, "Minimum 1").required("Wymagane"),
+      otherwise: fieldSchema => fieldSchema.nullable()
+    }),
+    text: Yup.string().when('type', (type, schema) => {
+      if (type == "Text" || type == "GraphicWithText") {return schema.required('Wymagane')}
+      else return schema.nullable()
+    }),
+    imgSrc: Yup.string().when('type', (type, schema) => {
+      if (type == "Graphic" || type == "GraphicWithText") {return schema.required('Wymagane')}
+      else return schema.nullable()
+    }),
+    autoplay: Yup.boolean().when('type', {
+      is: "YoutubePlayer",
+      then: fieldSchema => fieldSchema.required('Wymagane'),
+      otherwise: fieldSchema => fieldSchema.nullable()
+    }),
+    playlist: Yup.string().when('type', {
+      is: "YoutubePlayer",
+      then: fieldSchema => fieldSchema.required('Wymagane'),
+      otherwise: fieldSchema => fieldSchema.nullable()
+    }),
+    mapHeight: Yup.number().when('type', {
+      is: "Map",
+      then: fieldSchema => fieldSchema.min(0, "Minimum 0").required('Wymagane'),
+      otherwise: fieldSchema => fieldSchema.nullable()
+    }),
+    mapId: Yup.number().when('type', {
+      is: "Map",
+      then: fieldSchema => fieldSchema.required('Wymagane'),
+      otherwise: fieldSchema => fieldSchema.nullable()
+    }),
+    destinationViewId: Yup.number().when('type', {
+      is: "Navigation",
+      then: fieldSchema => fieldSchema.required('Wymagane'),
+      otherwise: fieldSchema => fieldSchema.nullable()
+    })
   });
 
   const onSubmitElements = (values, openNew) => {
+    console.log(values)
+    if(values.margin == 0) values.margin = null
+    if(values.height == 0) values.height = null
+    if(values.mapHeight == 0) values.mapHeight = null
     values.autoplay != null ? values.autoplay = values.autoplay == "1": null;
     if(destinationViewId != -1 ) values.destinationViewId = destinationViewId
-    if(mapId != -1 ) values.mapId = mapId
+    //if(mapId != -1 ) values.mapId = mapId
+    console.log(values.mapId)
     values.order=isAddMode? null : row.order
     if (isAddMode) {
       values.viewId = parentViewId
@@ -153,7 +201,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
         {(formik) => (
           <Form>
             <FormikControl
-              control="select"
+              control="muiSelect"
               label={"Typ"}
               name="type"
               options={arrayFromEnum(ElementType)}
@@ -229,18 +277,23 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
               className="form-item-width"
             />
             <FormikControl
+              control="muiSelect"
+              label={"Mapa"}
+              name="mapId"
+              options={mapsList}
+              className="form-item-width"
+            />
+            {/*<FormikControl
               control="typeSelect"
               label={"Mapa"}
               name="mapId"
-              options={maps.map(o => {
-                return {label: o.name, value: (o.id).toString()}
-              })}
+              options={mapsList}
               className="form-item-width"
               setValue={(val) => setMapId(val)}
               value={mapId}
               setLista={() => updateMaps(yearId)}
               yearId={popup? yearId: isAddMode? location.state.yearId: row.yearId}
-            />
+                  />*/}
             </>}
             {(formik.values.type === "Navigation") && 
             <>
@@ -261,7 +314,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
             <button
               className="btn m-1 btn-success"
               type="submit"
-              onClick={() => onSubmitElements(formik.values, false)}
+              onClick={() => formik.isValid && onSubmitElements(formik.values, false)}
               disabled={submitting ? true : false}
             >
               {submitting && (
@@ -271,7 +324,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
             </button>
             {(!popup && isAddMode) && <button
               className="btn m-1 btn-success"
-              onClick={() => onSubmitElements(formik.values, true)}
+              onClick={() => formik.isValid && onSubmitElements(formik.values, true)}
               disabled={submitting ? true : false}
             >
               {submitting && (

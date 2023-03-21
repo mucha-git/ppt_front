@@ -2,6 +2,7 @@ import React from "react";
 import { Field, ErrorMessage } from "formik";
 import TextError from "./TextError";
 import { isWymagane } from "@/_helpers";
+import { Box, TextField } from "@mui/material";
 
 function InputNumber(props) {
   const { label, name, className, wymagane, ...rest } = props;
@@ -25,18 +26,35 @@ function InputNumber(props) {
 
   return (
     <div className={className != null ? className : "form-group col"}>
-      <label htmlFor={name}>
-        {label}
-        {wymagane ? isWymagane() : ""}
-      </label>
       <Field
-        id={name}
         name={name}
         {...rest}
         autoComplete="off"
-        className="form-control"
-      />
-      <ErrorMessage name={name} component={TextError} />
+      >
+        {({ form, field }) => {
+          const { setFieldValue } = form;
+          const { value } = field;
+          return (
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                '& > :not(style)': { m: 1 },
+              }}
+            >
+              <TextField
+                inputProps={{ inputMode: 'numeric', pattern: '[0-9]*'  }}
+                type='number'
+                id={name}
+                label={label}
+                value={value}
+                onChange={(val) => setFieldValue(name, val.target.value) }
+              /><ErrorMessage name={name} component={TextError} />
+            </Box>
+          );
+        }}
+      </Field>
+      
     </div>
   );
 }

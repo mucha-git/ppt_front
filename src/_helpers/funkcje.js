@@ -27,7 +27,7 @@ export function showView (row) {
 export function arrayFromEnum(enumObject){
     var all = [];
     for(var key in enumObject){
-       all.push({key: key, value: enumObject[key]});
+       all.push({value: key, key: enumObject[key]});
     }
     return all
  }
