@@ -1,14 +1,14 @@
 import React from "react";
-import DateView, { registerLocale } from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 import { Field, ErrorMessage } from "formik";
 import { isWymagane } from "@/_helpers";
 import TextError from "./TextError";
-import pl from "date-fns/locale/pl"; // the locale you want
+import dayjs from "dayjs";
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
-registerLocale("pl", pl); // register it with the name you want
 function YearPicker(props) {
-  const { label, name, className, inline, wymagane, ...rest } = props;
+  const { label, name, className, inline, wymagane, excluded = [], ...rest } = props;
   return (
     <div className={className != null ? className : "form-group col"}>
       {inline == null ? (
@@ -28,24 +28,16 @@ function YearPicker(props) {
         {({ form, field }) => {
           const { setFieldValue } = form;
           const { value } = field;
-          return (
-            <DateView
-              className="form-control"
-              locale="pl"
-              autoComplete="off"
-              dateFormat="yyyy"
-              placeholderText={"Wybierz rok"}
-              todayButton={"Aktualny rok"}
-              id={name}
-              {...field}
-              {...rest}
-              //inline={inline == null}
-              selected={value}
-              showYearPicker
-              showFullYearPicker
-              onChange={(val) => setFieldValue(name, val)}
-            />
-          );
+          return <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DatePicker defaultValue={dayjs(value) } label={label} views={['year']} 
+                  //onChange={(val) => {
+                  //    console.log(val)
+                  //    setFieldValue(name, val.$y.toString())
+                  //  }}
+                    minDate={dayjs(new Date().getFullYear().toString())}
+                    shouldDisableYear={(year) => excluded.find(y => y == year.year()) }
+                  />
+                </LocalizationProvider>
         }}
       </Field>
       <ErrorMessage name={name} component={TextError} />

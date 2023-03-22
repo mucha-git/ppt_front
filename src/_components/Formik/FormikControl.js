@@ -30,7 +30,7 @@ function FormikControl(props) {
       return <RadioButtons {...rest} />;
     case "date":
       return <DatePicker {...rest} />;
-    case "month":
+    case "year":
       return <YearPicker {...rest} />;
     case "color":
       return <ColorPicker {...rest} />;

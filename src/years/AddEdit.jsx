@@ -8,7 +8,15 @@ import { AppContext } from "../_helpers/context";
 import { yearsService } from "../_services";
 
 function AddEdit({ history }) {
-  const {updateYears} = useContext(AppContext)
+  const {updateYears, years} = useContext(AppContext)
+  const excludedYears = years.map(m => m.year)
+  const findFirstAcceptableYear = () => {
+    let year = new Date().getFullYear()
+    while(excludedYears.find( y => y == year)){
+      year++
+    }
+    return year.toString()
+  }
   let location = useLocation();
   const isAddMode = location.state == undefined;
   const [submitting, setSubmitting] = useState(false);
@@ -16,20 +24,20 @@ function AddEdit({ history }) {
   let row = isAddMode? null: location.state.row
   const initialValues = isAddMode
     ? {
-        year: new Date().getFullYear(),
+        year: findFirstAcceptableYear(),
         yearTopic: "",
         isActive: false,
         imgSrc: null
       }
     : {
-        year: row.year,
+        year: parseInt(row.year),
         yearTopic: row.yearTopic,
         isActive: row.isActive,
         imgSrc: row.imgSrc,
       };
 
   const validationSchema = Yup.object({
-    year: Yup.number().min(new Date().getFullYear(), `Minimalnie ${new Date().getFullYear()}`).required("Wymagany"),
+    year: Yup.string().required("Wymagany"),
     yearTopic: Yup.string().required("Wymagany"),
     isActive: Yup.bool().required("Wymagany"),
     imgSrc: Yup.string().max(1000, "Maksymalnie 1000 znaków").nullable(),
@@ -37,6 +45,7 @@ function AddEdit({ history }) {
 
   const onSubmitYear = (values) => {
     setSubmitting(true)
+    values.year = parseInt(values.year)
     if(typeof values.isActive === "string") values.isActive = values.isActive == "true"
     if (isAddMode) {
       values.pilgrimageId = location.pilgrimageId
@@ -88,11 +97,12 @@ function AddEdit({ history }) {
         {(formik) => (
           <Form>
             <FormikControl
-              control="inputNumber"
+              control="year"
               label={"Rocznik"}
               name="year"
               className="form-item-width"
               wymagane={true}
+              excluded={excludedYears}
             />
             <FormikControl
               control="input"
