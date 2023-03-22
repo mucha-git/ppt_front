@@ -97,14 +97,14 @@ function AddEdit({ history }) {
       >
         {(formik) => (
           <Form>
-            <FormikControl
+            {isAddMode && <FormikControl
               control="year"
               label={"Rocznik"}
               name="year"
               className="form-item-width"
               wymagane={true}
               excluded={excludedYears}
-            />
+            />}
             <FormikControl
               control="input"
               type="text"
