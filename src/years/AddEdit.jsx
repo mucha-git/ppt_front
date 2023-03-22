@@ -9,7 +9,13 @@ import { yearsService } from "../_services";
 
 function AddEdit({ history }) {
   const {updateYears, years} = useContext(AppContext)
-  const excludedYears = years.map(m => m.year)
+  
+  let location = useLocation();
+  const isAddMode = location.state == undefined;
+  const [submitting, setSubmitting] = useState(false);
+  //material ui // domyślne wartości w formularzach
+  let row = isAddMode? null: location.state.row
+  const excludedYears = isAddMode? years.map(m => m.year) : years.filter(f => f.id != row.id).map(m => m.year)
   const findFirstAcceptableYear = () => {
     let year = new Date().getFullYear()
     while(excludedYears.find( y => y == year)){
@@ -17,11 +23,6 @@ function AddEdit({ history }) {
     }
     return year.toString()
   }
-  let location = useLocation();
-  const isAddMode = location.state == undefined;
-  const [submitting, setSubmitting] = useState(false);
-  //material ui // domyślne wartości w formularzach
-  let row = isAddMode? null: location.state.row
   const initialValues = isAddMode
     ? {
         year: findFirstAcceptableYear(),
@@ -30,7 +31,7 @@ function AddEdit({ history }) {
         imgSrc: null
       }
     : {
-        year: parseInt(row.year),
+        year: row.year.toString(),
         yearTopic: row.yearTopic,
         isActive: row.isActive,
         imgSrc: row.imgSrc,

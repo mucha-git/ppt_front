@@ -63,7 +63,6 @@ module.exports = (env) => {
             config: JSON.stringify({
                 apiUrl: process.env.REACT_APP_API_URL
                 //apiUrl: 'http://pielgrzymka.tplinkdns.com:7010'
-                //apiUrl: 'http://dmkk.freeddns.org:7000'
                 //apiUrl: 'http://localhost:52171'
             })
         }
