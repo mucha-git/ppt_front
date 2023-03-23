@@ -3,10 +3,13 @@ import { accountService } from '@/_services';
 
 export const fetchWrapper = {
     get,
+    getNotifications,
     post,
+    postNotifications,
     put,
     patch,
-    delete: _delete
+    delete: _delete,
+    deleteNotifications
 }
 
 function get(url) {
@@ -17,11 +20,35 @@ function get(url) {
     return fetch(url, requestOptions).then(handleResponse);
 }
 
+function getNotifications(url) {
+    const user = accountService.userValue;
+    const requestOptions = {
+        method: 'GET',
+        headers: {accept: 'application/json', Authorization: `Basic ${user.oneSignalApiKey}`}
+    };
+    return fetch(url, requestOptions).then(handleResponse);
+}
+
 function post(url, body) {
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', ...authHeader(url) },
         credentials: 'include',
+        body: JSON.stringify(body)
+    };
+    return fetch(url, requestOptions).then(handleResponse);
+}
+
+function postNotifications(url, body) {
+    const user = accountService.userValue;
+    const requestOptions = {
+        method: 'POST',
+        headers: {
+            accept: 'application/json',
+            Authorization: `Basic ${user.oneSignalApiKey}`,
+            'content-type': 'application/json'
+          },
+        //credentials: 'include',
         body: JSON.stringify(body)
     };
     return fetch(url, requestOptions).then(handleResponse);
@@ -51,6 +78,15 @@ function _delete(url) {
     const requestOptions = {
         method: 'DELETE',
         headers: authHeader(url)
+    };
+    return fetch(url, requestOptions).then(handleResponse);
+}
+
+function deleteNotifications(url) {
+    const user = accountService.userValue;
+    const requestOptions = {
+        method: 'DELETE',
+        headers: {accept: 'application/json', Authorization: `Basic ${user.oneSignalApiKey}`}
     };
     return fetch(url, requestOptions).then(handleResponse);
 }

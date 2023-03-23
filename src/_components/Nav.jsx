@@ -50,6 +50,11 @@ function Nav() {
                     {(user.role === Role.Manager) &&
                         <NavLink to="/years" className="nav-item nav-link">Roczniki</NavLink>
                     }
+                    {(user.role === Role.Manager || user.role === Role.User) 
+                        && user.oneSignalAppId != null 
+                        && user.oneSignalApiKey != null
+                        && <NavLink to="/notifications" className="nav-item nav-link">Powiadomienia</NavLink>
+                    }
                     <a onClick={logout} className="nav-item nav-link">Wyloguj</a>
                 
                     

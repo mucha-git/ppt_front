@@ -16,6 +16,7 @@ import { Maps } from '../maps/Index';
 import { Pilgrimages } from '../pilgrimages/Index';
 import { Years } from '../years/Index';
 import { MapPins } from '../mapPins/Index';
+import { Notifications } from '../notifications/Index';
 
 function App() {
     const { pathname } = useLocation();  
@@ -41,6 +42,7 @@ function App() {
                 <PrivateRoute path="/pilgrimages" component={Pilgrimages} roles={[Role.Admin, Role.Manager]} />
                 <PrivateRoute path="/years" component={Years} roles={[Role.Manager]} />
                 <PrivateRoute path="/profile" component={Profile} />
+                <PrivateRoute path="/notifications" component={Notifications} roles={[Role.Manager, Role.User]} />
                 <PrivateRoute path="/admin" roles={[Role.Admin, Role.Manager]} component={Admin} />
                 <Route path="/account" component={Account} />
                 <Redirect from="/:url*(/+)" to={pathname} />

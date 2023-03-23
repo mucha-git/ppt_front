@@ -121,14 +121,12 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
   });
 
   const onSubmitElements = (values, openNew) => {
-    console.log(values)
     if(values.margin == 0) values.margin = null
     if(values.height == 0) values.height = null
     if(values.mapHeight == 0) values.mapHeight = null
     values.autoplay != null ? values.autoplay = values.autoplay == "1": null;
     if(destinationViewId != -1 ) values.destinationViewId = destinationViewId
     //if(mapId != -1 ) values.mapId = mapId
-    console.log(values.mapId)
     values.order=isAddMode? null : row.order
     if (isAddMode) {
       values.viewId = parentViewId

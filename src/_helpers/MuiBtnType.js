@@ -1,5 +1,14 @@
 import { BtnColors } from "./BtnColors";
-import { faPlus, faPencil, faTrashCan, faAngleDown, faAngleUp, faPaperPlane, faGripVertical, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
+import { faPlus, 
+    faPencil, 
+    faTrashCan, 
+    faAngleDown, 
+    faAngleUp, 
+    faPaperPlane, 
+    faGripVertical, 
+    faMagnifyingGlass,
+    faCloudArrowDown,
+    faCloudArrowUp } from '@fortawesome/free-solid-svg-icons'
 
 export const MuiBtnType = {
     Add: {icon: faPlus, color: BtnColors.green},
@@ -9,5 +18,7 @@ export const MuiBtnType = {
     ArrowUp: {icon: faAngleUp, color: BtnColors.transparent},
     Send: {icon: faPaperPlane, color: BtnColors.blue},
     DragAndDrop: {icon: faGripVertical, color: BtnColors.transparent},
-    Search: {icon: faMagnifyingGlass, color: BtnColors.green}
+    Search: {icon: faMagnifyingGlass, color: BtnColors.green},
+    Download: {icon: faCloudArrowDown, color: BtnColors.orange},
+    Upload: {icon: faCloudArrowUp, color: BtnColors.blue}
 }
