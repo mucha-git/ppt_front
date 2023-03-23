@@ -125,7 +125,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
     if(values.height == 0) values.height = null
     if(values.mapHeight == 0) values.mapHeight = null
     values.autoplay != null ? values.autoplay = values.autoplay == "1": null;
-    if(destinationViewId != -1 ) values.destinationViewId = destinationViewId
+    //if(destinationViewId != -1 ) values.destinationViewId = destinationViewId
     //if(mapId != -1 ) values.mapId = mapId
     values.order=isAddMode? null : row.order
     if (isAddMode) {
@@ -296,17 +296,17 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
             {(formik.values.type === "Navigation") && 
             <>
             <FormikControl
-              control="typeSelect"
+              control="muiSelect"
               label={"Widok"}
               name="destinationViewId"
               options={views.map(o => {
-                return {label: o.title, value: (o.id).toString()}
+                return {key: o.title, value: o.id}
               })}
               className="form-item-width"
-              setValue={(val) => setDestinationViewId(val)}
-              value={destinationViewId}
-              setLista={() => updateViews(yearId)}
-              yearId={popup? yearId: isAddMode? location.state.yearId: row.yearId}
+              //setValue={(val) => setDestinationViewId(val)}
+              //value={destinationViewId}
+              //setLista={() => updateViews(yearId)}
+              //yearId={popup? yearId: isAddMode? location.state.yearId: row.yearId}
             />
             </>}
             <button
