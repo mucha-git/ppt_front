@@ -2,30 +2,42 @@ import React, { useState, useContext, useEffect } from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import FormikControl from "@/_components/Formik/FormikControl";
-import { alertService, mapsService } from "@/_services";
+import { alertService, mapsService } from "../_services";
 import { useLocation, Link } from "react-router-dom";
 import { ListType } from "../_helpers/ListType";
 import { ScreenType } from "../_helpers/ScreenType";
 import { AppContext } from "../_helpers/context";
+import { kolumny } from "./elements/MarkersColumns";
+import cellEditFactory from "@musicstory/react-bootstrap-table2-editor";
+import BootstrapTable from "@murasoftware/react-bootstrap-table-next";
 
 function AddEdit({ history, popup, close, lista, setLista, yearId }) {
   const {updateMaps, mapPins, set} = useContext(AppContext)
+  let location = useLocation();
+  const isAddMode = location.state.row == null || popup ? true : false;
+  const [submitting, setSubmitting] = useState(false);
+  let {row } = location.state
+  const [markers, setMarkers] = useState(isAddMode? [] : row.markers != null? row.markers : [])
+  const [polylines, setPolylines] = useState(isAddMode? "": row.polylines)
+  const [latitude, setLatitude] = useState(isAddMode? 0.0: row.latitude)
+  const [longitude, setLongitude] = useState(isAddMode? 0.0: row.longitude)
+  const [map, setMap] = useState(!isAddMode)
+  
   useEffect(() => {
     if(!set){
       const { from } = {from: { pathname: "/maps"}}
       history.push(from);
     } 
   }, []);
-  let location = useLocation();
-  const isAddMode = location.state.row == null || popup ? true : false;
-  const [submitting, setSubmitting] = useState(false);
+  useEffect(() => {
+    if(!isAddMode) {
+      mapsService.getMapById(row.id).then(x => setMarkers(x.markers))
+    }
+  }, [])
+  
+  
   //material ui // domyślne wartości w formularzach
-  let {row } = location.state
-  const [markers, setMarkers] = useState(isAddMode? [] : row.markers)
-  const [polylines, setPolylines] = useState(isAddMode? "": row.polylines)
-  const [latitude, setLatitude] = useState(isAddMode? 0.0: row.latitude)
-  const [longitude, setLongitude] = useState(isAddMode? 0.0: row.longitude)
-  const [map, setMap] = useState(!isAddMode)
+  
 
   const initialValues = isAddMode
     ? {
@@ -165,7 +177,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
         if(markersList.length != 0){
           var title = item.getElementsByTagName('name')[0].childNodes[0].nodeValue.trim()
           let it = item.getElementsByTagName('description')
-          var description = it.length == 0? "" : it[0].childNodes[0].nodeValue.trim()
+          var description = it.length == 0? "" : (it[0].childNodes[0].nodeValue.trim()).replace("<br>", "\n")
           for (const marker of markersList) {
             var coords = marker.getElementsByTagName('coordinates')[0].childNodes[0].nodeValue.trim()
             let coord = coords.split(",")
@@ -189,11 +201,17 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
     } else {
       throw "error while parsing"
     }
-
+    console.log(markers)
     setMarkers(markers)
     setPolylines(polylines)
     setMap(true)
   }
+
+  const columns = [
+    kolumny.KolumnaTitle(),
+    kolumny.KolumnaDescription(),
+    kolumny.KolumnaPinId(mapPins)
+  ]
 
   return (
     <div className="form-style">
@@ -247,6 +265,19 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
               wymagane={true}
             />
             <input type='file' accept=".kml" onChange={fileChanged}></input>
+            <BootstrapTable
+              bootstrap4
+              keyField="id"
+              data={markers}
+              columns={columns}
+              hover
+              condensed
+              cellEdit={cellEditFactory({
+                mode: "click",
+                blurToSave: true
+              })}
+              rowClasses="rowClasses"
+            />
             <button
               className="btn m-1 btn-success"
               type="submit"

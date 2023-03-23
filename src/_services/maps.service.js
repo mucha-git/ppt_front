@@ -5,6 +5,7 @@ const baseUrl = `${config.apiUrl}/maps`;
 
 export const mapsService = {
     getMaps,
+    getMapById,
     create,
     update,
     _delete
@@ -12,6 +13,10 @@ export const mapsService = {
 
 function getMaps(year) {
     return fetchWrapper.get(`${baseUrl}/${year}`);
+}
+
+function getMapById(id) {
+    return fetchWrapper.get(`${baseUrl}/id/${id}`);
 }
 
 function create(params) {
