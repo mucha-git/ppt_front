@@ -43,7 +43,8 @@ function NotificationsTable({ path }) {
                         headings: {en: "Nagłówek nowy" }, 
                         app_id: user.oneSignalAppId,
                         included_segments: ['Subscribed Users'],
-                        send_after: moment(Date.now()).add(3 , 'm').format() })
+                        send_after: moment(Date.now()).add(3 , 'm').format(),
+                        delayed_option: 'send_after' })
                 .then(() => oneSignalService.getNotifications().then(setNotifications))} 
           />
         </div>
