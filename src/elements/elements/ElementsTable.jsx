@@ -91,7 +91,7 @@ const akcje = (cell, row, rowIndex) => {
 
   return (
     <div>
-      <div class="d-flex justify-content-center mt-3">
+      <div className="d-flex justify-content-center mt-3">
     <NavLink to={{pathname: `/elements/dodaj`, state: {yearId: yearId, parentViewId: parentViewId} }} className="nav-item center-divs">
       <MuiButton icon={MuiBtnType.Add} text="Dodaj nowy element" className="p-2 pr-4 pl-4" />
     </NavLink>

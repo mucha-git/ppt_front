@@ -4,12 +4,26 @@ import * as Yup from "yup";
 import FormikControl from "@/_components/Formik/FormikControl";
 import { alertService, mapsService } from "../_services";
 import { useLocation, Link } from "react-router-dom";
-import { ListType } from "../_helpers/ListType";
-import { ScreenType } from "../_helpers/ScreenType";
 import { AppContext } from "../_helpers/context";
-import { kolumny } from "./elements/MarkersColumns";
+import { kolumny, kolumnyMui } from "./elements/MarkersColumns";
 import cellEditFactory from "@musicstory/react-bootstrap-table2-editor";
 import BootstrapTable from "@murasoftware/react-bootstrap-table-next";
+import paginationFactory from "@murasoftware/react-bootstrap-table2-paginator";
+import { DropzoneAreaBase } from 'material-ui-dropzone';
+import Box from '@mui/material/Box';
+import Tab from '@mui/material/Tab';
+import TabContext from '@mui/lab/TabContext';
+import TabList from '@mui/lab/TabList';
+import TabPanel from '@mui/lab/TabPanel';
+import { RenderMap } from "./Map";
+import { parseDocument } from "./functions";
+import MuiButton from "../_components/MuiButton";
+import { MuiBtnType } from "../_helpers/MuiBtnType";
+import { TextField } from "@mui/material";
+import { SketchPicker } from "react-color";
+import reactCSS from 'reactcss'
+import { MuiColorInput } from "mui-color-input";
+import { DataGrid } from '@mui/x-data-grid';
 
 function AddEdit({ history, popup, close, lista, setLista, yearId }) {
   const {updateMaps, mapPins, set} = useContext(AppContext)
@@ -17,12 +31,33 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
   const isAddMode = location.state.row == null || popup ? true : false;
   const [submitting, setSubmitting] = useState(false);
   let {row } = location.state
-  const [markers, setMarkers] = useState(isAddMode? [] : row.markers != null? row.markers : [])
+  let [markers, setMarkers] = useState(isAddMode? [] : row.markers != null? row.markers : [])
   const [polylines, setPolylines] = useState(isAddMode? "": row.polylines)
   const [latitude, setLatitude] = useState(isAddMode? 0.0: row.latitude)
   const [longitude, setLongitude] = useState(isAddMode? 0.0: row.longitude)
   const [map, setMap] = useState(!isAddMode)
-  
+  const [lineColor, setLineColor] = useState(isAddMode? "#00ff00" : row.strokeColor)
+  const [lineWidth, setLineWidth] = useState(isAddMode? 3: row.strokeWidth)
+  const [mapView, setMapView] = useState(() => <RenderMap polylines={polylines} lineColor={lineColor} lineWidth={lineWidth} latitude={latitude} longitude={longitude} markers={markers} />)
+  const [activeMarker, setActiveMarker] = useState(null);
+  const [value, setValue] = useState("0");
+  const [tabDisabled, setTabDisabled] = useState(!map)
+  const [linkToNavigationDescription, setLinkToNavigationDescription] = useState(isAddMode? "Przejdź do nawigacji": markers[0]? markers[0].footerText : "")
+  const [linkToNavigationColor, setLinkToNavigationColor] = useState(isAddMode? "#000000": markers[0]? markers[0].footerColor : "#000000")
+  const [displayColorPicker, setDisplayColorPicker] = useState(false)
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
+  const strokeThick = [
+    {key: "Bardzo cienka", value: 1},
+    {key: "Cienka", value: 2},
+    {key: "Normalna", value: 3},
+    {key: "Gruba", value: 4},
+    {key: "Bardzo gruba", value: 5}
+  ]
+
   useEffect(() => {
     if(!set){
       const { from } = {from: { pathname: "/maps"}}
@@ -34,16 +69,24 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
       mapsService.getMapById(row.id).then(x => setMarkers(x.markers))
     }
   }, [])
-  
-  
-  //material ui // domyślne wartości w formularzach
-  
 
+  useEffect(() => {
+    if(markers.length > 0){
+      const marker = markers[0]
+      setLinkToNavigationDescription(marker.footerText)
+      setLinkToNavigationColor(marker.footerColor)
+    }
+    
+  }, [markers])
+
+  useEffect(() => {
+    if(polylines != "") setMapView(() => <RenderMap polylines={polylines} lineColor={lineColor} lineWidth={lineWidth} latitude={latitude} longitude={longitude} markers={markers} />)
+  }, [lineColor, lineWidth, markers, polylines, activeMarker])
   const initialValues = isAddMode
     ? {
         name: "",
         strokeColor: "#00ff00",
-        strokeWidth: 1,
+        strokeWidth: 3,
         mapSrc: "",
         delta: 2.5
       }
@@ -128,99 +171,135 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
     }
   }
 
-  let file = null
-  function fileChanged(e) {
-    file = e.target.files[0]
-    parseDocument(file)
-  }
-
-  function parseDocument(file) {
-    let fileReader = new FileReader()
-    fileReader.onload = async (e) => {
-      extractGoogleCoords(e.target.result)
-
-      //Do something with result object here
-      
-
-    }
-    fileReader.readAsText(file)
-  }
-
-  function extractGoogleCoords(plainText) {
-    let parser = new DOMParser()
-    let xmlDoc = parser.parseFromString(plainText, "text/xml")
-    let polylines = ""
-    let markers = []
-    if (xmlDoc.documentElement.nodeName == "kml") {
-      let latMax = 0
-      let latMin = 0
-      let lonMax = 0
-      let lonMin = 0
-      for (const item of xmlDoc.getElementsByTagName('Placemark')) {
-        let placeMarkName = item.getElementsByTagName('name')[0].childNodes[0].nodeValue.trim()
-        let polylinesList = item.getElementsByTagName('LineString')
-        let markersList = item.getElementsByTagName('Point')
-
-        /** POLYLINES PARSE **/        
-        for (const line of polylinesList) {
-          let coords = line.getElementsByTagName('coordinates')[0].childNodes[0].nodeValue.trim()
-          
-          let points = coords.split("\n")
-          for (const point of points) {
-            let coord = point.split(",")
-            polylines += coord[1] + "," + coord[0] + "\n"
-          }
-          //polylines=googlePolylinesPaths
-        }
-
-        /** MARKER PARSE **/
-        if(markersList.length != 0){
-          var title = item.getElementsByTagName('name')[0].childNodes[0].nodeValue.trim()
-          let it = item.getElementsByTagName('description')
-          var description = it.length == 0? "" : (it[0].childNodes[0].nodeValue.trim()).replace("<br>", "\n")
-          for (const marker of markersList) {
-            var coords = marker.getElementsByTagName('coordinates')[0].childNodes[0].nodeValue.trim()
-            let coord = coords.split(",")
-            let lat = parseFloat(coord[1])
-            let lon = parseFloat(coord[0])
-            if(lat > latMax) latMax = lat
-            if(lat < latMin || latMin == 0) latMin = lat
-
-            if(lon > lonMax) lonMax = lon
-            if(lon < lonMin || lonMin == 0) lonMin = lon
-            let mapPin = mapPins.find(p => p.name.toUpperCase() == title.toUpperCase())
-            let pinId = mapPin? mapPin.id : mapPins.length > 0? mapPins[0].id : alertService.error("Brak pinów mapy")
-            markers.push({ latitude: lat, longitude: lon, title: title, description: description, footerText: "tekst stopki", footerColor: "#ff0000", strokeWidth: 1, pinId: pinId })
-          }
-        }    
-        
+  const changeFooterText = (val) => {
+    setLinkToNavigationDescription(val)
+    const newMarkers = markers.map((m) => {
+      return { 
+        description: m.description,
+        footerColor: m.footerColor,
+        footerText: val,
+        id: m.id,
+        latitude: m.latitude,
+        longitude: m.longitude,
+        pinId: m.pinId,
+        strokeWidth: m.strokeWidth,
+        title: m.title
       }
-    setLatitude(latMin + (latMax - latMin) / 2)
-    setLongitude(lonMin + (lonMax - lonMin) / 2)
+    })
+    setMarkers(newMarkers)
+  }
 
-    } else {
-      throw "error while parsing"
-    }
-    console.log(markers)
-    setMarkers(markers)
-    setPolylines(polylines)
+  const changeFooterColor = (val) => {
+    setLinkToNavigationColor(val)
+    const newMarkers = markers.map((m) => {
+      return { 
+        description: m.description,
+        footerColor: val,
+        footerText: m.footerText,
+        id: m.id,
+        latitude: m.latitude,
+        longitude: m.longitude,
+        pinId: m.pinId,
+        strokeWidth: m.strokeWidth,
+        title: m.title
+      }
+    })
+    setMarkers(newMarkers)
+  }
+
+  function fileChanged(e) {
+    const file = e.target.files[0]
+    setData(file)
+  }
+
+  function fileChangedBox(e) {
+    const file = e[0].file
+    setData(file)
+  }
+
+  const setData = (file) => {
+    const data = parseDocument(file, mapPins)
+    setLatitude(data.latitude)
+    setLongitude(data.longitude)
+    setMarkers(data.markers)
+    setPolylines(data.polylines)
     setMap(true)
   }
 
   const columns = [
+    kolumny.KolumnaPinId(mapPins),
     kolumny.KolumnaTitle(),
     kolumny.KolumnaDescription(),
-    kolumny.KolumnaPinId(mapPins)
   ]
 
+  const columnsMui = [
+    kolumnyMui.KolumnaPinIdMui(mapPins),
+    kolumnyMui.KolumnaTitleMui(),
+    kolumnyMui.KolumnaDescriptionMui(),
+  ]
+
+  const handleClick = () => {
+    setDisplayColorPicker(!displayColorPicker)
+  };
+
+  const handleClose = () => {
+    setDisplayColorPicker(false )
+  };
+
+  const rows = [
+    { id: 1, title: 'Barcelona', description: "5", pinId: 15 },
+    { id: 2, title: 'Rio de Janeiro', description: "4", pinId: 15 },
+    { id: 3, title: 'London', description: "3", pinId: 15 },
+    { id: 4, title: 'New York', description: "2", pinId: 15 },
+  ];
+
+  const styles = reactCSS({
+    'default': {
+      color: {
+        width: '24px',
+        height: '24px',
+        borderRadius: '12px',
+        background: linkToNavigationColor,
+      },
+      swatch: {
+        padding: '4px',
+        background: '#fff',
+        borderRadius: '16px',
+        boxShadow: '0 0 0 1px rgba(0,0,0,.1)',
+        display: 'inline-block',
+        cursor: 'pointer',
+      },
+      popover: {
+        position: 'absolute',
+        left: "-1px",
+        zIndex: '2',
+        marginTop: '10px',
+        width: '-webkit-fill-available',
+        pointerEvents: 'all'
+      },
+      cover: {
+        position: 'fixed',
+        top: '0px',
+        right: '0px',
+        bottom: '0px',
+        left: '0px',
+      },
+    },
+  });
+
+  const options = {
+    sizePerPageList: [
+      { text: '5', value: 5 },
+      { text: '10', value: 10 }, 
+      { text: '25', value: 25 }, 
+      { text: '50', value: 50 },
+      {text: "Wszystkie", value: markers.length}
+    ] 
+  };
+
+
   return (
-    <div className="form-style">
-      <h2>
-        {isAddMode
-          ? "Nowa mapa"
-          : "Edycja mapy"}
-      </h2>
-      <br></br>
+    <div className="box-shadow-main bg-white">
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -228,96 +307,241 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
       >
         {(formik) => (
           <Form>
-            <FormikControl
-              control="input"
-              type="text"
-              label={"Nazwa"}
-              name="name"
-              className="form-item-width"
-              wymagane={true}
-            />
-            <FormikControl
-              control="color"
-              //type="text"
-              label={"Kolor linii"}
-              name="strokeColor"
-              className="form-item-width"
-              wymagane={true}
-            />
-            <FormikControl
-              control="inputNumber"
-              label={"szerokość linii"}
-              name="strokeWidth"
-              className="form-item-width"
-            />
-            <FormikControl
-              control="inputNumber"
-              label={"delta"}
-              name="delta"
-              className="form-item-width"
-            />
-            <FormikControl
-              control="input"
-              type="text"
-              label={"Link do nawigacji"}
-              name="mapSrc"
-              className="form-item-width"
-              wymagane={true}
-            />
-            <input type='file' accept=".kml" onChange={fileChanged}></input>
-            <BootstrapTable
-              bootstrap4
-              keyField="id"
-              data={markers}
-              columns={columns}
-              hover
-              condensed
-              cellEdit={cellEditFactory({
-                mode: "click",
-                blurToSave: true
-              })}
-              rowClasses="rowClasses"
-            />
-            <button
-              className="btn m-1 btn-success"
-              type="submit"
-              onClick={() => onSubmitMaps(formik.values, false)}
-              disabled={submitting ? true : false}
-            >
-              {submitting && (
-                <span className="spinner-border spinner-border-sm"></span>
+            <div className="pl-5 pr-5 pt-5 pb-3">
+              <div className="d-flex flex-row">
+                <div>{popup ? (
+                  <a onClick={close}>
+                    <h2><MuiButton className="pl-2 pr-2" icon={MuiBtnType.ArrowBack} /></h2>
+                  </a>
+                  ) : (
+                  <Link to={{
+                    pathname: "/maps",
+                    state: {yearId: popup
+                      ? yearId
+                      : location.state.yearId },
+                    }} >
+                    <h2><MuiButton className="pl-2 pr-2" icon={MuiBtnType.ArrowBack} /></h2>
+                  </Link>
+                  )}
+                </div>
+                <div>
+                  <h2>
+                  {isAddMode
+                    ? "Nowa mapa"
+                    : "Edycja mapy"}
+                  </h2>
+                </div>
+              </div>
+              <Box sx={{ width: '100%', typography: 'body1' }}>
+              <TabContext value={value}>
+                <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                  <TabList variant="fullWidth" onChange={handleChange} aria-label="disabled tabs example">
+                    <Tab label="Ustawienia mapy" value={"0"} />
+                    <Tab label="Podgląd mapy" value={"1"} disabled= {tabDisabled} />
+
+                  </TabList>
+                </Box>
+                <TabPanel value ={"0"} >
+                  <FormikControl
+                    control="input"
+                    type="text"
+                    label={"Nazwa"}
+                    name="name"
+                    className="form-item-width"
+                    wymagane={true}
+                    fullWidth
+                    margin="normal"
+                  />
+                  <div className="d-flex justify-content-center">
+                    <div className="w-50">
+                      <TextField 
+                        id={"link-to-navigation-description"} 
+                        value={linkToNavigationDescription} 
+                        label={"Tekst linku do nawigacji"} 
+                        variant="outlined"
+                        onChange={(val) => changeFooterText(val.target.value)} 
+                        fullWidth
+                        margin="normal"
+                      />
+                    </div>
+                    <div className="w-50 ml-2">
+                    <MuiColorInput
+                      label={"Kolor linku do nawigacji"} 
+                      format={'hex'}
+                      id={"link-to-navigation-color"} 
+                      value={linkToNavigationColor} 
+                      isAlphaHidden={true}
+                      onChange={(val, e) => changeFooterColor(e.hex) } 
+                      fullWidth
+                      margin="normal"
+                    />
+                      {/* <div className="MuiFormControl-root MuiFormControl-marginNormal MuiFormControl-fullWidth MuiTextField-root css-17vbkzs-MuiFormControl-root-MuiTextField-root" onClick={handleClick}>
+                        <label className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-outlined MuiFormLabel-colorPrimary MuiFormLabel-filled MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-outlined css-1jy569b-MuiFormLabel-root-MuiInputLabel-root" data-shrink="true" htmlFor="link-to-navigation-color" id="link-to-navigation-color-label">Kolor linku do nawigacji</label>
+                        <div className="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl css-md26zr-MuiInputBase-root-MuiOutlinedInput-root">
+                          <div className="MuiInputBase-input MuiOutlinedInput-input css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input rounded">
+                          <fieldset aria-hidden="true" className="MuiOutlinedInput-notchedOutline css-1d3z3hw-MuiOutlinedInput-notchedOutline  overflow-visible">
+                            <legend className="css-14lo706">
+                              <span>Kolor linku do nawigacji </span>
+                            </legend>
+                            <div>
+                              <div className="d-flex flex-row">
+                                <div style={ styles.swatch } >
+                                  <div style={ styles.color } />
+                                </div>
+                                <div className="pt-2 pl-2">{linkToNavigationColor}</div>
+                              </div>
+                              {displayColorPicker ? <div style={ styles.popover }>
+                                <div style={ styles.cover } onClick={handleClose}/>
+                                <SketchPicker 
+                                  id={"link-to-navigation-color"}
+                                  disableAlpha={true}
+                                  color={ linkToNavigationColor} 
+                                  onChange={(val, e) => changeFooterColor(val.hex) } 
+                                />
+                              </div> : null }
+                            </div>
+                          </fieldset>
+                          </div>
+                        </div>
+                      </div> */}
+                    </div>
+                  </div>
+                  <FormikControl
+                    control="input"
+                    type="text"
+                    label={"Link do nawigacji"}
+                    name="mapSrc"
+                    className="form-item-width"
+                    wymagane={true}
+                    fullWidth
+                    margin="normal"
+                  />
+                  {/* <input type='file' accept=".kml" onChange={fileChanged}></input> */}
+                  <DropzoneAreaBase
+                    acceptedFiles={[]}
+                    inputProps={{accept: '.kml'}}
+                    filesLimit={1}
+                    dropzoneText={"PRZECIĄGNIJ PLIK KML LUB KLIKNIJ ABY DODAĆ MAPĘ"}
+                    onAdd={(files) => {
+                      files?.length > 0 && fileChangedBox(files)}}
+                    onDelete={() => {
+                      setLatitude(null)
+                      setLongitude(null)
+                      setMarkers([])
+                      setPolylines("")
+                      setMap(null)
+                    }}
+                    dropzoneClass={map? "file-success mt-3" : "bg-light mt-3"}
+                    dropzoneProps={{disabled: !isAddMode}}
+                  />
+                </TabPanel>
+                <TabPanel value={"1"} disabled={tabDisabled} >
+                <div className="d-flex justify-content-center">
+                  <div className="w-50">
+                    <FormikControl
+                      control="muiSelect"
+                      label="Szerokość linii"
+                      name="strokeWidth"
+                      options={strokeThick}
+                      fullWidth
+                      margin="normal"
+                      onChange={(val) => {
+                        formik.setFieldValue('strokeWidth', val.target.value)
+                        setLineWidth(val.target.value)
+                      }}
+                    />
+                  </div>
+                  <div className="w-50 ml-2">
+                    <FormikControl
+                      control="color"
+                      label={"Kolor linii"}
+                      name="strokeColor"
+                      className="w-100"
+                      wymagane={true}
+                      fullWidth
+                      margin="normal"
+                      onChange={(val2, val) => {
+                        formik.setFieldValue('strokeColor', val.hex)
+                        setLineColor(val.hex)
+                      }}
+                    />
+                  </div>
+                </div>
+                <FormikControl
+                      control="inputNumber"
+                      label={"Delta"}
+                      name="delta"
+                      className="form-item-width"
+                      fullWidth
+                      margin="normal"
+                    />
+                  {mapView}
+                  {markers.length > 0 && <div style={{ height: '400px', width: '100%' }}><DataGrid 
+                    rows={markers}
+                    columns={columnsMui}
+                    initialState={{ pagination: {paginationModel: {pageSize: 5}} }}
+                    //pageSizeOptions={[5, 10, 25]}
+                  /></div>}
+                  <BootstrapTable
+                    bootstrap4
+                    keyField="id"
+                    data={markers}
+                    columns={columns}
+                    hover
+                    condensed
+                    pagination={paginationFactory(options)}
+                    cellEdit={cellEditFactory({
+                      mode: "click",
+                      blurToSave: true
+                    })}
+                    rowClasses="rowClasses"
+                  />
+                </TabPanel>
+              </TabContext>
+              </Box>
+            </div>
+            <div className="d-flex flex-row-reverse bg-light pl-5 pr-5 pt-3 pb-3" >
+              <button
+                className="btn m-1 btn-success"
+                type="submit"
+                onClick={() => onSubmitMaps(formik.values, false)}
+                disabled={submitting ? true : false}
+              >
+                {submitting && (
+                  <span className="spinner-border spinner-border-sm"></span>
+                )}
+                  Zapisz 
+              </button>
+              {(!popup && isAddMode) && <button
+                className="btn m-1 btn-success"
+                onClick={() => onSubmitMaps(formik.values, true)}
+                disabled={submitting ? true : false}
+              >
+                {submitting && (
+                  <span className="spinner-border spinner-border-sm"></span>
+                )}
+                Zapisz i dodaj nowy
+              </button>
+              }
+              {popup ? (
+                <a onClick={close}>
+                  <button className="btn m-1 btn-danger">
+                    Anuluj
+                  </button>
+                </a>
+              ) : (
+                <Link to={{
+                  pathname: "/maps",
+                  state: {yearId: popup
+                    ? yearId
+                    : location.state.yearId },
+              }} >
+                  <button className="btn m-1 btn-danger" type="submit">
+                    Anuluj
+                  </button>
+                </Link>
               )}
-              Zapisz 
-            </button>
-            {(!popup && isAddMode) && <button
-              className="btn m-1 btn-success"
-              onClick={() => onSubmitMaps(formik.values, true)}
-              disabled={submitting ? true : false}
-            >
-              {submitting && (
-                <span className="spinner-border spinner-border-sm"></span>
-              )}
-              Zapisz i dodaj nowy
-            </button>
-            }
-            {popup ? (
-              <a onClick={close}>
-                <button className="btn m-1 btn-danger">
-                  Anuluj
-                </button>
-              </a>
-            ) : (
-              <Link to={{
-                pathname: "/maps",
-                state: {yearId: popup
-                  ? yearId
-                  : location.state.yearId },
-            }} >
-                <button className="btn m-1 btn-danger" type="submit">
-                  Anuluj
-                </button>
-              </Link>
-            )}
+            </div>
           </Form>
         )}
       </Formik>

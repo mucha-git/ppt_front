@@ -8,7 +8,7 @@ export default function MuiButton({icon, text, onClick, className = ""}) {
       onClick={onClick}
       type="submit"
       >
-        {icon && <FontAwesomeIcon icon={icon.icon} />}
+        {icon && icon.icon && <FontAwesomeIcon icon={icon.icon} />}
         {text && <span className="ml-1">{text}</span>}
     </button>
   );

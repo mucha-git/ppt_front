@@ -8,7 +8,8 @@ import { faPlus,
     faGripVertical, 
     faMagnifyingGlass,
     faCloudArrowDown,
-    faCloudArrowUp } from '@fortawesome/free-solid-svg-icons'
+    faCloudArrowUp,
+    faArrowLeftLong } from '@fortawesome/free-solid-svg-icons'
 
 export const MuiBtnType = {
     Add: {icon: faPlus, color: BtnColors.green},
@@ -20,5 +21,8 @@ export const MuiBtnType = {
     DragAndDrop: {icon: faGripVertical, color: BtnColors.transparent},
     Search: {icon: faMagnifyingGlass, color: BtnColors.green},
     Download: {icon: faCloudArrowDown, color: BtnColors.orange},
-    Upload: {icon: faCloudArrowUp, color: BtnColors.blue}
+    Upload: {icon: faCloudArrowUp, color: BtnColors.blue},
+    Cancel: {icon: null, color: BtnColors.transparent},
+    Submit: {icon: null, color: BtnColors.blue},
+    ArrowBack: {icon: faArrowLeftLong, color: BtnColors.transparent}
 }

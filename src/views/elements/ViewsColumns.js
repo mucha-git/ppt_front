@@ -1,6 +1,4 @@
 import React from 'react';
-import {ScreenType} from '../../_helpers/ScreenType'
-import {ListType} from '../../_helpers/ListType'
 import { View } from './components/View'
 
 export const kolumny = {

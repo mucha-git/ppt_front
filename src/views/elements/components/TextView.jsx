@@ -1,11 +1,9 @@
 import React from "react";
 import MuiButton from "../../../_components/MuiButton";
 import { showView } from "../../../_helpers";
-import { ListType } from "../../../_helpers/ListType";
 import { MuiBtnType } from "../../../_helpers/MuiBtnType";
 
 function TextView({row}){
-    
 
 return (
     <div>

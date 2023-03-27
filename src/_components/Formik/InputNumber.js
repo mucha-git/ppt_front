@@ -28,20 +28,12 @@ function InputNumber(props) {
     <div className={className != null ? className : "form-group col"}>
       <Field
         name={name}
-        {...rest}
         autoComplete="off"
       >
         {({ form, field }) => {
           const { setFieldValue } = form;
           const { value } = field;
           return (
-            <Box
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                '& > :not(style)': { m: 1 },
-              }}
-            >
               <TextField
                 inputProps={{ inputMode: 'numeric', pattern: '[0-9]*'  }}
                 type='number'
@@ -49,12 +41,12 @@ function InputNumber(props) {
                 label={label}
                 value={value}
                 onChange={(val) => setFieldValue(name, val.target.value) }
-              /><ErrorMessage name={name} component={TextError} />
-            </Box>
+                {...rest}
+              />
           );
         }}
       </Field>
-      
+      <ErrorMessage name={name} component={TextError} />
     </div>
   );
 }

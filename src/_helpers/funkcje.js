@@ -6,16 +6,16 @@ export function isWymagane() {
 
 export function showView (row) {
     switch (row.type) {
-        case ListType[0].key: 
+        case ListType[0].value: 
             return <div>
             </div>
-        case ListType[1].key: 
+        case ListType[1].value: 
             return <img src={row.imgSrc} width={"100%"} />
-        case ListType[2].key: 
+        case ListType[2].value: 
             return <div>
             <strong>Link zewnętrzny: </strong>{row.externalUrl}
         </div>
-        case ListType[3].key: 
+        case ListType[3].value: 
             return <div>
             <strong>Link zewnętrzny: </strong>{row.externalUrl}
             <img src={row.imgSrc} width={"100%"} />

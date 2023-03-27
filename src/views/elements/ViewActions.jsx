@@ -11,14 +11,14 @@ function Actions(props) {
     const { updateViews, views, elements } = useContext(AppContext);
     const addButtonPath = () => {
         switch (props.row.screenType) {
-            case ScreenType[1].key: return `${props.path}/dodaj`
-            case ScreenType[2].key: return `/elements/dodaj`
+            case ScreenType[1].value: return `${props.path}/dodaj`
+            case ScreenType[2].value: return `/elements/dodaj`
         }
     }
 
     const isInternalType = () => {
-        return props.row.type == ListType[0].key || 
-            props.row.type == ListType[1].key
+        return props.row.type == ListType[0].value || 
+            props.row.type == ListType[1].value
     }
 
     const isExpandable = () => {
@@ -62,21 +62,6 @@ function Actions(props) {
                     {expandButton()}
                 </div>
             </div>
-            
-            
-            
-            {/* <button
-                    className="btn m-1 btn-danger"
-                    onClick={() => {
-                        viewsService._delete(props.cell).then(() => {
-                            updateViews(props.row.yearId)
-                        });
-                    }}
-                >
-                    Usuń
-                </button>
-             */}
-            
         </div>
     );
 

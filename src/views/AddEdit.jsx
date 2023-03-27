@@ -7,6 +7,8 @@ import { useLocation, Link } from "react-router-dom";
 import { ListType } from "../_helpers/ListType";
 import { ScreenType } from "../_helpers/ScreenType";
 import { AppContext } from "../_helpers/context";
+import MuiButton from "../_components/MuiButton";
+import { MuiBtnType } from "../_helpers/MuiBtnType";
 
 function AddEdit({ history, popup, close, lista, setLista, yearId }) {
   const {updateViews, set} = useContext(AppContext)
@@ -20,6 +22,35 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
   const isAddMode = location.state.row == null || popup ? true : false;
   const [submitting, setSubmitting] = useState(false);
 
+  const btnTypes = [
+    {key: "Tekst", value: "Text"},
+    {key: "Grafika", value: "Graphic"}
+  ]
+
+  const contentTypes = [
+    {key: "", value: null},
+    {key: "Lista", value: "List"},
+    {key: "Treści", value: "Elements"},
+    {key: "Link Zewnętrzny", value: "ExternalLink"}
+  ]
+
+  const setContentType = (row) => {
+    if(row.type.includes("External")) return "ExternalLink"
+    switch (row.screenType) {
+      case "ListScreen": return "List"
+      case "TextScreen": return "Elements"
+    }
+  }
+
+  const getScreenType = (values) => {
+    if(values.contentType.includes("External")) return null
+    switch (values.contentType) {
+      case "List": return "ListScreen"
+      case "Elements": return "TextScreen"
+      default: null
+    }
+  }
+
   let {row, parentViewId } = location.state
 
 
@@ -27,8 +58,8 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
     ? {
         title: "",
         headerText: null,
-        type: "Text",
-        screenType: null,
+        btnType: "Text",
+        contentType: null,
         imgSrc: null,
         viewId: parentViewId,
         externalUrl: null
@@ -36,8 +67,8 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
     : {
         title: row.title,
         headerText: row.headerText,
-        type: row.type,
-        screenType: row.screenType? row.screenType : "",
+        btnType: row.type.includes("Text")? "Text": "Graphic",
+        contentType: setContentType(row),
         imgSrc: row.imgSrc,
         viewId: row.viewId,
         externalUrl: row.externalUrl
@@ -47,78 +78,49 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
     title: Yup.string()
       .required("Wymagany"),
     headerText: Yup.string().min(1)
-      .when('type', {
-        is: 'Text',
+      .when('contentType', {
+        is: 'List',
         then: fieldSchema => fieldSchema.required('Wymagane'),
       })
-      .when('type', {
-        is: 'Graphic',
+      .when('contentType', {
+        is: 'Elements',
         then: fieldSchema => fieldSchema.required('Wymagane'),
       })
-      .when('type', {
-        is: 'TextExternalLink',
-        then: fieldSchema => fieldSchema.nullable(),
-      })
-      .when('type', {
-        is: 'GraphicExternalLink',
+      .when('contentType', {
+        is: 'ExternalLink',
         then: fieldSchema => fieldSchema.nullable(),
       }),
-    type: Yup.string().required("Wymagany"),
-    screenType: Yup.string()
-      .when('type', {
-        is: 'Text',
-        then: fieldSchema => fieldSchema.required('Wymagane'),
-      })
-      .when('type', {
-        is: 'Graphic',
-        then: fieldSchema => fieldSchema.required('Wymagane'),
-      })
-      .when('type', {
-        is: 'TextExternalLink',
-        then: fieldSchema => fieldSchema.nullable(),
-      })
-      .when('type', {
-        is: 'GraphicExternalLink',
-        then: fieldSchema => fieldSchema.nullable(),
-      }),
+    btnType: Yup.string().required("Wymagany"),
+    contentType: Yup.string().required("Wymagany"),
     imgSrc: Yup.string()
-      .when('type', {
+      .when('btnType', {
         is: 'Text',
         then: fieldSchema => fieldSchema.nullable(),
       })
-      .when('type', {
+      .when('btnType', {
         is: 'Graphic',
-        then: fieldSchema => fieldSchema.required('Wymagane'),
-      })
-      .when('type', {
-        is: 'TextExternalLink',
-        then: fieldSchema => fieldSchema.nullable(),
-      })
-      .when('type', {
-        is: 'GraphicExternalLink',
         then: fieldSchema => fieldSchema.required('Wymagane'),
       }),
     externalUrl: Yup.string()
-      .when('type', {
-        is: 'Text',
+      .when('contentType', {
+        is: 'List',
         then: fieldSchema => fieldSchema.nullable(),
       })
-      .when('type', {
-        is: 'Graphic',
+      .when('contentType', {
+        is: 'Elements',
         then: fieldSchema => fieldSchema.nullable(),
       })
-      .when('type', {
-        is: 'TextExternalLink',
-        then: fieldSchema => fieldSchema.required('Wymagane'),
-      })
-      .when('type', {
-        is: 'GraphicExternalLink',
+      .when('contentType', {
+        is: 'ExternalLink',
         then: fieldSchema => fieldSchema.required('Wymagane'),
       })
   });
 
   const onSubmitViews = (values, openNew) => {
-    values.screenType === ""? values.screenType = null: null;
+    const screenType = getScreenType(values)
+    values.type = screenType!=null? values.btnType: values.btnType + "ExternalLink",
+    values.screenType=screenType,
+    //values.screenType === ""? values.screenType = null: null;
     values.order=isAddMode? null : row.order
     if (isAddMode) {
       popup
@@ -174,105 +176,133 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
   }
 
   return (
-    <div className="form-style">
-      <h2>
-        {isAddMode
-          ? "Nowy widok"
-          : "Edycja widoku"}
-      </h2>
-      <br></br>
+    <div className="box-shadow-main bg-white">
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={() => {}}
       >
         {(formik) => (
-          
           <Form>
-            <FormikControl
-              control="input"
-              type="text"
-              label={"Tytuł"}
-              name="title"
-              className="form-item-width"
-              wymagane={true}
-            />
-            <FormikControl
-              control="select"
-              label={"Typ"}
-              name="type"
-              options={ListType}
-              className="form-item-width"
-              wymagane={true}
-            />
-            {(formik.values.type === "Text" || formik.values.type === "Graphic") &&
-            <><FormikControl
-              control="select"
-              label={"Typ widoku"}
-              name="screenType"
-              options={ScreenType}
-              className="form-item-width"
-              wymagane={true}
-            />
-            <FormikControl
-              control="input"
-              type="text"
-              label={"Nagłówek"}
-              name="headerText"
-              className="form-item-width"
-            /></>
-            }
-            {(formik.values.type === "GraphicExternalLink" || formik.values.type === "Graphic") &&
-            <>
+            <div className="pl-5 pr-5 pt-5 pb-3">
+              <div className="d-flex flex-row">
+                <div>{popup ? (
+                  <a onClick={close}>
+                    <h2><MuiButton className="pl-2 pr-2" icon={MuiBtnType.ArrowBack} /></h2>
+                  </a>
+                  ) : (
+                  <Link to={{
+                    pathname: "/views",
+                    state: {yearId: popup
+                      ? yearId
+                      : location.state.yearId },
+                    }} >
+                    <h2><MuiButton className="pl-2 pr-2" icon={MuiBtnType.ArrowBack} /></h2>
+                  </Link>
+                  )}
+                </div>
+                <div>
+                  <h2>
+                    {isAddMode
+                      ? "Nowy widok"
+                      : "Edycja widoku"}
+                  </h2>
+                </div>
+              </div>
               <FormikControl
                 control="input"
                 type="text"
-                label={"Źródło grafiki"}
-                name="imgSrc"
+                label={"Tytuł"}
+                name="title"
                 className="form-item-width"
                 wymagane={true}
+                fullWidth
+                margin="normal"
               />
-              {(formik.values.imgSrc != null && formik.values.imgSrc != "")? <img className="pt-2" src={formik.values.imgSrc} width={'100%'} height={'100%'} />: "Brak grafiki do wyświetlenia"}
-              <div className="clear" />
-            </>
-            }
-            {(formik.values.type === "GraphicExternalLink" || formik.values.type === "TextExternalLink") &&
+              <FormikControl
+                control="muiSelect"
+                label={"Rodzaj Kafelka"}
+                name="btnType"
+                options={btnTypes}
+                wymagane={true}
+                fullWidth
+                margin="normal"
+              />
+              <FormikControl
+                control="muiSelect"
+                label={"Rodzaj zawartości"}
+                name="contentType"
+                options={contentTypes}
+                className="form-item-width"
+                wymagane={true}
+                fullWidth
+                margin="normal"
+              />
+              {formik.values.contentType != null && <div className="pt-3"><h5>Szczegóły widoku</h5></div>}
+              {(formik.values.contentType === "List" || formik.values.contentType === "Elements") &&
               <FormikControl
                 control="input"
                 type="text"
-                label={"Link zewnętrzny"}
-                name="externalUrl"
+                label={"Nagłówek"}
+                name="headerText"
                 className="form-item-width"
-                wymagane={true}
+                fullWidth
+                margin="normal"
               />
+              }
+              {formik.values.btnType === "Graphic"  &&
+              <>
+                <FormikControl
+                  control="input"
+                  type="text"
+                  label={"Źródło grafiki"}
+                  name="imgSrc"
+                  className="form-item-width"
+                  wymagane={true}
+                  fullWidth
+                  margin="normal"
+                />
+                {(formik.values.imgSrc != null && formik.values.imgSrc != "")? <img className="pt-2" src={formik.values.imgSrc} width={'100%'} height={'100%'} />: "Brak grafiki do wyświetlenia"}
+                <div className="clear" />
+              </>
+              }
+              {formik.values.contentType === "ExternalLink" &&
+                <FormikControl
+                  control="input"
+                  type="text"
+                  label={"Link zewnętrzny"}
+                  name="externalUrl"
+                  className="form-item-width"
+                  wymagane={true}
+                  fullWidth
+                  margin="normal"
+                />
+              }
+            </div>
+            <div className="d-flex flex-row-reverse bg-light pl-5 pr-5 pt-3 pb-3" >
+            {(!popup && isAddMode) && <MuiButton 
+            className="pl-5 pr-5 pt-2 pb-2"
+            text={"Zapisz i dodaj nowy"} 
+            icon={MuiBtnType.Add} 
+            onClick={() => formik.isValid && onSubmitViews(formik.values, true)} 
+            disabled={formik.isSubmitting} />
             }
-            <button
-              className="btn m-1 btn-success"
-              type="submit"
-              onClick={() => formik.isValid && onSubmitViews(formik.values, false)}
-              disabled={formik.isSubmitting}// ? true : false}
-            >
-              {formik.isSubmitting && (
-                <span className="spinner-border spinner-border-sm"></span>
-              )}
-              Zapisz
-            </button>
-            {(!popup && isAddMode) && <button
-              className="btn m-1 btn-success"
-              onClick={() => formik.isValid && onSubmitViews(formik.values, true)}
-              disabled={submitting ? true : false}
-            >
-              {submitting && (
-                <span className="spinner-border spinner-border-sm"></span>
-              )}
-              Zapisz i dodaj nowy
-            </button>
+            <MuiButton 
+              className="pl-5 pr-5 pt-2 pb-2"
+              text={"Zapisz"} 
+              icon={MuiBtnType.Submit} 
+              onClick={() => formik.isValid && onSubmitViews(formik.values, false)} 
+              disabled={formik.isSubmitting} />
+            {(!popup && !isAddMode) && <MuiButton 
+            className="pl-5 pr-5 pt-2 pb-2"
+            text={"Usuń"} 
+            icon={MuiBtnType.Delete} 
+            onClick={() => viewsService._delete(row.id).then(() => history.push({ pathname: "/views", state: { yearId: location.state.yearId }}))}
+             />
             }
             {popup ? (
               <a onClick={close}>
-                <button className="btn m-1 btn-danger">
-                  Anuluj
-                </button>
+                <MuiButton className="pl-5 pr-5 pt-2 pb-2" text={"Anuluj"} icon={MuiBtnType.Cancel} />
               </a>
             ) : (
               <Link to={{
@@ -281,11 +311,10 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                   ? yearId
                   : location.state.yearId },
             }} >
-                <button className="btn m-1 btn-danger" type="submit">
-                  Anuluj
-                </button>
+              <MuiButton className="pl-5 pr-5 pt-2 pb-2" text={"Anuluj"} icon={MuiBtnType.Cancel} />
               </Link>
             )}
+            </div>
           </Form>
         )}
       </Formik>

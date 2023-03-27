@@ -6,8 +6,8 @@ import { TextScreen } from "./ScreenType/TextScreen";
 function Elements({ view, path }) {
     const SubView = () => {
         switch (view.screenType) {
-            case ScreenType[1].key: return <ListScreen view={view} path={path} />
-            case ScreenType[2].key: return <TextScreen view={view} path={path} />
+            case ScreenType[1].value: return <ListScreen view={view} path={path} />
+            case ScreenType[2].value: return <TextScreen view={view} path={path} />
         }
     }
 

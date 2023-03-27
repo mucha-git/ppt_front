@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Field, ErrorMessage } from "formik";
 import TextError from "./TextError";
 import { isWymagane } from "@/_helpers";
+import { TextField } from "@mui/material";
 
 function Input(props) {
   const { label, name, className, wymagane, ...rest } = props;
@@ -11,17 +12,27 @@ function Input(props) {
   }, [wymagane]);
   return (
     <div className={className != null ? className : "form-group col"}>
-      <label htmlFor={name}>
-        {label}
-        {gwiazdka}
-      </label>
       <Field
-        id={name}
         name={name}
-        {...rest}
+        
         autoComplete="off"
-        className="form-control"
-      />
+      >
+        {({ form, field }) => {
+          const { setFieldValue } = form;
+          const { value } = field;
+          return (
+            <TextField 
+              id={name} 
+              value={value} 
+              label={label} 
+              variant="outlined"
+              onChange={(val) => setFieldValue(name, val.target.value)} 
+              {...rest}
+            />
+          );
+        }}
+        
+      </Field>
       <ErrorMessage name={name} component={TextError} />
     </div>
   );
