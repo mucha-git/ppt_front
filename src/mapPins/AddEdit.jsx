@@ -96,6 +96,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
+        validateOnMount={true}
         onSubmit={() => {}}
       >
         {(formik) => (

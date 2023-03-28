@@ -180,6 +180,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
+        validateOnMount={true}
         onSubmit={() => {}}
       >
         {(formik) => (
@@ -215,16 +216,14 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                 label={"Tytuł"}
                 name="title"
                 className="form-item-width"
-                wymagane={true}
                 fullWidth
                 margin="normal"
               />
               <FormikControl
                 control="muiSelect"
-                label={"Rodzaj Kafelka"}
+                label={"Rodzaj kafelka"}
                 name="btnType"
                 options={btnTypes}
-                wymagane={true}
                 fullWidth
                 margin="normal"
               />
@@ -234,7 +233,6 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                 name="contentType"
                 options={contentTypes}
                 className="form-item-width"
-                wymagane={true}
                 fullWidth
                 margin="normal"
               />
@@ -258,7 +256,6 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                   label={"Źródło grafiki"}
                   name="imgSrc"
                   className="form-item-width"
-                  wymagane={true}
                   fullWidth
                   margin="normal"
                 />
@@ -273,7 +270,6 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                   label={"Link zewnętrzny"}
                   name="externalUrl"
                   className="form-item-width"
-                  wymagane={true}
                   fullWidth
                   margin="normal"
                 />

@@ -74,9 +74,7 @@ export function parseDocument(file, mapPins) {
 
     const delta = () => {
       let x = (lonMax - lonMin)
-      console.log(x)
       let y = Math.round(x)
-      console.log(y)
       return y > x? y : y - 0.5 
     }
     //setMarkers(markers)

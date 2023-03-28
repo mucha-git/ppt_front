@@ -67,7 +67,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
   }, []);
   useEffect(() => {
     if(!isAddMode) {
-      mapsService.getMapById(row.id).then(x => {setMarkers(x.markers); console.log(x)})
+      mapsService.getMapById(row.id).then(x => setMarkers(x.markers))
     }
   }, [])
 
@@ -288,16 +288,12 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
   
       const delta = () => {
         let x = (lonMax - lonMin)
-        console.log(x)
         let y = Math.round(x)
-        console.log(y)
         return y > x? y  : y + 0.5
       }
-      console.log(markers)
       setMarkers(markers)
       setPolylines(polylines)
       let deltaa = delta()
-      console.log(deltaa)
       setDelta(deltaa)
       setMap(true)
       setTabDisabled(false)
@@ -381,6 +377,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
+        validateOnMount={true}
         onSubmit={() => {}}
       >
         {(formik) => (

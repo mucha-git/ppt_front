@@ -49,7 +49,7 @@ function AddEdit({ history }) {
   const onSubmitYear = (values) => {
     setSubmitting(true)
     values.year = parseInt(values.year)
-    if(typeof values.isActive === "string") values.isActive = values.isActive == "true"
+    //if(typeof values.isActive === "string") values.isActive = values.isActive == "true"
     if (isAddMode) {
       values.pilgrimageId = location.pilgrimageId
       yearsService
@@ -89,6 +89,7 @@ function AddEdit({ history }) {
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
+        validateOnMount={true}
         onSubmit={() => {}}
       >
         {(formik) => (
@@ -115,7 +116,6 @@ function AddEdit({ history }) {
                 label={"Rocznik"}
                 name="year"
                 className="form-item-width"
-                wymagane={true}
                 excluded={excludedYears}
                 fullWidth
                 margin="normal"
@@ -126,24 +126,22 @@ function AddEdit({ history }) {
                 label={"Hasło rocznika"}
                 name="yearTopic"
                 className="form-item-width"
-                wymagane={true}
                 fullWidth
                 margin="normal"
               />
-              <FormikControl
-                control="input"
-                type="text"
-                label={"Aktywny"}
+              <div className="d-flex justify-content-center m-3">
+                <FormikControl
+                control="switch"
+                label={"Aktywna"}
                 name="isActive"
                 className="form-item-width"
-                wymagane={true}
-                fullWidth
                 margin="normal"
               />
+              </div>
               <FormikControl
                 control="input"
                 type="text"
-                label={"Link do grafiki"}
+                label={"Źródło grafiki"}
                 name="imgSrc"
                 className="form-item-width"
                 fullWidth

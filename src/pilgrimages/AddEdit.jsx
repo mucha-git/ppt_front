@@ -45,7 +45,7 @@ function AddEdit({ history }) {
     setSubmitting(true)
     if(values.oneSignal == "") values.oneSignal = null
     if(values.oneSignalApiKey == "") values.oneSignalApiKey = null
-    if(typeof values.isActive === "string") values.isActive = values.isActive == "true"
+    //if(typeof values.isActive === "string") values.isActive = values.isActive == "true"
     if (isAddMode) {
       pilgrimagesService
         .create(values)
@@ -83,6 +83,7 @@ function AddEdit({ history }) {
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
+        validateOnMount={true}
         onSubmit={() => {}}
       >
         {(formik) => (
@@ -117,17 +118,7 @@ function AddEdit({ history }) {
               <FormikControl
                 control="input"
                 type="text"
-                label={"Aktywna"}
-                name="isActive"
-                className="form-item-width"
-                wymagane={true}
-                fullWidth
-                margin="normal"
-              />
-              <FormikControl
-                control="input"
-                type="text"
-                label={"Logo Src"}
+                label={"Źródło logo"}
                 name="logoSrc"
                 className="form-item-width"
                 fullWidth
@@ -151,6 +142,18 @@ function AddEdit({ history }) {
                 fullWidth
                 margin="normal"
               />
+              <div className="d-flex justify-content-center m-3">
+                <FormikControl
+                control="switch"
+                label={"Aktywna"}
+                name="isActive"
+                className="form-item-width"
+                wymagane={true}
+                fullWidth
+                margin="normal"
+              />
+              </div>
+              
             </div>
             <div className="d-flex flex-row-reverse bg-light pl-5 pr-5 pt-3 pb-3" >
             <MuiButton 

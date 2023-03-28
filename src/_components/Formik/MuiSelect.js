@@ -7,7 +7,7 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
 function MuiSelect(props) {
-  const { label, name, options, ...rest } = props;
+  const { label, name, options, margin, ...rest } = props;
   return (
     <div>
       <Field
@@ -19,7 +19,7 @@ function MuiSelect(props) {
           const { setFieldValue } = form;
           const { value } = field;
           return (
-            <FormControl {...rest} >
+            <FormControl margin={margin} {...rest} >
               <InputLabel id={name + "-label"}>{label}</InputLabel>
               <Select
                 labelId={name + "-label"}
@@ -31,7 +31,7 @@ function MuiSelect(props) {
                 {...rest} 
               >
                 {options.map((option) => {
-                  return <MenuItem value={option.value}>{option.key}</MenuItem>
+                  return <MenuItem key={option.value} value={option.value}>{option.key}</MenuItem>
                 })}
               </Select>
             </FormControl>

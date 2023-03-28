@@ -38,7 +38,7 @@ function Overview({ match }) {
           value={year}
           onChange={handleChange}
         >
-          {years.map(y => {return <MenuItem value={y.id}>{y.year}</MenuItem>})}
+          {years.map(y => {return <MenuItem key={y.id} value={y.id}>{y.year}</MenuItem>})}
         </Select>
       </FormControl>
         }

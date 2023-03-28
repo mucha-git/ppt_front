@@ -36,22 +36,22 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
 
   const initialValues = isAddMode
     ? {
-        type: null,
+        type: "Text",
         // Divider
         color: '#000000',
         margin: 0,
         height: 0,
         // Graphic and text
-        text: null,
-        imgSrc: null,
+        text: undefined,
+        imgSrc: undefined,
         // Youtube
         autoplay: false,
-        playlist: null,
+        playlist: undefined,
         // Map
         mapHeight: 0,
-        mapId: null,
+        mapId: undefined,
         // Navigation
-        destinationViewId: null,
+        destinationViewId: undefined,
 
         
       }
@@ -196,6 +196,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
+        validateOnMount={true}
         onSubmit={() => {}}
       >
         {(formik) => (
@@ -231,7 +232,6 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                 name="type"
                 options={arrayFromEnum(ElementType)}
                 className="form-item-width"
-                wymagane={true}
                 fullWidth
                 margin="normal"
               />
@@ -304,7 +304,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                 <FormikControl
                   control="input"
                   type="text"
-                  label={"id plejlisty lub wideo z YT"}
+                  label={"Id plejlisty lub wideo z YT"}
                   name="playlist"
                   className="form-item-width"
                   fullWidth
@@ -325,9 +325,8 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                 <div className="d-flex justify-content-center m-3">
                   <FormikControl
                   control="switch"
-                  label={"Autoodtwazanie"}
+                  label={"Autoodtważanie"}
                   name="autoplay"
-                  fullWidth
                   margin="normal"
                 />
                 </div>
@@ -346,7 +345,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                 />
                 <FormikControl
                   control="inputNumber"
-                  label={"wysokość mapy"}
+                  label={"Wysokość mapy"}
                   name="mapHeight"
                   className="form-item-width"
                   fullWidth
