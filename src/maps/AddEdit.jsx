@@ -35,6 +35,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
   const [polylines, setPolylines] = useState(isAddMode? "": row.polylines)
   const [latitude, setLatitude] = useState(isAddMode? 0.0: row.latitude)
   const [longitude, setLongitude] = useState(isAddMode? 0.0: row.longitude)
+  const [delta, setDelta] = useState(isAddMode? 0 : row.delta)
   const [map, setMap] = useState(!isAddMode)
   const [lineColor, setLineColor] = useState(isAddMode? "#00ff00" : row.strokeColor)
   const [lineWidth, setLineWidth] = useState(isAddMode? 3: row.strokeWidth)
@@ -66,7 +67,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
   }, []);
   useEffect(() => {
     if(!isAddMode) {
-      mapsService.getMapById(row.id).then(x => setMarkers(x.markers))
+      mapsService.getMapById(row.id).then(x => {setMarkers(x.markers); console.log(x)})
     }
   }, [])
 
@@ -88,21 +89,21 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
         strokeColor: "#00ff00",
         strokeWidth: 3,
         mapSrc: "",
-        delta: 2.5
+        //delta: 2.5
       }
     : {
         name: row.name,
         strokeColor: row.strokeColor,
         strokeWidth: row.strokeWidth,
         mapSrc: row.mapSrc,
-        delta: row.delta,
+        //delta: row.delta,
       };
 
   const validationSchema = Yup.object({
     name: Yup.string().required("Wymagany"),
     mapSrc: Yup.string().required("Wymagany"),
     strokeColor: Yup.string().required("Wymagany"),
-    delta: Yup.number().required("Wymagany"),
+    //delta: Yup.number().required("Wymagany"),
     strokeWidth: Yup.number().required("Wymagany"),
   });
 
@@ -117,7 +118,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
     values.polylines = polylines
     values.latitude = latitude
     values.strokeWidth = parseInt(values.strokeWidth)
-    values.delta = parseFloat(values.delta)
+    values.delta = delta//parseFloat(values.delta)
     values.longitude = longitude
     if (isAddMode) {
       popup
@@ -218,12 +219,89 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
   }
 
   const setData = (file) => {
-    const data = parseDocument(file, mapPins)
-    setLatitude(data.latitude)
-    setLongitude(data.longitude)
-    setMarkers(data.markers)
-    setPolylines(data.polylines)
-    setMap(true)
+    let fileReader = new FileReader()
+    fileReader.onload = async (e) => {
+      return extractGoogleCoords(e.target.result)
+
+      //Do something with result object here
+    }
+    fileReader.readAsText(file)
+  
+    function extractGoogleCoords(plainText) {
+      let parser = new DOMParser()
+      let xmlDoc = parser.parseFromString(plainText, "text/xml")
+      let polylines = ""
+      let markers = []
+      let latMax = 0
+      let latMin = 0
+      let lonMax = 0
+      let lonMin = 0
+      if (xmlDoc.documentElement.nodeName == "kml") {
+        let i = 0
+        for (const item of xmlDoc.getElementsByTagName('Placemark')) {
+          //let placeMarkName = item.getElementsByTagName('name')[0].childNodes[0].nodeValue.trim()
+          let polylinesList = item.getElementsByTagName('LineString')
+          let markersList = item.getElementsByTagName('Point')
+  
+          /** POLYLINES PARSE **/        
+          for (const line of polylinesList) {
+            let coords = line.getElementsByTagName('coordinates')[0].childNodes[0].nodeValue.trim()
+            
+            let points = coords.split("\n")
+            for (const point of points) {
+              let coord = point.split(",")
+              polylines += coord[1] + "," + coord[0] + "\n"
+            }
+            //polylines=googlePolylinesPaths
+          }
+          
+          /** MARKER PARSE **/
+          if(markersList.length != 0){
+            var title = item.getElementsByTagName('name')[0].childNodes[0].nodeValue.trim()
+            let it = item.getElementsByTagName('description')
+            var description = it.length == 0? "" : (it[0].childNodes[0].nodeValue.trim()).replace("<br>", "\n")
+            
+            for (const marker of markersList) {
+              var coords = marker.getElementsByTagName('coordinates')[0].childNodes[0].nodeValue.trim()
+              let coord = coords.split(",")
+              let lat = parseFloat(coord[1])
+              let lon = parseFloat(coord[0])
+              if(lat > latMax) latMax = lat
+              if(lat < latMin || latMin == 0) latMin = lat
+  
+              if(lon > lonMax) lonMax = lon
+              if(lon < lonMin || lonMin == 0) lonMin = lon
+              let mapPin = mapPins.find(p => p.name.toUpperCase() == title.toUpperCase())
+              let pinId = mapPin? mapPin.id : mapPins.length > 0? mapPins[0].id : alertService.error("Brak pinów mapy")
+              markers.push({ id: i, latitude: lat, longitude: lon, title: title, description: description, footerText: linkToNavigationDescription, footerColor: linkToNavigationColor, strokeWidth: 1, pinId: pinId })
+              i = i+1
+            }
+          }    
+          
+        }
+      setLatitude(latMin + (latMax - latMin) / 2)
+      setLongitude(lonMin + (lonMax - lonMin) / 2)
+  
+      } else {
+        throw "error while parsing"
+      }
+  
+      const delta = () => {
+        let x = (lonMax - lonMin)
+        console.log(x)
+        let y = Math.round(x)
+        console.log(y)
+        return y > x? y  : y + 0.5
+      }
+      console.log(markers)
+      setMarkers(markers)
+      setPolylines(polylines)
+      let deltaa = delta()
+      console.log(deltaa)
+      setDelta(deltaa)
+      setMap(true)
+      setTabDisabled(false)
+    }
   }
 
   const columns = [
@@ -337,7 +415,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                   <TabList variant="fullWidth" onChange={handleChange} aria-label="disabled tabs example">
                     <Tab label="Ustawienia mapy" value={"0"} />
-                    <Tab label="Podgląd mapy" value={"1"} disabled= {tabDisabled} />
+                    <Tab label="Podgląd mapy" value={"1"} disabled={tabDisabled} />
 
                   </TabList>
                 </Box>
@@ -352,7 +430,38 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                     fullWidth
                     margin="normal"
                   />
-                  <div className="d-flex justify-content-center">
+                  
+                  <FormikControl
+                    control="input"
+                    type="text"
+                    label={"Link do nawigacji"}
+                    name="mapSrc"
+                    className="form-item-width"
+                    wymagane={true}
+                    fullWidth
+                    margin="normal"
+                  />
+                  {/* <input type='file' accept=".kml" onChange={fileChanged}></input> */}
+                  <DropzoneAreaBase
+                    acceptedFiles={[]}
+                    inputProps={{accept: '.kml'}}
+                    filesLimit={1}
+                    dropzoneText={"PRZECIĄGNIJ PLIK KML LUB KLIKNIJ ABY DODAĆ MAPĘ"}
+                    onAdd={(files) => {
+                      files?.length > 0 && fileChangedBox(files)}}
+                    onDelete={() => {
+                      setLatitude(null)
+                      setLongitude(null)
+                      setMarkers([])
+                      setPolylines("")
+                      setMap(null)
+                    }}
+                    dropzoneClass={map? "file-success mt-3" : "bg-light mt-3"}
+                    dropzoneProps={{disabled: !isAddMode}}
+                  />
+                </TabPanel>
+                <TabPanel value={"1"} disabled={tabDisabled} >
+                <div className="d-flex justify-content-center">
                     <div className="w-50">
                       <TextField 
                         id={"link-to-navigation-description"} 
@@ -406,36 +515,6 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                       </div> */}
                     </div>
                   </div>
-                  <FormikControl
-                    control="input"
-                    type="text"
-                    label={"Link do nawigacji"}
-                    name="mapSrc"
-                    className="form-item-width"
-                    wymagane={true}
-                    fullWidth
-                    margin="normal"
-                  />
-                  {/* <input type='file' accept=".kml" onChange={fileChanged}></input> */}
-                  <DropzoneAreaBase
-                    acceptedFiles={[]}
-                    inputProps={{accept: '.kml'}}
-                    filesLimit={1}
-                    dropzoneText={"PRZECIĄGNIJ PLIK KML LUB KLIKNIJ ABY DODAĆ MAPĘ"}
-                    onAdd={(files) => {
-                      files?.length > 0 && fileChangedBox(files)}}
-                    onDelete={() => {
-                      setLatitude(null)
-                      setLongitude(null)
-                      setMarkers([])
-                      setPolylines("")
-                      setMap(null)
-                    }}
-                    dropzoneClass={map? "file-success mt-3" : "bg-light mt-3"}
-                    dropzoneProps={{disabled: !isAddMode}}
-                  />
-                </TabPanel>
-                <TabPanel value={"1"} disabled={tabDisabled} >
                 <div className="d-flex justify-content-center">
                   <div className="w-50">
                     <FormikControl
@@ -467,34 +546,38 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                     />
                   </div>
                 </div>
-                <FormikControl
+                {/* <FormikControl
                       control="inputNumber"
                       label={"Delta"}
                       name="delta"
                       className="form-item-width"
                       fullWidth
                       margin="normal"
-                    />
+                    /> */}
                   {mapView}
-                  {markers.length > 0 && <div style={{ height: '400px', width: '100%' }}><DataGrid 
+                  {/* {markers.length > 0 && <div style={{ height: '400px', width: '100%' }}><DataGrid 
                     rows={markers}
                     columns={columnsMui}
                     initialState={{ pagination: {paginationModel: {pageSize: 5}} }}
                     //pageSizeOptions={[5, 10, 25]}
-                  /></div>}
+                  /></div>} */}
                   <BootstrapTable
                     bootstrap4
                     keyField="id"
                     data={markers}
                     columns={columns}
                     hover
-                    condensed
+                    //condensed
                     pagination={paginationFactory(options)}
                     cellEdit={cellEditFactory({
                       mode: "click",
-                      blurToSave: true
+                      blurToSave: true,
+                      afterSaveCell: (oldValue, newValue, row, column) => { oldValue != newValue && setMapView(() => <RenderMap polylines={polylines} lineColor={lineColor} lineWidth={lineWidth} latitude={latitude} longitude={longitude} markers={markers} />) }
                     })}
-                    rowClasses="rowClasses"
+                    classes="tableClassesMarkers"
+                    rowClasses="rowClassesMarkers m-2"
+                    headerClasses="headerClassesMarkers"
+                    bodyClasses="bodyClassesMarkers"
                   />
                 </TabPanel>
               </TabContext>

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from "prop-types";
 import DefaultTableView from '../../_components/DefaultTableView';
 import  { Type } from '@musicstory/react-bootstrap-table2-editor';
 import Box from '@mui/material/Box';
@@ -16,7 +17,9 @@ export const kolumny = {
 function KolumnaTitle(){return{
         dataField: "title",
         text: "Tytuł",
-        headerClasses: "header-class",
+        classes: "tdClassesMarkers p-3",
+        editCellClasses: "editorClassesMarkers m-3",
+        //headerClasses: "header-class",
         editable: true,
         editor: {
             type: Type.TEXTAREA
@@ -26,7 +29,9 @@ function KolumnaTitle(){return{
 function KolumnaDescription(){return{
         dataField: "description",
         text: "Opis",
-        headerClasses: "header-class",
+        classes: "tdClassesMarkers p-3",
+        editCellClasses: "editorClassesMarkers m-3",
+        //headerClasses: "header-class",
         editable: true,
         editor: {
             type: Type.TEXTAREA,
@@ -37,31 +42,52 @@ function KolumnaDescription(){return{
 function KolumnaPinId(options){return{
         dataField: "pinId",
         text: "Pinezka",
+        classes: "tdClassesMarkers p-3",
         //classes: "height1 pt-3 pb-3",
-        headerClasses: "header-class",
+        //headerClasses: "header-class",
         formatter: (cell) => {
             return <img src={options.find(f => f.id == cell)?.pinSrc} width={20} />
         },
-        headerStyle: { width: "110px"},
+        headerStyle: { width: "70px"},
         editable: true,
-        editorRenderer: (editorProps, value, row, column, rowIndex, columnIndex) => {
-            return (
-                <Select
-                name={"mapPins"}
-                value={value}
-                onChange={(val) => editorProps.onUpdate(val.target.value)}
-              >
-                {options.map((option) => {
-                  return <MenuItem key={option.id} value={option.id}><img src={option.pinSrc} width={20} /></MenuItem>
-                })}
-              </Select>
-            );
-        }
+        editCellClasses: "editorClassesMarkers",
+        editorRenderer: (editorProps, value, row, column, rowIndex, columnIndex) => (
+            <QualityRanger { ...editorProps } value={ value } options={options} column={column} />
+        )
         // editor: {
         //     type: Type.SELECT,
         //     options: options.map(m => { return {value: m.id, label: m.name}}) 
         //   }
     }}
+
+
+    class QualityRanger extends React.Component {
+        static propTypes = {
+          value: PropTypes.number,
+          onUpdate: PropTypes.func.isRequired
+        }
+        static defaultProps = {
+          value: 0
+        }
+
+        render() {
+          const { value, options, column, onUpdate, ...rest } = this.props;
+          return (<Select
+                {...rest}
+                //key="id"
+                //ef={ node => this.range = node }
+                //name={rowIndex}
+                value={value}
+                onChange={(val) => onUpdate(val.target.value)}
+              >
+                {options.map((option) => {
+                  return <MenuItem key={option.id} value={option.id}><img src={option.pinSrc} width={20} /></MenuItem>
+                })}
+              </Select>)
+        }
+      }
+
+
 
     export const kolumnyMui = {
         KolumnaTitleMui,
@@ -94,7 +120,7 @@ function KolumnaPinId(options){return{
     function KolumnaPinIdMui(options){
         return{
             field: "pinId",
-            width: 110,
+            width: 70,
             headerName: "Pinezka",
             editable: true,
             //classes: "height1 pt-3 pb-3",

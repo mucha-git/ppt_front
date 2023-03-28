@@ -71,11 +71,22 @@ export function parseDocument(file, mapPins) {
     } else {
       throw "error while parsing"
     }
+
+    const delta = () => {
+      let x = (lonMax - lonMin)
+      console.log(x)
+      let y = Math.round(x)
+      console.log(y)
+      return y > x? y : y - 0.5 
+    }
     //setMarkers(markers)
     //setPolylines(polylines)
-    return {latitude: latMin + (latMax - latMin) / 2, 
+    const responce = {latitude: latMin + (latMax - latMin) / 2, 
             longitude: lonMin + (lonMax - lonMin) / 2,
             markers: markers,
-            polylines: polylines
+            polylines: polylines,
+            delta: delta()
         }
+
+    return responce
   }
