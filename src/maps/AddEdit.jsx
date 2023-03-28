@@ -584,33 +584,30 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
               </Box>
             </div>
             <div className="d-flex flex-row-reverse bg-light pl-5 pr-5 pt-3 pb-3" >
-              <button
-                className="btn m-1 btn-success"
-                type="submit"
-                onClick={() => onSubmitMaps(formik.values, false)}
-                disabled={submitting ? true : false}
-              >
-                {submitting && (
-                  <span className="spinner-border spinner-border-sm"></span>
-                )}
-                  Zapisz 
-              </button>
-              {(!popup && isAddMode) && <button
-                className="btn m-1 btn-success"
-                onClick={() => onSubmitMaps(formik.values, true)}
-                disabled={submitting ? true : false}
-              >
-                {submitting && (
-                  <span className="spinner-border spinner-border-sm"></span>
-                )}
-                Zapisz i dodaj nowy
-              </button>
+              {(!popup && isAddMode) && <MuiButton 
+              className="pl-5 pr-5 pt-2 pb-2"
+              text={"Zapisz i dodaj nowy"} 
+              icon={MuiBtnType.Add} 
+              onClick={() => formik.isValid && onSubmitMaps(formik.values, true)} 
+              disabled={formik.isSubmitting} />
+              }
+              <MuiButton 
+                className="pl-5 pr-5 pt-2 pb-2"
+                text={"Zapisz"} 
+                icon={MuiBtnType.Submit} 
+                onClick={() => formik.isValid && onSubmitMaps(formik.values, false)} 
+                disabled={formik.isSubmitting} 
+              />
+              {(!popup && !isAddMode) && <MuiButton 
+              className="pl-5 pr-5 pt-2 pb-2"
+              text={"Usuń"} 
+              icon={MuiBtnType.Delete} 
+              onClick={() => mapsService._delete(row.id).then(() => history.push({ pathname: "/maps", state: { yearId: location.state.yearId }}))}
+              />
               }
               {popup ? (
                 <a onClick={close}>
-                  <button className="btn m-1 btn-danger">
-                    Anuluj
-                  </button>
+                  <MuiButton className="pl-5 pr-5 pt-2 pb-2" text={"Anuluj"} icon={MuiBtnType.Cancel} />
                 </a>
               ) : (
                 <Link to={{
@@ -619,9 +616,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                     ? yearId
                     : location.state.yearId },
               }} >
-                  <button className="btn m-1 btn-danger" type="submit">
-                    Anuluj
-                  </button>
+                <MuiButton className="pl-5 pr-5 pt-2 pb-2" text={"Anuluj"} icon={MuiBtnType.Cancel} />
                 </Link>
               )}
             </div>

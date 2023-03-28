@@ -7,6 +7,8 @@ import { useLocation, Link } from "react-router-dom";
 import { ElementType } from "../_helpers/ElementType";
 import { AppContext } from "../_helpers/context";
 import { arrayFromEnum } from "../_helpers";
+import MuiButton from "../_components/MuiButton";
+import { MuiBtnType } from "../_helpers/MuiBtnType";
 
 function AddEdit({ history, popup, close, lista, setLista, yearId }) {
   const {updateElements, views, updateViews, maps, updateMaps} = useContext(AppContext)
@@ -43,7 +45,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
         text: null,
         imgSrc: null,
         // Youtube
-        autoplay: null,
+        autoplay: false,
         playlist: null,
         // Map
         mapHeight: 0,
@@ -124,7 +126,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
     if(values.margin == 0) values.margin = null
     if(values.height == 0) values.height = null
     if(values.mapHeight == 0) values.mapHeight = null
-    values.autoplay != null ? values.autoplay = values.autoplay == "1": null;
+    //values.autoplay != null ? values.autoplay = values.autoplay == "1": null;
     //if(destinationViewId != -1 ) values.destinationViewId = destinationViewId
     //if(mapId != -1 ) values.mapId = mapId
     values.order=isAddMode? null : row.order
@@ -183,14 +185,14 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
     }
   }
 
+  const getYoutubeSrc = (playlist) => {
+    return playlist.length> 20?
+    "https://www.youtube.com/embed/videoseries?list=" + playlist 
+    : "https://www.youtube.com/embed/" + playlist
+  }
+
   return (
-    <div className="form-style">
-      <h2>
-        {isAddMode
-          ? "Nowy element"
-          : "Edycja elementu"}
-      </h2>
-      <br></br>
+    <div className="box-shadow-main bg-white">
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -198,157 +200,211 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
       >
         {(formik) => (
           <Form>
-            <FormikControl
-              control="muiSelect"
-              label={"Typ"}
-              name="type"
-              options={arrayFromEnum(ElementType)}
-              className="form-item-width"
-              wymagane={true}
-            />
-            {(formik.values.type === "Divider") &&
-            <>
-            <FormikControl
-              control="color"
-              //type="text"
-              label={"Kolor"}
-              name="color"
-              className="form-item-width"
-            />
-            <FormikControl
-              control="inputNumber"
-              label={"Margines"}
-              name="margin"
-              className="form-item-width"
-            />
-            <FormikControl
-              control="inputNumber"
-              label={"Wysokość"}
-              name="height"
-              className="form-item-width"
-            />
-            </>
-            }
-            {(formik.values.type === "Text" || formik.values.type === "GraphicWithText") &&
-            <FormikControl
-              control="html"
-              //type="text"
-              label={"Tekst"}
-              name="text"
-              className="form-item-width"
-            />}
-            {(formik.values.type === "Graphic" || formik.values.type === "GraphicWithText") &&
-            <><FormikControl
-              control="input"
-              type="text"
-              label={"Link do grafiki"}
-              name="imgSrc"
-              className="form-item-width"
-            />
-            {(formik.values.imgSrc != null && formik.values.imgSrc != "")? <img className="pt-2" src={formik.values.imgSrc} width={'100%'} height={'100%'} />: "Brak grafiki do wyświetlenia"}
-            <div className="clear" />
-            </>}
-            {(formik.values.type === "YoutubePlayer") &&
-            <><FormikControl
-              control="radio"
-              label={"Autoodtwazanie"}
-              name="autoplay"
-              className="form-item-width"
-              options={[
-                      { key: "Tak", value: "1" },
-                      { key: "nie", value: "0" },
-                    ]}
-            />
-            <FormikControl
-              control="input"
-              type="text"
-              label={"id plejlisty lub wideo z YT"}
-              name="playlist"
-              className="form-item-width"
-            /></>}
-            {(formik.values.type === "Map") &&
-            <>
-            <FormikControl
-              control="inputNumber"
-              label={"wysokość mapy"}
-              name="mapHeight"
-              className="form-item-width"
-            />
-            <FormikControl
-              control="muiSelect"
-              label={"Mapa"}
-              name="mapId"
-              options={mapsList}
-              className="form-item-width"
-            />
-            {/*<FormikControl
-              control="typeSelect"
-              label={"Mapa"}
-              name="mapId"
-              options={mapsList}
-              className="form-item-width"
-              setValue={(val) => setMapId(val)}
-              value={mapId}
-              setLista={() => updateMaps(yearId)}
-              yearId={popup? yearId: isAddMode? location.state.yearId: row.yearId}
-                  />*/}
-            </>}
-            {(formik.values.type === "Navigation") && 
-            <>
-            <FormikControl
-              control="muiSelect"
-              label={"Widok"}
-              name="destinationViewId"
-              options={views.map(o => {
-                return {key: o.title, value: o.id}
-              })}
-              className="form-item-width"
-              //setValue={(val) => setDestinationViewId(val)}
-              //value={destinationViewId}
-              //setLista={() => updateViews(yearId)}
-              //yearId={popup? yearId: isAddMode? location.state.yearId: row.yearId}
-            />
-            </>}
-            <button
-              className="btn m-1 btn-success"
-              type="submit"
-              onClick={() => formik.isValid && onSubmitElements(formik.values, false)}
-              disabled={submitting ? true : false}
-            >
-              {submitting && (
-                <span className="spinner-border spinner-border-sm"></span>
+            <div className="pl-5 pr-5 pt-5 pb-3">
+              <div className="d-flex flex-row">
+                <div>{popup ? (
+                  <a onClick={close}>
+                    <h2><MuiButton className="pl-2 pr-2" icon={MuiBtnType.ArrowBack} /></h2>
+                  </a>
+                  ) : (
+                  <Link to={{
+                    pathname: "/views",
+                    state: {yearId: popup
+                      ? yearId
+                      : location.state.yearId },
+                    }} >
+                    <h2><MuiButton className="pl-2 pr-2" icon={MuiBtnType.ArrowBack} /></h2>
+                  </Link>
+                  )}
+                </div>
+                <div>
+                  <h2>
+                    {isAddMode
+                      ? "Nowy element"
+                      : "Edycja elementu"}
+                  </h2>
+                </div>
+              </div>
+              <FormikControl
+                control="muiSelect"
+                label={"Typ"}
+                name="type"
+                options={arrayFromEnum(ElementType)}
+                className="form-item-width"
+                wymagane={true}
+                fullWidth
+                margin="normal"
+              />
+              {formik.values.type != null && <div className="pt-3"><h5>Szczegóły elementu</h5></div>}
+              {(formik.values.type === "Divider") &&
+              <>
+                <div className="d-flex justify-content-between">
+                  <div className="w-33">
+                    <FormikControl
+                      control="inputNumber"
+                      label={"Wysokość"}
+                      name="height"
+                      className="form-item-width"
+                      fullWidth
+                      margin="normal"
+                    />
+                  </div>
+                  <div className="w-33">
+                    <FormikControl
+                      control="inputNumber"
+                      label={"Margines"}
+                      name="margin"
+                      className="form-item-width"
+                      fullWidth
+                      margin="normal"
+                    />
+                  </div>
+                  <div className="w-33">
+                    <FormikControl
+                      control="color"
+                      //type="text"
+                      label={"Kolor"}
+                      name="color"
+                      className="form-item-width"
+                      fullWidth
+                      margin="normal"
+                    />
+                  </div>
+                </div>
+                <div className="w-100 mt-3 mb-3">
+                  <div style={{backgroundColor: formik.values.color, margin: formik.values.margin + "px", height: formik.values.height + "px", width: '100%'}} ></div>
+                </div>
+              </>
+              }
+              {(formik.values.type === "Text" || formik.values.type === "GraphicWithText") &&
+              <FormikControl
+                control="html"
+                //type="text"
+                label={"Tekst"}
+                name="text"
+                className="form-item-width"
+                fullWidth
+                margin="normal"
+              />}
+              {(formik.values.type === "Graphic" || formik.values.type === "GraphicWithText") &&
+              <><FormikControl
+                control="input"
+                type="text"
+                label={"Link do grafiki"}
+                name="imgSrc"
+                className="form-item-width"
+                fullWidth
+                margin="normal"
+              />
+              {(formik.values.imgSrc != null && formik.values.imgSrc != "")? <img className="pt-2" src={formik.values.imgSrc} width={'100%'} height={'100%'} />: "Brak grafiki do wyświetlenia"}
+              <div className="clear" />
+              </>}
+              {(formik.values.type === "YoutubePlayer") &&
+              <>
+                <FormikControl
+                  control="input"
+                  type="text"
+                  label={"id plejlisty lub wideo z YT"}
+                  name="playlist"
+                  className="form-item-width"
+                  fullWidth
+                  margin="normal"
+                />
+                {formik.values.playlist && <div className="d-flex justify-content-center m-3">
+                  <div className="box-shadow p-2 rounded">
+                    <iframe 
+                      width="280" 
+                      className="rounded" 
+                      src={getYoutubeSrc(formik.values.playlist)} 
+                      title="YouTube video player" 
+                      frameborder="0" 
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                      allowfullscreen />
+                  </div>
+                </div>}
+                <div className="d-flex justify-content-center m-3">
+                  <FormikControl
+                  control="switch"
+                  label={"Autoodtwazanie"}
+                  name="autoplay"
+                  fullWidth
+                  margin="normal"
+                />
+                </div>
+                
+              </>}
+              {(formik.values.type === "Map") &&
+              <>
+                <FormikControl
+                  control="muiSelect"
+                  label={"Mapa"}
+                  name="mapId"
+                  options={mapsList}
+                  className="form-item-width"
+                  fullWidth
+                  margin="normal"
+                />
+                <FormikControl
+                  control="inputNumber"
+                  label={"wysokość mapy"}
+                  name="mapHeight"
+                  className="form-item-width"
+                  fullWidth
+                  margin="normal"
+                />
+              </>}
+              {(formik.values.type === "Navigation") && 
+              <>
+              <FormikControl
+                control="muiSelect"
+                label={"Widok"}
+                name="destinationViewId"
+                options={views.map(o => {
+                  return {key: o.title, value: o.id}
+                })}
+                className="form-item-width"
+                fullWidth
+                margin="normal"
+              />
+              </>}
+            </div>
+            <div className="d-flex flex-row-reverse bg-light pl-5 pr-5 pt-3 pb-3" >
+              {(!popup && isAddMode) && <MuiButton 
+                className="pl-5 pr-5 pt-2 pb-2"
+                text={"Zapisz i dodaj nowy"} 
+                icon={MuiBtnType.Add} 
+                onClick={() => formik.isValid && onSubmitElements(formik.values, true)} 
+                disabled={formik.isSubmitting} />
+              }
+              <MuiButton 
+                className="pl-5 pr-5 pt-2 pb-2"
+                text={"Zapisz"} 
+                icon={MuiBtnType.Submit} 
+                onClick={() => formik.isValid && onSubmitElements(formik.values, false)} 
+                disabled={formik.isSubmitting}
+              />
+              {(!popup && !isAddMode) && <MuiButton 
+                className="pl-5 pr-5 pt-2 pb-2"
+                text={"Usuń"} 
+                icon={MuiBtnType.Delete} 
+                onClick={() => elementsService._delete(row.id).then(() => history.push({ pathname: "/views", state: { yearId: location.state.yearId }}))}
+                />
+              }
+              {popup ? (
+                <a onClick={close}>
+                  <MuiButton className="pl-5 pr-5 pt-2 pb-2" text={"Anuluj"} icon={MuiBtnType.Cancel} />
+                </a>
+              ) : (
+                <Link to={{
+                  pathname: "/views",
+                  state: {yearId: popup
+                    ? yearId
+                    : location.state.yearId },
+              }} >
+                <MuiButton className="pl-5 pr-5 pt-2 pb-2" text={"Anuluj"} icon={MuiBtnType.Cancel} />
+                </Link>
               )}
-              Zapisz
-            </button>
-            {(!popup && isAddMode) && <button
-              className="btn m-1 btn-success"
-              onClick={() => formik.isValid && onSubmitElements(formik.values, true)}
-              disabled={submitting ? true : false}
-            >
-              {submitting && (
-                <span className="spinner-border spinner-border-sm"></span>
-              )}
-              Zapisz i dodaj nowy
-            </button>
-            }
-            {popup ? (
-              <a onClick={close}>
-                <button className="btn m-1 btn-danger">
-                  Anuluj
-                </button>
-              </a>
-            ) : (
-              <Link to={{
-                pathname: "/views",
-                state: {yearId: popup
-                  ? yearId
-                  : location.state.yearId },
-            }} >
-                <button className="btn m-1 btn-danger" type="submit">
-                  Anuluj
-                </button>
-              </Link>
-            )}
+            </div>
           </Form>
         )}
       </Formik>

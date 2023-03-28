@@ -5,6 +5,8 @@ import FormikControl from "@/_components/Formik/FormikControl";
 import { alertService, mapPinsService } from "@/_services";
 import { useLocation, Link } from "react-router-dom";
 import { AppContext } from "../_helpers/context";
+import MuiButton from "../_components/MuiButton";
+import { MuiBtnType } from "../_helpers/MuiBtnType";
 
 function AddEdit({ history, popup, close, lista, setLista, yearId }) {
   const {updateMapPins, set} = useContext(AppContext)
@@ -90,13 +92,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
   }
 
   return (
-    <div className="form-style">
-      <h2>
-        {isAddMode
-          ? "Nowa pinezka"
-          : "Edycja pinezki"}
-      </h2>
-      <br></br>
+    <div className="box-shadow-main bg-white">
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -104,59 +100,90 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
       >
         {(formik) => (
           <Form>
-            <FormikControl
-              control="input"
-              type="text"
-              label={"Nazwa"}
-              name="name"
-              className="form-item-width"
-            />
-            <FormikControl
-              control="input"
-              type="text"
-              label={"Źródło grafiki"}
-              name="pinSrc"
-              className="form-item-width"
-            />
-            <FormikControl
-              control="inputNumber"
-              label={"Wysokość"}
-              name="height"
-              className="form-item-width"
-            />
-            <FormikControl
-              control="inputNumber"
-              label={"Szerokość"}
-              name="width"
-              className="form-item-width"
-            />
-            <button
-              className="btn m-1 btn-success"
-              type="submit"
-              onClick={() => formik.isValid && onSubmitMapPins(formik.values, false)}
-              disabled={submitting ? true : false}
-            >
-              {submitting && (
-                <span className="spinner-border spinner-border-sm"></span>
-              )}
-              Zapisz 
-            </button>
-            {(!popup && isAddMode) && <button
-              className="btn m-1 btn-success"
-              onClick={() => formik.isValid && onSubmitMapPins(formik.values, true)}
-              disabled={submitting ? true : false}
-            >
-              {submitting && (
-                <span className="spinner-border spinner-border-sm"></span>
-              )}
-              Zapisz i dodaj nowy
-            </button>
+            <div className="pl-5 pr-5 pt-5 pb-3">
+              <div className="d-flex flex-row">
+                <div>{popup ? (
+                  <a onClick={close}>
+                    <h2><MuiButton className="pl-2 pr-2" icon={MuiBtnType.ArrowBack} /></h2>
+                  </a>
+                  ) : (
+                  <Link to={{
+                    pathname: "/mapPins",
+                    state: {yearId: popup
+                      ? yearId
+                      : location.state.yearId },
+                    }} >
+                    <h2><MuiButton className="pl-2 pr-2" icon={MuiBtnType.ArrowBack} /></h2>
+                  </Link>
+                  )}
+                </div>
+                <div>
+                  <h2>
+                    {isAddMode
+                      ? "Nowa pinezka"
+                      : "Edycja pinezki"}
+                  </h2>
+                </div>
+              </div>
+              <FormikControl
+                control="input"
+                type="text"
+                label={"Nazwa"}
+                name="name"
+                className="form-item-width"
+                fullWidth
+                margin="normal"
+              />
+              <FormikControl
+                control="input"
+                type="text"
+                label={"Źródło grafiki"}
+                name="pinSrc"
+                className="form-item-width"
+                fullWidth
+                margin="normal"
+              />
+              <FormikControl
+                control="inputNumber"
+                label={"Wysokość"}
+                name="height"
+                className="form-item-width"
+                fullWidth
+                margin="normal"
+              />
+              <FormikControl
+                control="inputNumber"
+                label={"Szerokość"}
+                name="width"
+                className="form-item-width"
+                fullWidth
+                margin="normal"
+              />
+            </div>
+            <div className="d-flex flex-row-reverse bg-light pl-5 pr-5 pt-3 pb-3" >
+            {(!popup && isAddMode) && <MuiButton 
+            className="pl-5 pr-5 pt-2 pb-2"
+            text={"Zapisz i dodaj nowy"} 
+            icon={MuiBtnType.Add} 
+            onClick={() => formik.isValid && onSubmitMapPins(formik.values, true)} 
+            disabled={formik.isSubmitting} />
+            }
+            <MuiButton 
+              className="pl-5 pr-5 pt-2 pb-2"
+              text={"Zapisz"} 
+              icon={MuiBtnType.Submit} 
+              onClick={() => formik.isValid && onSubmitMapPins(formik.values, false)} 
+              disabled={formik.isSubmitting} />
+            {(!popup && !isAddMode) && <MuiButton 
+            className="pl-5 pr-5 pt-2 pb-2"
+            text={"Usuń"} 
+            icon={MuiBtnType.Delete} 
+            onClick={() => mapPinsService._delete(row.id).then(() => history.push({ pathname: "/mapPins", state: { yearId: location.state.yearId }}))}
+             />
             }
             {popup ? (
               <a onClick={close}>
-                <button className="btn m-1 btn-danger">
-                  Anuluj
-                </button>
+                <MuiButton className="pl-5 pr-5 pt-2 pb-2" text={"Anuluj"} icon={MuiBtnType.Cancel} />
               </a>
             ) : (
               <Link to={{
@@ -165,11 +192,10 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                   ? yearId
                   : location.state.yearId },
             }} >
-                <button className="btn m-1 btn-danger" type="submit">
-                  Anuluj
-                </button>
+              <MuiButton className="pl-5 pr-5 pt-2 pb-2" text={"Anuluj"} icon={MuiBtnType.Cancel} />
               </Link>
             )}
+            </div>
           </Form>
         )}
       </Formik>

@@ -10,6 +10,7 @@ import TypeAndSelect from "./TypeAndSelect";
 import ColorPicker from "./ColorPicker"
 import HtmlEditor from "./HtmlEditor";
 import MuiSelect from "./MuiSelect";
+import SwitchMui from "./Switch";
 
 function FormikControl(props) {
   const { control, ...rest } = props;
@@ -22,6 +23,8 @@ function FormikControl(props) {
       return <TextArea {...rest} />;
     case "select":
       return <Select {...rest} />;
+    case "switch":
+      return <SwitchMui {...rest} />;
     case "muiSelect":
       return <MuiSelect {...rest} />
     case "typeSelect":

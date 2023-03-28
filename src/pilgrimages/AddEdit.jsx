@@ -6,6 +6,8 @@ import { alertService } from "@/_services";
 import { useLocation, Link } from "react-router-dom";
 import { AppContext } from "../_helpers/context";
 import { pilgrimagesService } from "../_services";
+import MuiButton from "../_components/MuiButton";
+import { MuiBtnType } from "../_helpers/MuiBtnType";
 
 function AddEdit({ history }) {
   const {updatePilgrimages} = useContext(AppContext)
@@ -77,74 +79,99 @@ function AddEdit({ history }) {
   }
 
   return (
-    <div className="form-style">
-      <h2>
-        {isAddMode
-          ? "Nowa pielgrzymka"
-          : "Edycja pielgrzymki"}
-      </h2>
-      <br></br>
+    <div className="box-shadow-main bg-white">
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
-        onSubmit={onSubmitPilgrimage}
+        onSubmit={() => {}}
       >
         {(formik) => (
           <Form>
-            <FormikControl
-              control="input"
-              type="text"
-              label={"Nazwa"}
-              name="name"
-              className="form-item-width"
-              wymagane={true}
+            <div className="pl-5 pr-5 pt-5 pb-3">
+              <div className="d-flex flex-row">
+                <div>
+                  <Link to={{
+                    pathname: "/pilgrimages"
+                    }} >
+                    <h2><MuiButton className="pl-2 pr-2" icon={MuiBtnType.ArrowBack} /></h2>
+                  </Link>
+                </div>
+                <div>
+                  <h2>
+                    {isAddMode
+                      ? "Nowa pielgrzymka"
+                      : "Edycja pielgrzymki"}
+                  </h2>
+                </div>
+              </div>
+              <FormikControl
+                control="input"
+                type="text"
+                label={"Nazwa"}
+                name="name"
+                className="form-item-width"
+                wymagane={true}
+                fullWidth
+                margin="normal"
+              />
+              <FormikControl
+                control="input"
+                type="text"
+                label={"Aktywna"}
+                name="isActive"
+                className="form-item-width"
+                wymagane={true}
+                fullWidth
+                margin="normal"
+              />
+              <FormikControl
+                control="input"
+                type="text"
+                label={"Logo Src"}
+                name="logoSrc"
+                className="form-item-width"
+                fullWidth
+                margin="normal"
+              />
+              <FormikControl
+                control="input"
+                type="text"
+                label={"Id aplikacji OneSignal"}
+                name="oneSignal"
+                className="form-item-width"
+                fullWidth
+                margin="normal"
+              />
+              <FormikControl
+                control="input"
+                type="text"
+                label={"Id Api OneSignal"}
+                name="oneSignalApiKey"
+                className="form-item-width"
+                fullWidth
+                margin="normal"
+              />
+            </div>
+            <div className="d-flex flex-row-reverse bg-light pl-5 pr-5 pt-3 pb-3" >
+            <MuiButton 
+              className="pl-5 pr-5 pt-2 pb-2"
+              text={"Zapisz"} 
+              icon={MuiBtnType.Submit} 
+              onClick={() => formik.isValid && onSubmitPilgrimage(formik.values)} 
+              disabled={formik.isSubmitting} />
+            {(!isAddMode) && <MuiButton 
+              className="pl-5 pr-5 pt-2 pb-2"
+              text={"Usuń"} 
+              icon={MuiBtnType.Delete} 
+              onClick={() => pilgrimagesService._delete(row.id).then(() => history.push({ pathname: "/pilgrimages"}))}
             />
-            <FormikControl
-              control="input"
-              type="text"
-              label={"Aktywna"}
-              name="isActive"
-              className="form-item-width"
-              wymagane={true}
-            />
-            <FormikControl
-              control="input"
-              type="text"
-              label={"Logo Src"}
-              name="logoSrc"
-              className="form-item-width"
-            />
-            <FormikControl
-              control="input"
-              type="text"
-              label={"Id aplikacji OneSignal"}
-              name="oneSignal"
-              className="form-item-width"
-            />
-            <FormikControl
-              control="input"
-              type="text"
-              label={"Id Api OneSignal"}
-              name="oneSignalApiKey"
-              className="form-item-width"
-            />
-            <button
-              className="btn m-1 btn-success"
-              type="submit"
-              disabled={submitting ? true : false}
-            >
-              {submitting && (
-                <span className="spinner-border spinner-border-sm"></span>
-              )}
-              Zapisz 
-            </button>
-            
-              <Link to={"/pilgrimages"} >
-                <button className="btn m-1 btn-danger" type="submit">
-                  Anuluj
-                </button>
-              </Link>
-            
+            }
+            <Link to={{
+              pathname: "/pilgrimages"
+              }} >
+              <MuiButton className="pl-5 pr-5 pt-2 pb-2" text={"Anuluj"} icon={MuiBtnType.Cancel} />
+            </Link>
+            </div>
           </Form>
         )}
       </Formik>

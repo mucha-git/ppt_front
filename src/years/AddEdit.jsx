@@ -6,6 +6,8 @@ import { alertService } from "@/_services";
 import { useLocation, Link } from "react-router-dom";
 import { AppContext } from "../_helpers/context";
 import { yearsService } from "../_services";
+import MuiButton from "../_components/MuiButton";
+import { MuiBtnType } from "../_helpers/MuiBtnType";
 
 function AddEdit({ history }) {
   const {updateYears, years} = useContext(AppContext)
@@ -83,68 +85,91 @@ function AddEdit({ history }) {
   }
 
   return (
-    <div className="form-style">
-      <h2>
-        {isAddMode
-          ? "Nowy rocznik"
-          : "Edycja rocznika"}
-      </h2>
-      <br></br>
+    <div className="box-shadow-main bg-white">
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
-        onSubmit={onSubmitYear}
+        onSubmit={() => {}}
       >
         {(formik) => (
           <Form>
-            {isAddMode && <FormikControl
-              control="year"
-              label={"Rocznik"}
-              name="year"
-              className="form-item-width"
-              wymagane={true}
-              excluded={excludedYears}
-            />}
-            <FormikControl
-              control="input"
-              type="text"
-              label={"Hasło rocznika"}
-              name="yearTopic"
-              className="form-item-width"
-              wymagane={true}
-            />
-            <FormikControl
-              control="input"
-              type="text"
-              label={"Aktywny"}
-              name="isActive"
-              className="form-item-width"
-              wymagane={true}
-            />
-            <FormikControl
-              control="input"
-              type="text"
-              label={"Link do grafiki"}
-              name="imgSrc"
-              className="form-item-width"
-            />
-            <button
-              className="btn m-1 btn-success"
-              type="submit"
-              disabled={submitting ? true : false}
-            >
-              {submitting && (
-                <span className="spinner-border spinner-border-sm"></span>
-              )}
-              Zapisz 
-            </button>
-            
-              <Link to={"/years"} >
-                <button className="btn m-1 btn-danger" type="submit">
-                  Anuluj
-                </button>
+            <div className="pl-5 pr-5 pt-5 pb-3">
+              <div className="d-flex flex-row">
+                <div>
+                  <Link to={{
+                    pathname: "/years"
+                    }} >
+                    <h2><MuiButton className="pl-2 pr-2" icon={MuiBtnType.ArrowBack} /></h2>
+                  </Link>
+                </div>
+                <div>
+                  <h2>
+                    {isAddMode
+                      ? "Nowy rocznik"
+                      : "Edycja rocznika"}
+                  </h2>
+                </div>
+              </div>
+              {isAddMode && <FormikControl
+                control="year"
+                label={"Rocznik"}
+                name="year"
+                className="form-item-width"
+                wymagane={true}
+                excluded={excludedYears}
+                fullWidth
+                margin="normal"
+              />}
+              <FormikControl
+                control="input"
+                type="text"
+                label={"Hasło rocznika"}
+                name="yearTopic"
+                className="form-item-width"
+                wymagane={true}
+                fullWidth
+                margin="normal"
+              />
+              <FormikControl
+                control="input"
+                type="text"
+                label={"Aktywny"}
+                name="isActive"
+                className="form-item-width"
+                wymagane={true}
+                fullWidth
+                margin="normal"
+              />
+              <FormikControl
+                control="input"
+                type="text"
+                label={"Link do grafiki"}
+                name="imgSrc"
+                className="form-item-width"
+                fullWidth
+                margin="normal"
+              />
+            </div>
+            <div className="d-flex flex-row-reverse bg-light pl-5 pr-5 pt-3 pb-3" >
+            <MuiButton 
+              className="pl-5 pr-5 pt-2 pb-2"
+              text={"Zapisz"} 
+              icon={MuiBtnType.Submit} 
+              onClick={() => formik.isValid && onSubmitYear(formik.values)} 
+              disabled={formik.isSubmitting} />
+            {(!isAddMode) && <MuiButton 
+              className="pl-5 pr-5 pt-2 pb-2"
+              text={"Usuń"} 
+              icon={MuiBtnType.Delete} 
+              onClick={() => yearsService._delete(row.id).then(() => history.push({ pathname: "/years"}))}
+              />
+            }
+              <Link to={{
+                pathname: "/years"
+            }} >
+              <MuiButton className="pl-5 pr-5 pt-2 pb-2" text={"Anuluj"} icon={MuiBtnType.Cancel} />
               </Link>
-            
+            </div>
           </Form>
         )}
       </Formik>
