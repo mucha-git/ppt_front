@@ -30,10 +30,6 @@ function YearPicker(props) {
           const { value } = field;
           return <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DatePicker defaultValue={dayjs(value) } label={label} views={['year']} 
-                  //onChange={(val) => {
-                  //    console.log(val)
-                  //    setFieldValue(name, val.$y.toString())
-                  //  }}
                     minDate={dayjs(new Date().getFullYear().toString())}
                     shouldDisableYear={(year) => excluded.find(y => y == year.year()) }
                   />

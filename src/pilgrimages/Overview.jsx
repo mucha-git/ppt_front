@@ -32,7 +32,7 @@ function Overview({ match }) {
                                 send_after: moment(new Date()).add(3 , 'm').format() })} />
           </div>
         }
-        {user.role != Role.Admin &&<div><MuiButton icon={MuiBtnType.Send} text={"pobierz powiadomienia"} className={"p-2 pr-4 pl-4"} onClick={() => oneSignalService.getNotifications().then( ret => console.log(ret))} /></div>}
+        {user.role != Role.Admin &&<div><MuiButton icon={MuiBtnType.Send} text={"pobierz powiadomienia"} className={"p-2 pr-4 pl-4"} onClick={() => oneSignalService.getNotifications()} /></div>}
         {user.role == Role.Admin && <div className="d-flex justify-content-end">
           <div>
             <NavLink to={{pathname: `${path}/dodaj`}} className="nav-item center-divs">
