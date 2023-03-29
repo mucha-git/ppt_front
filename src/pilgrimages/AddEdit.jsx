@@ -166,13 +166,14 @@ function AddEdit({ history }) {
               className="pl-5 pr-5 pt-2 pb-2"
               text={"Usuń"} 
               icon={MuiBtnType.DeleteWithoutIcon} 
+              disabled={formik.isSubmitting}
               onClick={() => pilgrimagesService._delete(row.id).then(() => history.push({ pathname: "/pilgrimages"}))}
             />
             }
             <Link to={{
               pathname: "/pilgrimages"
               }} >
-              <MuiButton className="pl-5 pr-5 pt-2 pb-2" text={"Anuluj"} icon={MuiBtnType.Cancel} />
+              <MuiButton disabled={formik.isSubmitting} className="pl-5 pr-5 pt-2 pb-2" text={"Anuluj"} icon={MuiBtnType.Cancel} />
             </Link>
             </div>
           </Form>

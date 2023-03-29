@@ -282,13 +282,13 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
             className="pl-5 pr-5 pt-2 pb-2"
             text={"Usuń"} 
             icon={MuiBtnType.DeleteWithoutIcon} 
+            disabled={formik.isSubmitting}
             onClick={() => viewsService._delete(row.id).then(() => history.push({ pathname: "/views", state: { yearId: location.state.yearId }}))}
              />
             }
             {popup ? (
-              <a onClick={close}>
-                <MuiButton className="pl-5 pr-5 pt-2 pb-2" text={"Anuluj"} icon={MuiBtnType.Cancel} />
-              </a>
+                <MuiButton disabled={formik.isSubmitting} onClick={() => close()} className="pl-5 pr-5 pt-2 pb-2" text={"Anuluj"} icon={MuiBtnType.Cancel} />
+            
             ) : (
               <Link to={{
                 pathname: "/views",
@@ -296,7 +296,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                   ? yearId
                   : location.state.yearId },
             }} >
-              <MuiButton className="pl-5 pr-5 pt-2 pb-2" text={"Anuluj"} icon={MuiBtnType.Cancel} />
+              <MuiButton disabled={formik.isSubmitting} className="pl-5 pr-5 pt-2 pb-2" text={"Anuluj"} icon={MuiBtnType.Cancel} />
               </Link>
             )}
             </div>

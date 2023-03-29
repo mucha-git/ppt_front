@@ -115,7 +115,7 @@ function AddEdit({ history }) {
               <Link to={{
                 pathname: "/notifications"
               }} >
-                <MuiButton className="pl-5 pr-5 pt-2 pb-2" text={"Anuluj"} icon={MuiBtnType.Cancel} />
+                <MuiButton disabled={formik.isSubmitting} className="pl-5 pr-5 pt-2 pb-2" text={"Anuluj"} icon={MuiBtnType.Cancel} />
               </Link>
             </div>
           </Form>
