@@ -31,7 +31,7 @@ function NotificationsTable({ path }) {
   return (
     <>
       <div className="d-flex justify-content-end">
-        <div>
+        {/* <div>
           <MuiButton 
             icon={MuiBtnType.Upload} 
             text={"Wyślij powiadomienie"} 
@@ -47,7 +47,7 @@ function NotificationsTable({ path }) {
                         delayed_option: 'send_after' })
                 .then(() => oneSignalService.getNotifications().then(setNotifications))} 
           />
-        </div>
+        </div> */}
         <div>
           <MuiButton 
             icon={MuiBtnType.Download} 
