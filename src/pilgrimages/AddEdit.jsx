@@ -160,12 +160,12 @@ function AddEdit({ history }) {
               className="pl-5 pr-5 pt-2 pb-2"
               text={"Zapisz"} 
               icon={MuiBtnType.Submit} 
-              onClick={() => formik.isValid && onSubmitPilgrimage(formik.values)} 
-              disabled={formik.isSubmitting} />
+              onClick={() => onSubmitPilgrimage(formik.values)} 
+              disabled={formik.isSubmitting || !formik.isValid} />
             {(!isAddMode) && <MuiButton 
               className="pl-5 pr-5 pt-2 pb-2"
               text={"Usuń"} 
-              icon={MuiBtnType.Delete} 
+              icon={MuiBtnType.DeleteWithoutIcon} 
               onClick={() => pilgrimagesService._delete(row.id).then(() => history.push({ pathname: "/pilgrimages"}))}
             />
             }

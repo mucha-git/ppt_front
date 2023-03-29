@@ -584,21 +584,21 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
               {(!popup && isAddMode) && <MuiButton 
               className="pl-5 pr-5 pt-2 pb-2"
               text={"Zapisz i dodaj nowy"} 
-              icon={MuiBtnType.Add} 
-              onClick={() => formik.isValid && onSubmitMaps(formik.values, true)} 
-              disabled={formik.isSubmitting} />
+              icon={MuiBtnType.SubmitAndNew} 
+              onClick={() => onSubmitMaps(formik.values, true)} 
+              disabled={formik.isSubmitting || !formik.isValid} />
               }
               <MuiButton 
                 className="pl-5 pr-5 pt-2 pb-2"
                 text={"Zapisz"} 
                 icon={MuiBtnType.Submit} 
-                onClick={() => formik.isValid && onSubmitMaps(formik.values, false)} 
-                disabled={formik.isSubmitting} 
+                onClick={() => onSubmitMaps(formik.values, false)} 
+                disabled={formik.isSubmitting || !formik.isValid} 
               />
               {(!popup && !isAddMode) && <MuiButton 
               className="pl-5 pr-5 pt-2 pb-2"
               text={"Usuń"} 
-              icon={MuiBtnType.Delete} 
+              icon={MuiBtnType.DeleteWithoutIcon} 
               onClick={() => mapsService._delete(row.id).then(() => history.push({ pathname: "/maps", state: { yearId: location.state.yearId }}))}
               />
               }

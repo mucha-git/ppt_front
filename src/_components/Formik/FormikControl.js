@@ -11,6 +11,7 @@ import ColorPicker from "./ColorPicker"
 import HtmlEditor from "./HtmlEditor";
 import MuiSelect from "./MuiSelect";
 import SwitchMui from "./Switch";
+import MuiDateTime from "./MuiDateTime";
 
 function FormikControl(props) {
   const { control, ...rest } = props;
@@ -33,6 +34,8 @@ function FormikControl(props) {
       return <RadioButtons {...rest} />;
     case "date":
       return <DatePicker {...rest} />;
+    case "dateTime":
+      return <MuiDateTime {...rest} />;
     case "year":
       return <YearPicker {...rest} />;
     case "color":

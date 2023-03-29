@@ -77,19 +77,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
   const validationSchema = Yup.object().shape({
     title: Yup.string()
       .required("Wymagany"),
-    headerText: Yup.string().min(1)
-      .when('contentType', {
-        is: 'List',
-        then: fieldSchema => fieldSchema.required('Wymagane'),
-      })
-      .when('contentType', {
-        is: 'Elements',
-        then: fieldSchema => fieldSchema.required('Wymagane'),
-      })
-      .when('contentType', {
-        is: 'ExternalLink',
-        then: fieldSchema => fieldSchema.nullable(),
-      }),
+    headerText: Yup.string().nullable(),
     btnType: Yup.string().required("Wymagany"),
     contentType: Yup.string().required("Wymagany"),
     imgSrc: Yup.string()
@@ -117,6 +105,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
   });
 
   const onSubmitViews = (values, openNew) => {
+    if(values.headerText == null) values.headerText = values.title
     const screenType = getScreenType(values)
     values.type = screenType!=null? values.btnType: values.btnType + "ExternalLink",
     values.screenType=screenType,
@@ -279,20 +268,20 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
             {(!popup && isAddMode) && <MuiButton 
             className="pl-5 pr-5 pt-2 pb-2"
             text={"Zapisz i dodaj nowy"} 
-            icon={MuiBtnType.Add} 
-            onClick={() => formik.isValid && onSubmitViews(formik.values, true)} 
-            disabled={formik.isSubmitting} />
+            icon={MuiBtnType.SubmitAndNew} 
+            onClick={() => onSubmitViews(formik.values, true)} 
+            disabled={formik.isSubmitting || !formik.isValid} />
             }
             <MuiButton 
               className="pl-5 pr-5 pt-2 pb-2"
               text={"Zapisz"} 
               icon={MuiBtnType.Submit} 
-              onClick={() => formik.isValid && onSubmitViews(formik.values, false)} 
-              disabled={formik.isSubmitting} />
+              onClick={() => onSubmitViews(formik.values, false)} 
+              disabled={formik.isSubmitting || !formik.isValid} />
             {(!popup && !isAddMode) && <MuiButton 
             className="pl-5 pr-5 pt-2 pb-2"
             text={"Usuń"} 
-            icon={MuiBtnType.Delete} 
+            icon={MuiBtnType.DeleteWithoutIcon} 
             onClick={() => viewsService._delete(row.id).then(() => history.push({ pathname: "/views", state: { yearId: location.state.yearId }}))}
              />
             }

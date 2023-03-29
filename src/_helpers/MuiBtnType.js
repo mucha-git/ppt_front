@@ -24,5 +24,7 @@ export const MuiBtnType = {
     Upload: {icon: faCloudArrowUp, color: BtnColors.blue},
     Cancel: {icon: null, color: BtnColors.transparent},
     Submit: {icon: null, color: BtnColors.blue},
+    SubmitAndNew: {icon: null, color: BtnColors.green},
+    DeleteWithoutIcon: {icon: null, color: BtnColors.red},
     ArrowBack: {icon: faArrowLeftLong, color: BtnColors.transparent}
 }

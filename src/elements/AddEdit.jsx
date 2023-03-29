@@ -191,6 +191,24 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
     : "https://www.youtube.com/embed/" + playlist
   }
 
+  const setYoutubePlaylistValue = (val, setFieldValue) => {
+    function getId(val) {
+      let parts = val.split('list=')
+      if(parts.length > 1) return parts[1]
+      parts = parts[0].split("v=")
+      if(parts.length > 1) return parts[1]
+      parts = parts[0].split("?")[0]
+      parts = parts.split("/")
+      if(parts[parts.length -1].includes(".")) return null
+      return(parts[parts.length -1])
+    }
+    setFieldValue("playlist", getId(val.target.value))
+    //https://www.youtube.com/watch?v=KplqwuQfBNg
+    //https://youtu.be/KplqwuQfBNg
+    //https://www.youtube.com/watch?v=hyFEF1sFGmQ&list=PL2ZI1wL-hAdntzlVj-QB1bqU3W1ggEGHx
+    //https://www.youtube.com/live/hyFEF1sFGmQ?feature=share
+    //https://youtube.com/playlist?list=PLVd_QdOssBqRbsTR54h3pDHmDlgoH_3nW
+  }
   return (
     <div className="box-shadow-main bg-white">
       <Formik
@@ -307,6 +325,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                   label={"Id plejlisty lub wideo z YT"}
                   name="playlist"
                   className="form-item-width"
+                  onChange={(val) => setYoutubePlaylistValue(val, formik.setFieldValue)}
                   fullWidth
                   margin="normal"
                 />
@@ -371,21 +390,21 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
               {(!popup && isAddMode) && <MuiButton 
                 className="pl-5 pr-5 pt-2 pb-2"
                 text={"Zapisz i dodaj nowy"} 
-                icon={MuiBtnType.Add} 
-                onClick={() => formik.isValid && onSubmitElements(formik.values, true)} 
-                disabled={formik.isSubmitting} />
+                icon={MuiBtnType.SubmitAndNew} 
+                onClick={() => onSubmitElements(formik.values, true)} 
+                disabled={formik.isSubmitting || !formik.isValid} />
               }
               <MuiButton 
                 className="pl-5 pr-5 pt-2 pb-2"
                 text={"Zapisz"} 
                 icon={MuiBtnType.Submit} 
-                onClick={() => formik.isValid && onSubmitElements(formik.values, false)} 
-                disabled={formik.isSubmitting}
+                onClick={() => onSubmitElements(formik.values, false)} 
+                disabled={formik.isSubmitting || !formik.isValid }
               />
               {(!popup && !isAddMode) && <MuiButton 
                 className="pl-5 pr-5 pt-2 pb-2"
                 text={"Usuń"} 
-                icon={MuiBtnType.Delete} 
+                icon={MuiBtnType.DeleteWithoutIcon} 
                 onClick={() => elementsService._delete(row.id).then(() => history.push({ pathname: "/views", state: { yearId: location.state.yearId }}))}
                 />
               }
