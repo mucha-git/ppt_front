@@ -29,7 +29,6 @@ function AddEdit({ history }) {
 
   const onSubmitNotification = (values) => {
     values.send_after = Date.now()>=values.send_after? moment(Date.now()).add(3, 's').format() : moment(values.send_after).format()
-    console.log(values.send_after)
     oneSignalService
       .create({name: values.name, 
               contents: { en: values.content}, 
