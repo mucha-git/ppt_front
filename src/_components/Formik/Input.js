@@ -10,6 +10,8 @@ function Input(props) {
   useEffect(() => {
     setWymagane(wymagane ? isWymagane() : undefined);
   }, [wymagane]);
+
+
   return (
     <div className={className != null ? className : "form-group col"}>
       <Field
@@ -20,6 +22,15 @@ function Input(props) {
         {({ form, field }) => {
           const { setFieldValue } = form;
           const { value } = field;
+
+          const setValue =(val) => {
+            if(val.includes("https://drive.google.com/file/d/")){
+              val = val.replace("https://drive.google.com/file/d/", "")
+              val = val.split("/")[0]
+              val = "http://drive.google.com/uc?export=view&id=" + val
+            }
+            setFieldValue(name, val)
+          }
           return (
             <TextField 
               id={name} 
@@ -27,7 +38,7 @@ function Input(props) {
               value={value} 
               label={label} 
               variant="outlined"
-              onChange={(val) => setFieldValue(name, val.target.value)} 
+              onChange={(val) => setValue(val.target.value)} 
               helperText={form.errors[name]}
               {...rest}
             />
