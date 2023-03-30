@@ -18,7 +18,6 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
   }, []);
   let location = useLocation();
   const isAddMode = location.state.row == null || popup ? true : false;
-  const [submitting, setSubmitting] = useState(false);
   //material ui // domyślne wartości w formularzach
   let {row } = location.state
 
@@ -37,14 +36,14 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
       };
 
   const validationSchema = Yup.object({
-    name: Yup.string().required("Wymagany"),
-    pinSrc: Yup.string().required("Wymagany"),
-    width: Yup.number().min(1, "Musi być większe od 0").required("Wymagany"),
-    height: Yup.number().min(1, "Musi być większe od 0").required("Wymagany")
+    name: Yup.string().required("Pole jest wymagane"),
+    pinSrc: Yup.string().required("Pole jest wymagane"),
+    width: Yup.number().min(1, "Musi być większe od 0").required("Pole jest wymagane"),
+    height: Yup.number().min(1, "Musi być większe od 0").required("Pole jest wymagane")
   });
 
-  const onSubmitMapPins = (values, openNew) => {
-    setSubmitting(true)
+  const onSubmitMapPins = (formik, openNew) => {
+    let values = formik.values
     // pobrać wysokość i szerokość z grafiki
     if (isAddMode) {
       popup
@@ -62,10 +61,12 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
             } :{
               from: { pathname: "/mapPins", state: { yearId: location.state.yearId }},
             };
+            formik.resetForm()
+            formik.setSubmitting(false)
             history.push(from);
         })
         .catch((error) => {
-          setSubmitting(false);
+          formik.setSubmitting(false);
           alertService.error(error);
         });  
     } else {
@@ -85,7 +86,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
           history.push(from);
         })
         .catch((error) => {
-          setSubmitting(false);
+          formik.setSubmitting(false);
           alertService.error(error);
         });
     }
@@ -164,16 +165,16 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
             <div className="d-flex flex-row-reverse bg-light pl-5 pr-5 pt-3 pb-3" >
             {(!popup && isAddMode) && <MuiButton 
             className="pl-5 pr-5 pt-2 pb-2"
-            text={"Zapisz i dodaj nowy"} 
+            text={"Zapisz i dodaj kolejny"} 
             icon={MuiBtnType.SubmitAndNew} 
-            onClick={() => onSubmitMapPins(formik.values, true)} 
+            onClick={() => onSubmitMapPins(formik, true)} 
             disabled={formik.isSubmitting || !formik.isValid} />
             }
             <MuiButton 
               className="pl-5 pr-5 pt-2 pb-2"
               text={"Zapisz"} 
               icon={MuiBtnType.Submit} 
-              onClick={() => onSubmitMapPins(formik.values, false)} 
+              onClick={() => onSubmitMapPins(formik, false)} 
               disabled={formik.isSubmitting || !formik.isValid} />
             {(!popup && !isAddMode) && <MuiButton 
             className="pl-5 pr-5 pt-2 pb-2"

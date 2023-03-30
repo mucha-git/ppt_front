@@ -30,7 +30,7 @@ function Overview({ match }) {
 
   const validationSchema = Yup.object({
     year: Yup.number()
-        .required("Wymagane")
+        .required("Pole jest wymagane")
   });
 
   const handleChange = (event) => {

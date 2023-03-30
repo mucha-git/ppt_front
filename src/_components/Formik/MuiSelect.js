@@ -5,6 +5,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import { FormHelperText } from "@mui/material";
 
 function MuiSelect(props) {
   const { label, name, options, margin, ...rest } = props;
@@ -19,7 +20,7 @@ function MuiSelect(props) {
           const { setFieldValue } = form;
           const { value } = field;
           return (
-            <FormControl margin={margin} {...rest} >
+            <FormControl margin={margin} {...rest} error={form.errors[name] != null}>
               <InputLabel id={name + "-label"}>{label}</InputLabel>
               <Select
                 labelId={name + "-label"}
@@ -34,6 +35,7 @@ function MuiSelect(props) {
                   return <MenuItem key={option.value} value={option.value}>{option.key}</MenuItem>
                 })}
               </Select>
+              <FormHelperText>{form.errors[name]}</FormHelperText>
             </FormControl>
           );
         }}

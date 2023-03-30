@@ -21,10 +21,10 @@ function AddEdit({ history }) {
     ;
 
   const validationSchema = Yup.object({
-    name: Yup.string().max(150, "Maksymalnie 150 znaków").required("Wymagany"),
-    content: Yup.string().max(150, "Maksymalnie 150 znaków").required("Wymagany"),
-    headings: Yup.string().max(500, "Maksymalnie 500 znaków").required("Wymagany"),
-    send_after: Yup.date().required("Wymagany")
+    name: Yup.string().max(150, "Maksymalnie 150 znaków").required("Pole jest wymagane"),
+    content: Yup.string().max(150, "Maksymalnie 150 znaków").required("Pole jest wymagane"),
+    headings: Yup.string().max(500, "Maksymalnie 500 znaków").required("Pole jest wymagane"),
+    send_after: Yup.date().required("Pole jest wymagane")
   });
 
   const onSubmitNotification = (values) => {

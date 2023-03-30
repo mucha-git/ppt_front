@@ -12,7 +12,7 @@ function Elements({ view, path }) {
     }
 
   return (
-        <div className={"pt-20 pb-20"}>
+        <div>
             {SubView()}
         </div>
   );

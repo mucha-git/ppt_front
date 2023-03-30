@@ -22,7 +22,7 @@ export const MuiBtnType = {
     Search: {icon: faMagnifyingGlass, color: BtnColors.green},
     Download: {icon: faCloudArrowDown, color: BtnColors.orange},
     Upload: {icon: faCloudArrowUp, color: BtnColors.blue},
-    Cancel: {icon: null, color: BtnColors.transparent},
+    Cancel: {icon: null, color: BtnColors.transparentBlue},
     Submit: {icon: null, color: BtnColors.blue},
     SubmitAndNew: {icon: null, color: BtnColors.green},
     DeleteWithoutIcon: {icon: null, color: BtnColors.red},

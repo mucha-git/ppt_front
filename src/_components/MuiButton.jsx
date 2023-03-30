@@ -4,7 +4,7 @@ export default function MuiButton({icon, text, onClick, className = "", disabled
 
   return (
     <button 
-      className={disabled? `btn m-1 rounded-1 bg-secondary ${className}`: `btn m-1 rounded-1  ${icon && icon.color} ${className}` }
+      className={`btn m-1 rounded-1  ${icon && icon.color} ${className}`}
       onClick={onClick}
       type="submit"
       disabled={disabled}

@@ -59,7 +59,7 @@ const akcje = (cell, row, rowIndex) => {
 
     const expandRowElement = {
         parentClassName: "parent-expand-foo",
-        className: "blue-light pt-5 pb-5",
+        className: "blue-light pt-2 pb-2",
         onlyOneExpanding: true,
         nonExpandable: rowsNotToExpand(),
         renderer: (row) => {

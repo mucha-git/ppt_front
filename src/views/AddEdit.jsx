@@ -20,7 +20,6 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
   }, []);
   let location = useLocation();
   const isAddMode = location.state.row == null || popup ? true : false;
-  const [submitting, setSubmitting] = useState(false);
 
   const btnTypes = [
     {key: "Tekst", value: "Text"},
@@ -28,10 +27,9 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
   ]
 
   const contentTypes = [
-    {key: "", value: null},
     {key: "Lista", value: "List"},
     {key: "Treści", value: "Elements"},
-    {key: "Link Zewnętrzny", value: "ExternalLink"}
+    {key: "Link zewnętrzny", value: "ExternalLink"}
   ]
 
   const setContentType = (row) => {
@@ -47,7 +45,6 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
     switch (values.contentType) {
       case "List": return "ListScreen"
       case "Elements": return "TextScreen"
-      default: null
     }
   }
 
@@ -59,7 +56,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
         title: "",
         headerText: null,
         btnType: "Text",
-        contentType: null,
+        contentType: "List",
         imgSrc: null,
         viewId: parentViewId,
         externalUrl: null
@@ -75,12 +72,12 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
       };
 
   const validationSchema = Yup.object().shape({
-    title: Yup.string()
-      .required("Wymagany"),
-    headerText: Yup.string().nullable(),
-    btnType: Yup.string().required("Wymagany"),
-    contentType: Yup.string().required("Wymagany"),
-    imgSrc: Yup.string()
+    title: Yup.string().max(80, "Maksymalna liczba znaków to 80")
+      .required("Pole jest wymagane"),
+    headerText: Yup.string().max(80, "Maksymalna liczba znaków to 80").nullable(),
+    btnType: Yup.string().required("Pole jest wymagane"),
+    contentType: Yup.string().required("Pole jest wymagane"),
+    imgSrc: Yup.string().max(1000, "Maksymalna liczba znaków to 1000")
       .when('btnType', {
         is: 'Text',
         then: fieldSchema => fieldSchema.nullable(),
@@ -89,7 +86,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
         is: 'Graphic',
         then: fieldSchema => fieldSchema.required('Wymagane'),
       }),
-    externalUrl: Yup.string()
+    externalUrl: Yup.string().max(1000, "Maksymalna liczba znaków to 1000")
       .when('contentType', {
         is: 'List',
         then: fieldSchema => fieldSchema.nullable(),
@@ -104,7 +101,8 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
       })
   });
 
-  const onSubmitViews = (values, openNew) => {
+  const onSubmitViews = (formik, openNew) => {
+    let values = formik.values
     if(values.headerText == null) values.headerText = values.title
     const screenType = getScreenType(values)
     values.type = screenType!=null? values.btnType: values.btnType + "ExternalLink",
@@ -135,11 +133,13 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
             } :{
               from: { pathname: "/views", state: { yearId: location.state.yearId }},
             };
+            formik.resetForm()
+            formik.setSubmitting(false)
             history.push(from);
           }
         })
         .catch((error) => {
-          setSubmitting(false);
+          formik.setSubmitting(false);
           alertService.error(error);
         });  
     } else {
@@ -158,10 +158,21 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
           history.push(from);
         })
         .catch((error) => {
-          setSubmitting(false);
+          formik.setSubmitting(false);
           alertService.error(error);
         });
     }
+  }
+
+  const onDelete = (formik) => {
+    formik.setSubmitting(true)
+    viewsService._delete(row.id).then(() => {
+      updateViews(row.yearId)
+      history.push({ pathname: "/views", state: { yearId: row.yearId }})
+    }).catch((error) => {
+      formik.setSubmitting(false)
+      alertService.error(error);
+    })
   }
 
   return (
@@ -175,7 +186,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
         {(formik) => (
           <Form>
             <div className="pl-5 pr-5 pt-5 pb-3">
-              <div className="d-flex flex-row">
+              <div className="d-flex">
                 <div>{popup ? (
                   <a onClick={close}>
                     <h2><MuiButton className="pl-2 pr-2" icon={MuiBtnType.ArrowBack} /></h2>
@@ -197,6 +208,16 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                       ? "Nowy widok"
                       : "Edycja widoku"}
                   </h2>
+                </div>
+                <div className="ml-auto">
+                  {(!popup && !isAddMode) && <MuiButton 
+                  //className="pl-5 pr-5 pt-2 pb-2"
+                  //text={"Usuń"} 
+                  icon={MuiBtnType.Delete} 
+                  disabled={formik.isSubmitting}
+                  onClick={() => onDelete(formik)}
+                  />
+                  }
                 </div>
               </div>
               <FormikControl
@@ -237,7 +258,18 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                 margin="normal"
               />
               }
-              {formik.values.btnType === "Graphic"  &&
+              {formik.values.contentType === "ExternalLink" &&
+                <FormikControl
+                  control="input"
+                  type="text"
+                  label={"Link zewnętrzny"}
+                  name="externalUrl"
+                  className="form-item-width"
+                  fullWidth
+                  margin="normal"
+                />
+              }
+              {formik.values.btnType === "Graphic" && formik.values.contentType != null && 
               <>
                 <FormikControl
                   control="input"
@@ -252,40 +284,22 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                 <div className="clear" />
               </>
               }
-              {formik.values.contentType === "ExternalLink" &&
-                <FormikControl
-                  control="input"
-                  type="text"
-                  label={"Link zewnętrzny"}
-                  name="externalUrl"
-                  className="form-item-width"
-                  fullWidth
-                  margin="normal"
-                />
-              }
             </div>
             <div className="d-flex flex-row-reverse bg-light pl-5 pr-5 pt-3 pb-3" >
             {(!popup && isAddMode) && <MuiButton 
             className="pl-5 pr-5 pt-2 pb-2"
-            text={"Zapisz i dodaj nowy"} 
+            text={"Zapisz i dodaj kolejny"} 
             icon={MuiBtnType.SubmitAndNew} 
-            onClick={() => onSubmitViews(formik.values, true)} 
+            onClick={() => onSubmitViews(formik, true)} 
             disabled={formik.isSubmitting || !formik.isValid} />
             }
             <MuiButton 
               className="pl-5 pr-5 pt-2 pb-2"
               text={"Zapisz"} 
               icon={MuiBtnType.Submit} 
-              onClick={() => onSubmitViews(formik.values, false)} 
+              onClick={() => onSubmitViews(formik, false)} 
               disabled={formik.isSubmitting || !formik.isValid} />
-            {(!popup && !isAddMode) && <MuiButton 
-            className="pl-5 pr-5 pt-2 pb-2"
-            text={"Usuń"} 
-            icon={MuiBtnType.DeleteWithoutIcon} 
-            disabled={formik.isSubmitting}
-            onClick={() => viewsService._delete(row.id).then(() => history.push({ pathname: "/views", state: { yearId: location.state.yearId }}))}
-             />
-            }
+            
             {popup ? (
                 <MuiButton disabled={formik.isSubmitting} onClick={() => close()} className="pl-5 pr-5 pt-2 pb-2" text={"Anuluj"} icon={MuiBtnType.Cancel} />
             

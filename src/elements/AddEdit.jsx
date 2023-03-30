@@ -9,12 +9,13 @@ import { AppContext } from "../_helpers/context";
 import { arrayFromEnum } from "../_helpers";
 import MuiButton from "../_components/MuiButton";
 import { MuiBtnType } from "../_helpers/MuiBtnType";
+import { strokeThick } from "../_helpers/strokeThick";
+import { margins } from "../_helpers/margins";
 
 function AddEdit({ history, popup, close, lista, setLista, yearId }) {
-  const {updateElements, views, updateViews, maps, updateMaps} = useContext(AppContext)
+  const {updateElements, views, maps} = useContext(AppContext)
   let location = useLocation();
   const isAddMode = location.state.row == null || popup ? true : false;
-  const [submitting, setSubmitting] = useState(false);
   const mapsList = maps.map(o => {
     return {key: o.name, value: o.id}
   })
@@ -40,7 +41,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
         // Divider
         color: '#000000',
         margin: 0,
-        height: 0,
+        height: 5,
         // Graphic and text
         text: undefined,
         imgSrc: undefined,
@@ -71,7 +72,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
 
   const validationSchema = Yup.object({
     type: Yup.string()
-      .required("Wymagany"),
+      .required("Pole jest wymagane"),
     color: Yup.string().when('type', {
       is: "Divider",
       then: fieldSchema => fieldSchema.required('Wymagane'),
@@ -79,12 +80,12 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
     }),
     margin: Yup.number().when('type', {
       is: "Divider",
-      then: fieldSchema => fieldSchema.min(1, "Minimum 1").required('Wymagane'),
+      then: fieldSchema => fieldSchema.min(0, "Minimum 0").required('Wymagane'),
       otherwise: fieldSchema => fieldSchema.nullable()
     }),
     height: Yup.number().when('type', {
       is: "Divider",
-      then: fieldSchema => fieldSchema.min(1, "Minimum 1").required("Wymagane"),
+      then: fieldSchema => fieldSchema.min(1, "Minimum 1").required("Pole jest wymagane"),
       otherwise: fieldSchema => fieldSchema.nullable()
     }),
     text: Yup.string().when('type', (type, schema) => {
@@ -122,9 +123,10 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
     })
   });
 
-  const onSubmitElements = (values, openNew) => {
-    if(values.margin == 0) values.margin = null
-    if(values.height == 0) values.height = null
+  const onSubmitElements = (formik, openNew) => {
+    let values = formik.values
+    //if(values.margin == 0) values.margin = null
+    //if(values.height == 0) values.height = null
     if(values.mapHeight == 0) values.mapHeight = null
     //values.autoplay != null ? values.autoplay = values.autoplay == "1": null;
     //if(destinationViewId != -1 ) values.destinationViewId = destinationViewId
@@ -155,11 +157,13 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
             } :{
               from: { pathname: "/views", state: { yearId: location.state.yearId }},
             };
+            formik.resetForm()
+            formik.setSubmitting(false)
             history.push(from);
           }
         })
         .catch((error) => {
-          setSubmitting(false);
+          formik.setSubmitting(false);
           alertService.error(error);
         });  
     } else {
@@ -179,7 +183,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
           history.push(from);
         })
         .catch((error) => {
-          setSubmitting(false);
+          formik.setSubmitting(false);
           alertService.error(error);
         });
     }
@@ -194,21 +198,31 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
   const setYoutubePlaylistValue = (val, setFieldValue) => {
     function getId(val) {
       let parts = val.split('list=')
-      if(parts.length > 1) return parts[1]
+      if(parts.length > 1) {
+        parts = parts[1].split("&")[0]
+        return parts
+      }
       parts = parts[0].split("v=")
-      if(parts.length > 1) return parts[1]
+      if(parts.length > 1) {
+        parts = parts[1].split("&")[0]
+        return parts
+      }
       parts = parts[0].split("?")[0]
       parts = parts.split("/")
       if(parts[parts.length -1].includes(".")) return null
-      return(parts[parts.length -1])
+      parts = parts[parts.length -1].split("&")[0]
+      return(parts)
     }
     setFieldValue("playlist", getId(val.target.value))
     //https://www.youtube.com/watch?v=KplqwuQfBNg
+    //https://www.youtube.com/watch?v=KplqwuQfBNg&time=123
     //https://youtu.be/KplqwuQfBNg
     //https://www.youtube.com/watch?v=hyFEF1sFGmQ&list=PL2ZI1wL-hAdntzlVj-QB1bqU3W1ggEGHx
     //https://www.youtube.com/live/hyFEF1sFGmQ?feature=share
     //https://youtube.com/playlist?list=PLVd_QdOssBqRbsTR54h3pDHmDlgoH_3nW
+    //https://youtube.com/playlist?list=PLVd_QdOssBqRbsTR54h3pDHmDlgoH_3nW&index=1
   }
+
   return (
     <div className="box-shadow-main bg-white">
       <Formik
@@ -254,25 +268,26 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                 margin="normal"
               />
               {formik.values.type != null && <div className="pt-3"><h5>Szczegóły elementu</h5></div>}
+              
               {(formik.values.type === "Divider") &&
               <>
                 <div className="d-flex justify-content-between">
                   <div className="w-33">
                     <FormikControl
-                      control="inputNumber"
-                      label={"Wysokość"}
+                      control="muiSelect"
+                      label={"Szerokość linii"}
                       name="height"
-                      className="form-item-width"
+                      options={strokeThick}
                       fullWidth
                       margin="normal"
                     />
                   </div>
                   <div className="w-33">
                     <FormikControl
-                      control="inputNumber"
+                      control="muiSelect"
                       label={"Margines"}
                       name="margin"
-                      className="form-item-width"
+                      options={margins}
                       fullWidth
                       margin="normal"
                     />
@@ -280,7 +295,6 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                   <div className="w-33">
                     <FormikControl
                       control="color"
-                      //type="text"
                       label={"Kolor"}
                       name="color"
                       className="form-item-width"
@@ -289,7 +303,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                     />
                   </div>
                 </div>
-                <div className="w-100 mt-3 mb-3">
+                <div className="d-flex mt-3 mb-3">
                   <div style={{backgroundColor: formik.values.color, margin: formik.values.margin + "px", height: formik.values.height + "px", width: '100%'}} ></div>
                 </div>
               </>
@@ -314,6 +328,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                 fullWidth
                 margin="normal"
               />
+              
               {(formik.values.imgSrc != null && formik.values.imgSrc != "")? <img className="pt-2" src={formik.values.imgSrc} width={'100%'} height={'100%'} />: "Brak grafiki do wyświetlenia"}
               <div className="clear" />
               </>}
@@ -322,7 +337,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                 <FormikControl
                   control="input"
                   type="text"
-                  label={"Id plejlisty lub wideo z YT"}
+                  label={"Id plejlisty lub wideo"}
                   name="playlist"
                   className="form-item-width"
                   onChange={(val) => setYoutubePlaylistValue(val, formik.setFieldValue)}
@@ -344,7 +359,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                 <div className="d-flex justify-content-center m-3">
                   <FormikControl
                   control="switch"
-                  label={"Autoodtważanie"}
+                  label={"Autoodtwarzanie"}
                   name="autoplay"
                   margin="normal"
                 />
@@ -389,16 +404,16 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
             <div className="d-flex flex-row-reverse bg-light pl-5 pr-5 pt-3 pb-3" >
               {(!popup && isAddMode) && <MuiButton 
                 className="pl-5 pr-5 pt-2 pb-2"
-                text={"Zapisz i dodaj nowy"} 
+                text={"Zapisz i dodaj kolejny"} 
                 icon={MuiBtnType.SubmitAndNew} 
-                onClick={() => onSubmitElements(formik.values, true)} 
+                onClick={() => onSubmitElements(formik, true)} 
                 disabled={formik.isSubmitting || !formik.isValid} />
               }
               <MuiButton 
                 className="pl-5 pr-5 pt-2 pb-2"
                 text={"Zapisz"} 
                 icon={MuiBtnType.Submit} 
-                onClick={() => onSubmitElements(formik.values, false)} 
+                onClick={() => onSubmitElements(formik, false)} 
                 disabled={formik.isSubmitting || !formik.isValid }
               />
               {(!popup && !isAddMode) && <MuiButton 

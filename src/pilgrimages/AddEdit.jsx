@@ -13,7 +13,6 @@ function AddEdit({ history }) {
   const {updatePilgrimages} = useContext(AppContext)
   let location = useLocation();
   const isAddMode = location.state == undefined;
-  const [submitting, setSubmitting] = useState(false);
   //material ui // domyślne wartości w formularzach
   let row = isAddMode? null: location.state.row
 
@@ -34,15 +33,15 @@ function AddEdit({ history }) {
       };
 
   const validationSchema = Yup.object({
-    name: Yup.string().max(500, "Maksymalnie 500 znaków").required("Wymagany"),
-    isActive: Yup.bool().required("Wymagany"),
+    name: Yup.string().max(500, "Maksymalnie 500 znaków").required("Pole jest wymagane"),
+    isActive: Yup.bool().required("Pole jest wymagane"),
     logoSrc: Yup.string().max(1000, "Maksymalnie 1000 znaków").nullable(),
     oneSignal: Yup.string().max(50, "Maksymalnie 50 znaków").nullable(),
     oneSignalApiKey: Yup.string().max(50, "Maksymalnie 50 znaków").nullable(),
   });
 
-  const onSubmitPilgrimage = (values) => {
-    setSubmitting(true)
+  const onSubmitPilgrimage = (formik) => {
+    let values = formik.values
     if(values.oneSignal == "") values.oneSignal = null
     if(values.oneSignalApiKey == "") values.oneSignalApiKey = null
     //if(typeof values.isActive === "string") values.isActive = values.isActive == "true"
@@ -57,7 +56,7 @@ function AddEdit({ history }) {
           history.push('/pilgrimages');
         })
         .catch((error) => {
-          setSubmitting(false);
+          formik.setSubmitting(false);
           alertService.error(error);
         });  
     } else {
@@ -72,7 +71,7 @@ function AddEdit({ history }) {
           history.push("/pilgrimages");
         })
         .catch((error) => {
-          setSubmitting(false);
+          formik.setSubmitting(false);
           alertService.error(error);
         });
     }
@@ -160,7 +159,7 @@ function AddEdit({ history }) {
               className="pl-5 pr-5 pt-2 pb-2"
               text={"Zapisz"} 
               icon={MuiBtnType.Submit} 
-              onClick={() => onSubmitPilgrimage(formik.values)} 
+              onClick={() => onSubmitPilgrimage(formik)} 
               disabled={formik.isSubmitting || !formik.isValid} />
             {(!isAddMode) && <MuiButton 
               className="pl-5 pr-5 pt-2 pb-2"

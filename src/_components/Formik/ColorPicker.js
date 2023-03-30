@@ -79,10 +79,12 @@ function ColorPicker(props) {
 
           return (
             <MuiColorInput
+            error={form.errors[name] != null}
             label={label} 
             format={'hex'}
             id={name} 
             value={value} 
+            helperText={form.errors[name]}
             isAlphaHidden={true}
             onChange={(val, e) => setFieldValue(name, e.hex) } 
             {...rest}

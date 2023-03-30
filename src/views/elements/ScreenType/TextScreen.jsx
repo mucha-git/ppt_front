@@ -4,7 +4,7 @@ import { ElementsTable } from "../../../elements/elements/ElementsTable";
 function TextScreen({ view, path }) {
 
   return (
-        <div className={"pt-20 pb-20"}>
+        <div>
           <div className="container">
             <ElementsTable parentViewId={view.id} yearId={view.yearId} path={path} />
           </div>

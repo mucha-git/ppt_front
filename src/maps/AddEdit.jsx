@@ -24,12 +24,12 @@ import { SketchPicker } from "react-color";
 import reactCSS from 'reactcss'
 import { MuiColorInput } from "mui-color-input";
 import { DataGrid } from '@mui/x-data-grid';
+import { strokeThick } from "../_helpers/strokeThick";
 
 function AddEdit({ history, popup, close, lista, setLista, yearId }) {
   const {updateMaps, mapPins, set} = useContext(AppContext)
   let location = useLocation();
   const isAddMode = location.state.row == null || popup ? true : false;
-  const [submitting, setSubmitting] = useState(false);
   let {row } = location.state
   let [markers, setMarkers] = useState(isAddMode? [] : row.markers != null? row.markers : [])
   const [polylines, setPolylines] = useState(isAddMode? "": row.polylines)
@@ -50,14 +50,6 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
-  const strokeThick = [
-    {key: "Bardzo cienka", value: 1},
-    {key: "Cienka", value: 2},
-    {key: "Normalna", value: 3},
-    {key: "Gruba", value: 4},
-    {key: "Bardzo gruba", value: 5}
-  ]
 
   useEffect(() => {
     if(!set){
@@ -86,7 +78,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
   const initialValues = isAddMode
     ? {
         name: "",
-        strokeColor: "#00ff00",
+        strokeColor: "",
         strokeWidth: 3,
         mapSrc: "",
         //delta: 2.5
@@ -100,19 +92,19 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
       };
 
   const validationSchema = Yup.object({
-    name: Yup.string().required("Wymagany"),
-    mapSrc: Yup.string().required("Wymagany"),
-    strokeColor: Yup.string().required("Wymagany"),
-    //delta: Yup.number().required("Wymagany"),
-    strokeWidth: Yup.number().required("Wymagany"),
+    name: Yup.string().required("Pole jest wymagane"),
+    mapSrc: Yup.string().required("Pole jest wymagane"),
+    strokeColor: Yup.string().required("Pole jest wymagane"),
+    //delta: Yup.number().required("Pole jest wymagane"),
+    strokeWidth: Yup.number().required("Pole jest wymagane"),
   });
 
-  const onSubmitMaps = (values, openNew) => {
+  const onSubmitMaps = (formik, openNew) => {
+    let values = formik.values
     if(!map) {
       alertService.error("Nie wczytano pliku mapy!!");
       return;
     }
-    setSubmitting(true)
     values.provider = "google"
     values.markers = markers
     values.polylines = polylines
@@ -143,11 +135,13 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
             } :{
               from: { pathname: "/maps", state: { yearId: location.state.yearId }},
             };
+            formik.resetForm()
+            formik.setSubmitting(false)
             history.push(from);
           }
         })
         .catch((error) => {
-          setSubmitting(false);
+          formik.setSubmitting(false);
           alertService.error(error);
         });  
     } else {
@@ -166,7 +160,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
           history.push(from);
         })
         .catch((error) => {
-          setSubmitting(false);
+          formik.setSubmitting(false);
           alertService.error(error);
         });
     }
@@ -453,7 +447,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                       setPolylines("")
                       setMap(null)
                     }}
-                    dropzoneClass={map? "file-success mt-3" : "bg-light mt-3"}
+                    dropzoneClass={map? "file-success mt-3" : "bg-danger mt-3"}
                     dropzoneProps={{disabled: !isAddMode}}
                   />
                 </TabPanel>
@@ -583,16 +577,16 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
             <div className="d-flex flex-row-reverse bg-light pl-5 pr-5 pt-3 pb-3" >
               {(!popup && isAddMode) && <MuiButton 
               className="pl-5 pr-5 pt-2 pb-2"
-              text={"Zapisz i dodaj nowy"} 
+              text={"Zapisz i dodaj kolejny"} 
               icon={MuiBtnType.SubmitAndNew} 
-              onClick={() => onSubmitMaps(formik.values, true)} 
+              onClick={() => onSubmitMaps(formik, true)} 
               disabled={formik.isSubmitting || !formik.isValid} />
               }
               <MuiButton 
                 className="pl-5 pr-5 pt-2 pb-2"
                 text={"Zapisz"} 
                 icon={MuiBtnType.Submit} 
-                onClick={() => onSubmitMaps(formik.values, false)} 
+                onClick={() => onSubmitMaps(formik, false)} 
                 disabled={formik.isSubmitting || !formik.isValid} 
               />
               {(!popup && !isAddMode) && <MuiButton 

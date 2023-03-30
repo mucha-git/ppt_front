@@ -10,5 +10,6 @@ export const BtnColors = {
     lightGray: 'bg-light text-dark ',
     dark: 'bg-dark text-white ',
     white: 'bg-white text-dark ',
-    transparent: 'text-dark'
+    transparent: 'text-dark',
+    transparentBlue: 'text-primary',
 }

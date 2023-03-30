@@ -23,10 +23,12 @@ function Input(props) {
           return (
             <TextField 
               id={name} 
+              error={form.errors[name] != null}
               value={value} 
               label={label} 
               variant="outlined"
               onChange={(val) => setFieldValue(name, val.target.value)} 
+              helperText={form.errors[name]}
               {...rest}
             />
           );

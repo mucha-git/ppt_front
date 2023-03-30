@@ -14,7 +14,6 @@ function AddEdit({ history }) {
   
   let location = useLocation();
   const isAddMode = location.state == undefined;
-  const [submitting, setSubmitting] = useState(false);
   //material ui // domyślne wartości w formularzach
   let row = isAddMode? null: location.state.row
   const excludedYears = isAddMode? years.map(m => m.year) : years.filter(f => f.id != row.id).map(m => m.year)
@@ -40,14 +39,14 @@ function AddEdit({ history }) {
       };
 
   const validationSchema = Yup.object({
-    year: Yup.string().required("Wymagany"),
-    yearTopic: Yup.string().required("Wymagany"),
-    isActive: Yup.bool().required("Wymagany"),
+    year: Yup.string().required("Pole jest wymagane"),
+    yearTopic: Yup.string().required("Pole jest wymagane"),
+    isActive: Yup.bool().required("Pole jest wymagane"),
     imgSrc: Yup.string().max(1000, "Maksymalnie 1000 znaków").nullable(),
   });
 
-  const onSubmitYear = (values) => {
-    setSubmitting(true)
+  const onSubmitYear = (formik) => {
+    let values = formik.values
     values.year = parseInt(values.year)
     //if(typeof values.isActive === "string") values.isActive = values.isActive == "true"
     if (isAddMode) {
@@ -62,7 +61,7 @@ function AddEdit({ history }) {
           history.push('/years');
         })
         .catch((error) => {
-          setSubmitting(false);
+          formik.setSubmitting(false);
           alertService.error(error);
         });  
     } else {
@@ -78,7 +77,7 @@ function AddEdit({ history }) {
           history.push("/years");
         })
         .catch((error) => {
-          setSubmitting(false);
+          formik.setSubmitting(false);
           alertService.error(error);
         });
     }
@@ -153,7 +152,7 @@ function AddEdit({ history }) {
               className="pl-5 pr-5 pt-2 pb-2"
               text={"Zapisz"} 
               icon={MuiBtnType.Submit} 
-              onClick={() => onSubmitYear(formik.values)} 
+              onClick={() => onSubmitYear(formik)} 
               disabled={formik.isSubmitting || !formik.isValid} />
             {(!isAddMode) && <MuiButton 
               className="pl-5 pr-5 pt-2 pb-2"

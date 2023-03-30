@@ -62,7 +62,7 @@ const akcje = (cell, row, rowIndex) => {
         expanded: expanded,
         onExpand: handleOnExpand,
         parentClassName: "parent-expand-foo",
-        className: "blue-light pt-5 pb-5",
+        className: "blue-light pt-2 pb-2",
         onlyOneExpanding: true,
         nonExpandable: rowsNotToExpand(),
         showExpandColumn: false,
@@ -114,11 +114,11 @@ const akcje = (cell, row, rowIndex) => {
       }];
 
   return (
-    <div>
-      {parentViewId && <div classNAme="d-flex justify-content-center mt-3">
-        <NavLink to={{pathname: `${path}/dodaj`, state: {yearId: yearId, parentViewId: parentViewId} }} className="nav-item center-divs">
-          <MuiButton icon={MuiBtnType.Add} text="Dodaj nowy widok" className="p-2 pr-4 pl-4" />
-        </NavLink>
+    <div className="pt-3">
+      {parentViewId && <div className="d-flex justify-content-center">
+          <NavLink to={{pathname: `${path}/dodaj`, state: {yearId: yearId, parentViewId: parentViewId} }}>
+            <MuiButton icon={MuiBtnType.Add} text="Dodaj nowy widok" className="p-2 pr-4 pl-4" />
+          </NavLink>
       </div>}
       <BootstrapTable
         bootstrap4
