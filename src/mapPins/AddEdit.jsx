@@ -37,7 +37,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
 
   const validationSchema = Yup.object({
     name: Yup.string().required("Pole jest wymagane"),
-    pinSrc: Yup.string().required("Pole jest wymagane"),
+    pinSrc: Yup.string().min(1, "Minimum 1 znak").required("Pole jest wymagane"),
     width: Yup.number().min(1, "Musi być większe od 0").required("Pole jest wymagane"),
     height: Yup.number().min(1, "Musi być większe od 0").required("Pole jest wymagane")
   });
@@ -92,18 +92,30 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
     }
   }
 
+  const onDelete = (formik) => {
+    formik.setSubmitting(true)
+    mapPinsService._delete(row.id).then(() => {
+      updateMapPins(row.yearId)
+      history.push({ pathname: "/mapPins", state: { yearId: row.yearId }})
+    }).catch((error) => {
+      formik.setSubmitting(false)
+      alertService.error(error);
+    })
+  }
+
   return (
     <div className="box-shadow-main bg-white">
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
-        validateOnMount={true}
+        validateOnChange={true}
+        isInitialValid={!isAddMode}
         onSubmit={() => {}}
       >
         {(formik) => (
           <Form>
             <div className="pl-5 pr-5 pt-5 pb-3">
-              <div className="d-flex flex-row">
+              <div className="d-flex">
                 <div>{popup ? (
                   <a onClick={close}>
                     <h2><MuiButton className="pl-2 pr-2" icon={MuiBtnType.ArrowBack} /></h2>
@@ -125,6 +137,14 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                       ? "Nowa pinezka"
                       : "Edycja pinezki"}
                   </h2>
+                </div>
+                <div className="ml-auto">
+                  {(!popup && !isAddMode) && <MuiButton 
+                  icon={MuiBtnType.Delete} 
+                  disabled={formik.isSubmitting}
+                  onClick={() => onDelete(formik)}
+                  />
+                  }
                 </div>
               </div>
               <FormikControl
@@ -176,14 +196,6 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
               icon={MuiBtnType.Submit} 
               onClick={() => onSubmitMapPins(formik, false)} 
               disabled={formik.isSubmitting || !formik.isValid} />
-            {(!popup && !isAddMode) && <MuiButton 
-            className="pl-5 pr-5 pt-2 pb-2"
-            text={"Usuń"} 
-            icon={MuiBtnType.DeleteWithoutIcon} 
-            disabled={formik.isSubmitting}
-            onClick={() => mapPinsService._delete(row.id).then(() => history.push({ pathname: "/mapPins", state: { yearId: location.state.yearId }}))}
-             />
-            }
             {popup ? (
                 <MuiButton disabled={formik.isSubmitting} onClick={() => close()} className="pl-5 pr-5 pt-2 pb-2" text={"Anuluj"} icon={MuiBtnType.Cancel} />
               

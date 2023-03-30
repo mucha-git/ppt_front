@@ -223,18 +223,30 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
     //https://youtube.com/playlist?list=PLVd_QdOssBqRbsTR54h3pDHmDlgoH_3nW&index=1
   }
 
+  const onDelete = (formik) => {
+    formik.setSubmitting(true)
+    elementsService._delete(row.id).then(() => {
+      updateElements(row.yearId)
+      history.push({ pathname: "/views", state: { yearId: row.yearId }})
+    }).catch((error) => {
+      formik.setSubmitting(false)
+      alertService.error(error);
+    })
+  }
+
   return (
     <div className="box-shadow-main bg-white">
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
-        validateOnMount={true}
+        validateOnChange={true}
+        isInitialValid={!isAddMode}
         onSubmit={() => {}}
       >
         {(formik) => (
           <Form>
             <div className="pl-5 pr-5 pt-5 pb-3">
-              <div className="d-flex flex-row">
+              <div className="d-flex">
                 <div>{popup ? (
                   <a onClick={close}>
                     <h2><MuiButton className="pl-2 pr-2" icon={MuiBtnType.ArrowBack} /></h2>
@@ -256,6 +268,14 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                       ? "Nowy element"
                       : "Edycja elementu"}
                   </h2>
+                </div>
+                <div className="ml-auto">
+                  {(!popup && !isAddMode) && <MuiButton 
+                  icon={MuiBtnType.Delete} 
+                  disabled={formik.isSubmitting}
+                  onClick={() => onDelete(formik)}
+                  />
+                  }
                 </div>
               </div>
               <FormikControl
@@ -337,7 +357,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                 <FormikControl
                   control="input"
                   type="text"
-                  label={"Id plejlisty lub wideo"}
+                  label={"ID playlisty lub wideo"}
                   name="playlist"
                   className="form-item-width"
                   onChange={(val) => setYoutubePlaylistValue(val, formik.setFieldValue)}
@@ -416,14 +436,6 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                 onClick={() => onSubmitElements(formik, false)} 
                 disabled={formik.isSubmitting || !formik.isValid }
               />
-              {(!popup && !isAddMode) && <MuiButton 
-                className="pl-5 pr-5 pt-2 pb-2"
-                text={"Usuń"} 
-                icon={MuiBtnType.DeleteWithoutIcon} 
-                disabled={formik.isSubmitting}
-                onClick={() => elementsService._delete(row.id).then(() => history.push({ pathname: "/views", state: { yearId: location.state.yearId }}))}
-                />
-              }
               {popup ? (
                   <MuiButton className="pl-5 pr-5 pt-2 pb-2" text={"Anuluj"} icon={MuiBtnType.Cancel} disabled={formik.isSubmitting} onClick={() => close()} />
               ) : (

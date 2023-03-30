@@ -36,7 +36,6 @@ function YearPicker(props) {
                 </LocalizationProvider>
         }}
       </Field>
-      <ErrorMessage name={name} component={TextError} />
     </div>
   );
 }

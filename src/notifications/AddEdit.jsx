@@ -51,6 +51,8 @@ function AddEdit({ history }) {
         initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={onSubmitNotification}
+        validateOnChange={true}
+        isInitialValid={false}
       >
         {(formik) => (
           <Form>

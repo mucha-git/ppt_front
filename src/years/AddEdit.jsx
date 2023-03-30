@@ -83,18 +83,30 @@ function AddEdit({ history }) {
     }
   }
 
+  const onDelete = (formik) => {
+    formik.setSubmitting(true)
+    yearsService._delete(row.id).then(() => {
+      updateYears()
+      history.push({ pathname: "/years"})
+    }).catch((error) => {
+      formik.setSubmitting(false)
+      alertService.error(error);
+    })
+  }
+
   return (
     <div className="box-shadow-main bg-white">
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
-        validateOnMount={true}
+        validateOnChange={true}
+        isInitialValid={!isAddMode}
         onSubmit={() => {}}
       >
         {(formik) => (
           <Form>
             <div className="pl-5 pr-5 pt-5 pb-3">
-              <div className="d-flex flex-row">
+              <div className="d-flex">
                 <div>
                   <Link to={{
                     pathname: "/years"
@@ -108,6 +120,14 @@ function AddEdit({ history }) {
                       ? "Nowy rocznik"
                       : "Edycja rocznika"}
                   </h2>
+                </div>
+                <div className="ml-auto">
+                  {(!isAddMode) && <MuiButton 
+                  icon={MuiBtnType.Delete} 
+                  disabled={formik.isSubmitting}
+                  onClick={() => onDelete(formik)}
+                  />
+                  }
                 </div>
               </div>
               {isAddMode && <FormikControl
@@ -154,14 +174,6 @@ function AddEdit({ history }) {
               icon={MuiBtnType.Submit} 
               onClick={() => onSubmitYear(formik)} 
               disabled={formik.isSubmitting || !formik.isValid} />
-            {(!isAddMode) && <MuiButton 
-              className="pl-5 pr-5 pt-2 pb-2"
-              text={"Usuń"} 
-              icon={MuiBtnType.DeleteWithoutIcon} 
-              disabled={formik.isSubmitting}
-              onClick={() => yearsService._delete(row.id).then(() => history.push({ pathname: "/years"}))}
-              />
-            }
               <Link to={{
                 pathname: "/years"
             }} >

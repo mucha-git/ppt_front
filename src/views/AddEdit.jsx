@@ -103,7 +103,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
 
   const onSubmitViews = (formik, openNew) => {
     let values = formik.values
-    if(values.headerText == null) values.headerText = values.title
+    //if(values.headerText == null) values.headerText = values.title
     const screenType = getScreenType(values)
     values.type = screenType!=null? values.btnType: values.btnType + "ExternalLink",
     values.screenType=screenType,
@@ -180,11 +180,13 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
-        validateOnMount={true}
+        validateOnChange={true}
+        isInitialValid={!isAddMode}
         onSubmit={() => {}}
       >
-        {(formik) => (
-          <Form>
+        {(formik) => {
+          
+          return <Form>
             <div className="pl-5 pr-5 pt-5 pb-3">
               <div className="d-flex">
                 <div>{popup ? (
@@ -211,8 +213,6 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                 </div>
                 <div className="ml-auto">
                   {(!popup && !isAddMode) && <MuiButton 
-                  //className="pl-5 pr-5 pt-2 pb-2"
-                  //text={"Usuń"} 
                   icon={MuiBtnType.Delete} 
                   disabled={formik.isSubmitting}
                   onClick={() => onDelete(formik)}
@@ -315,7 +315,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
             )}
             </div>
           </Form>
-        )}
+        }}
       </Formik>
     </div>
   );

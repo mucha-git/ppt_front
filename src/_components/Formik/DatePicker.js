@@ -56,7 +56,6 @@ function DatePicker(props) {
           );
         }}
       </Field>
-      <ErrorMessage name={name} component={TextError} />
     </div>
   );
 }

@@ -36,6 +36,8 @@ function InputNumber(props) {
           return (
               <TextField
                 inputProps={{ inputMode: 'numeric', pattern: '[0-9]*'  }}
+                error={form.errors[name] != null}
+                helperText={form.errors[name]}
                 type='number'
                 id={name}
                 label={label}
@@ -46,7 +48,6 @@ function InputNumber(props) {
           );
         }}
       </Field>
-      <ErrorMessage name={name} component={TextError} />
     </div>
   );
 }

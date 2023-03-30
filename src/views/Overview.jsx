@@ -1,9 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { viewsService } from "@/_services";
-import { Formik, Form } from "formik";
 import { NavLink } from "react-router-dom";
-import FormikControl from "@/_components/Formik/FormikControl";
-import * as Yup from "yup";
 import { ViewsTable } from "./elements/ViewsTable";
 import {AppContext} from '../_helpers/context'
 import SendToApp from '@/_components/SendToApp'
@@ -20,18 +17,9 @@ function Overview({ match }) {
     isSet()
   }, []);
 
-  const onSubmitForm = (values) => {
-    viewsService.getViews(values.year).then(e => {setYearId(values.year); setData(values.year)});
-  };
-
-  const initialValues = {
-    year: yearId,
-  };
-
-  const validationSchema = Yup.object({
-    year: Yup.number()
-        .required("Pole jest wymagane")
-  });
+  useEffect(() => {
+    setYearId(yearId)
+  },[yearId])
 
   const handleChange = (event) => {
     viewsService.getViews(event.target.value).then(e => {setYearId(event.target.value); setData(event.target.value)});

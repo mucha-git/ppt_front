@@ -1,5 +1,6 @@
 export const BtnColors = {
     blue: 'bg-primary text-white',
+    lightBlue: 'bg-light text-primary',
     gray: 'bg-secondary text-white ',
     green: 'bg-success text-white ',
     inverseGreen: 'text-success ',

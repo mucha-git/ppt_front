@@ -77,18 +77,30 @@ function AddEdit({ history }) {
     }
   }
 
+  const onDelete = (formik) => {
+    formik.setSubmitting(true)
+    pilgrimagesService._delete(row.id).then(() => {
+      updatePilgrimages()
+      history.push({ pathname: "/pilgrimages"})
+    }).catch((error) => {
+      formik.setSubmitting(false)
+      alertService.error(error);
+    })
+  }
+
   return (
     <div className="box-shadow-main bg-white">
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
-        validateOnMount={true}
+        validateOnChange={true}
+        isInitialValid={!isAddMode}
         onSubmit={() => {}}
       >
         {(formik) => (
           <Form>
             <div className="pl-5 pr-5 pt-5 pb-3">
-              <div className="d-flex flex-row">
+              <div className="d-flex">
                 <div>
                   <Link to={{
                     pathname: "/pilgrimages"
@@ -102,6 +114,14 @@ function AddEdit({ history }) {
                       ? "Nowa pielgrzymka"
                       : "Edycja pielgrzymki"}
                   </h2>
+                </div>
+                <div className="ml-auto">
+                  {(!isAddMode) && <MuiButton 
+                  icon={MuiBtnType.Delete} 
+                  disabled={formik.isSubmitting}
+                  onClick={() => onDelete(formik)}
+                  />
+                  }
                 </div>
               </div>
               <FormikControl
@@ -161,14 +181,6 @@ function AddEdit({ history }) {
               icon={MuiBtnType.Submit} 
               onClick={() => onSubmitPilgrimage(formik)} 
               disabled={formik.isSubmitting || !formik.isValid} />
-            {(!isAddMode) && <MuiButton 
-              className="pl-5 pr-5 pt-2 pb-2"
-              text={"Usuń"} 
-              icon={MuiBtnType.DeleteWithoutIcon} 
-              disabled={formik.isSubmitting}
-              onClick={() => pilgrimagesService._delete(row.id).then(() => history.push({ pathname: "/pilgrimages"}))}
-            />
-            }
             <Link to={{
               pathname: "/pilgrimages"
               }} >

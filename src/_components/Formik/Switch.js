@@ -38,7 +38,6 @@ function SwitchMui(props) {
           );
         }}
       </Field>
-      <ErrorMessage name={name} component={TextError} />
     </div>
   );
 }
