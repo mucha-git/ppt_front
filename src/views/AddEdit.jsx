@@ -84,7 +84,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
       })
       .when('btnType', {
         is: 'Graphic',
-        then: fieldSchema => fieldSchema.required('Wymagane'),
+        then: fieldSchema => fieldSchema.required('Brak grafiki do wyświetlenia'),
       }),
     externalUrl: Yup.string().max(1000, "Maksymalna liczba znaków to 1000")
       .when('contentType', {
@@ -214,6 +214,8 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                 <div className="ml-auto">
                   {(!popup && !isAddMode) && <MuiButton 
                   icon={MuiBtnType.Delete} 
+                  showTooltip={true}
+                  tooltip={"Usuń widok"}
                   disabled={formik.isSubmitting}
                   onClick={() => onDelete(formik)}
                   />
@@ -280,7 +282,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                   fullWidth
                   margin="normal"
                 />
-                {(formik.values.imgSrc != null && formik.values.imgSrc != "")? <img className="pt-2" src={formik.values.imgSrc} width={'100%'} height={'100%'} />: "Brak grafiki do wyświetlenia"}
+                {(formik.values.imgSrc != null && formik.values.imgSrc != "")? <img className="pt-2" src={formik.values.imgSrc} width={'100%'} height={'100%'} />: ""}
                 <div className="clear" />
               </>
               }

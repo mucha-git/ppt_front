@@ -7,6 +7,7 @@ import { MuiBtnType } from "../_helpers/MuiBtnType";
 import SendToApp from "../_components/SendToApp";
 import { NavLink } from "react-router-dom";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import { history } from "../_helpers";
 
 
 function Overview({ match }) {
@@ -43,9 +44,13 @@ function Overview({ match }) {
         }
         </div>
         <div>
-          <NavLink to={{pathname: `${path}/dodaj`, state: {yearId: year } }} className="nav-item center-divs">
-            <MuiButton icon={MuiBtnType.Add} text="Dodaj nową pinezkę" className="p-2 pr-4 pl-4" />
-          </NavLink>
+          {/* <NavLink to={{pathname: `${path}/dodaj`, state: {yearId: year } }} className="nav-item center-divs"> */}
+            <MuiButton 
+              icon={MuiBtnType.Add} 
+              text="Dodaj nową pinezkę" 
+              className="p-2 pr-4 pl-4"
+              onClick={() => history.push({pathname: `${path}/dodaj`, state: {yearId: year } })} />
+          {/* </NavLink> */}
         </div>
         <div><SendToApp /></div>
         </div>

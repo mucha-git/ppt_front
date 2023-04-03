@@ -7,6 +7,7 @@ import SendToApp from '@/_components/SendToApp'
 import MuiButton from '@/_components/MuiButton'
 import { MuiBtnType } from "../_helpers/MuiBtnType";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import { history } from "../_helpers";
 
 function Overview({ match }) {
   const {isSet, setData, yearId, years} = useContext(AppContext)
@@ -46,9 +47,13 @@ function Overview({ match }) {
         }
         </div>
         <div>
-          <NavLink to={{pathname: `${path}/dodaj`, state: {yearId: year, parentViewId: null} }} className="nav-item center-divs">
-            <MuiButton icon={MuiBtnType.Add} text="Dodaj nowy widok" className="p-2 pr-4 pl-4" />
-          </NavLink>
+          {/* <NavLink to={{pathname: `${path}/dodaj`, state: {yearId: year, parentViewId: null} }} className="nav-item center-divs"> */}
+            <MuiButton 
+              icon={MuiBtnType.Add} 
+              text="Dodaj nowy widok" 
+              className="p-2 pr-4 pl-4"
+              onClick={() => history.push({pathname: `${path}/dodaj`, state: {yearId: year, parentViewId: null} })} />
+          {/* </NavLink> */}
         </div>
         <div><SendToApp /></div>
         </div>

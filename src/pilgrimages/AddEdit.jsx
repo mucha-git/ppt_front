@@ -118,6 +118,8 @@ function AddEdit({ history }) {
                 <div className="ml-auto">
                   {(!isAddMode) && <MuiButton 
                   icon={MuiBtnType.Delete} 
+                  showTooltip={true}
+                  tooltip={"Usuń pielgrzymkę"}
                   disabled={formik.isSubmitting}
                   onClick={() => onDelete(formik)}
                   />

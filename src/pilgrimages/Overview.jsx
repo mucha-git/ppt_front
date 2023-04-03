@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 import MuiButton from "../_components/MuiButton";
 import { MuiBtnType } from "../_helpers/MuiBtnType";
 import { accountService, oneSignalService } from "../_services";
-import { Role } from "../_helpers";
+import { Role, history } from "../_helpers";
 import moment from 'moment';
 
 function Overview({ match }) {
@@ -35,9 +35,13 @@ function Overview({ match }) {
         {user.role != Role.Admin &&<div><MuiButton icon={MuiBtnType.Send} text={"pobierz powiadomienia"} className={"p-2 pr-4 pl-4"} onClick={() => oneSignalService.getNotifications()} /></div>}
         {user.role == Role.Admin && <div className="d-flex justify-content-end">
           <div>
-            <NavLink to={{pathname: `${path}/dodaj`}} className="nav-item center-divs">
-              <MuiButton icon={MuiBtnType.Add} text="Dodaj nową pielgrzymkę" className="p-2 pr-4 pl-4" />
-            </NavLink>
+            {/* <NavLink to={{pathname: `${path}/dodaj`}} className="nav-item center-divs"> */}
+              <MuiButton 
+                icon={MuiBtnType.Add} 
+                text="Dodaj nową pielgrzymkę" 
+                className="p-2 pr-4 pl-4"
+                onClick={() => history.push({pathname: `${path}/dodaj`})} />
+            {/* </NavLink> */}
           </div>
         </div>
         }

@@ -25,9 +25,10 @@ import reactCSS from 'reactcss'
 import { MuiColorInput } from "mui-color-input";
 import { DataGrid } from '@mui/x-data-grid';
 import { strokeThick } from "../_helpers/strokeThick";
+import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
 
 function AddEdit({ history, popup, close, lista, setLista, yearId }) {
-  const {updateMaps, mapPins, set} = useContext(AppContext)
+  const {updateMaps, mapPins, set, elements} = useContext(AppContext)
   let location = useLocation();
   const isAddMode = location.state.row == null || popup ? true : false;
   let {row } = location.state
@@ -38,7 +39,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
   const [delta, setDelta] = useState(isAddMode? 0 : row.delta)
   const [map, setMap] = useState(!isAddMode)
   const [lineColor, setLineColor] = useState(isAddMode? "#00ff00" : row.strokeColor)
-  const [lineWidth, setLineWidth] = useState(isAddMode? 3: row.strokeWidth)
+  const [lineWidth, setLineWidth] = useState(isAddMode? 5: row.strokeWidth)
   const [mapView, setMapView] = useState(() => <RenderMap polylines={polylines} lineColor={lineColor} lineWidth={lineWidth} latitude={latitude} longitude={longitude} markers={markers} />)
   const [activeMarker, setActiveMarker] = useState(null);
   const [value, setValue] = useState("0");
@@ -79,7 +80,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
     ? {
         name: "",
         strokeColor: "",
-        strokeWidth: 3,
+        strokeWidth: 5,
         mapSrc: "",
         //delta: 2.5
       }
@@ -92,7 +93,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
       };
 
   const validationSchema = Yup.object({
-    name: Yup.string().required("Pole jest wymagane"),
+    name: Yup.string().max(250, "Maksymalnie 250 znaków").required("Pole jest wymagane"),
     mapSrc: Yup.string().required("Pole jest wymagane"),
     strokeColor: Yup.string().required("Pole jest wymagane"),
     //delta: Yup.number().required("Pole jest wymagane"),
@@ -135,6 +136,20 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
             } :{
               from: { pathname: "/maps", state: { yearId: location.state.yearId }},
             };
+            setLatitude(0)
+            setLongitude(0)
+        
+            setMarkers([])
+            setPolylines("")
+            setDelta(0)
+            setValue("0")
+            setMap(false)
+            setTabDisabled(true)
+            setLineColor("#00ff00")
+            setLineWidth(5)
+            setLinkToNavigationDescription("Przejdź do nawigacji")
+            setLinkToNavigationColor("#000000")
+            setDisplayColorPicker(false)
             formik.resetForm()
             formik.setSubmitting(false)
             history.push(from);
@@ -414,7 +429,9 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                 <div className="ml-auto">
                   {(!popup && !isAddMode) && <MuiButton 
                   icon={MuiBtnType.Delete} 
-                  disabled={formik.isSubmitting}
+                  showTooltip={true}
+                  tooltip={formik.isSubmitting || elements.find(e => e.type=="Map" && e.mapId == row.id)?"Ta mapa jest przypisana w elemencie": "Usuń mapę"}
+                  disabled={formik.isSubmitting || elements.find(e => e.type=="Map" && e.mapId == row.id)}
                   onClick={() => onDelete(formik)}
                   />
                   }
@@ -429,7 +446,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
 
                   </TabList>
                 </Box>
-                <TabPanel value ={"0"} >
+                <TabPanel value={"0"} >
                   <FormikControl
                     control="input"
                     type="text"
@@ -452,11 +469,12 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                     margin="normal"
                   />
                   {/* <input type='file' accept=".kml" onChange={fileChanged}></input> */}
-                  <DropzoneAreaBase
+                  {isAddMode && <DropzoneAreaBase
+                    Icon={CloudUploadOutlinedIcon}
                     acceptedFiles={[]}
                     inputProps={{accept: '.kml'}}
                     filesLimit={1}
-                    dropzoneText={"PRZECIĄGNIJ PLIK KML LUB KLIKNIJ ABY DODAĆ MAPĘ"}
+                    dropzoneText={"PRZECIĄGNIJ PLIK KML LUB KLIKNIJ, ABY DODAĆ MAPĘ"}
                     onAdd={(files) => {
                       files?.length > 0 && fileChangedBox(files)}}
                     onDelete={() => {
@@ -466,9 +484,9 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                       setPolylines("")
                       setMap(null)
                     }}
-                    dropzoneClass={map? "file-success mt-3" : "bg-danger mt-3"}
+                    dropzoneClass={map? "file-success mt-3 h150" : "bg-light mt-3 h150"}
                     dropzoneProps={{disabled: !isAddMode}}
-                  />
+                  /> }
                 </TabPanel>
                 <TabPanel value={"1"} disabled={tabDisabled} >
                 <div className="d-flex justify-content-center">

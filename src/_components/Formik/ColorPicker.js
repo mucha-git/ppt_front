@@ -12,6 +12,9 @@ import { InputLabel, FormControl, createTheme, ThemeProvider, CssBaseline, Typog
 function ColorPicker(props) {
   const { label, name, className, inline, wymagane, ...rest } = props;
   const [displayColorPicker, setDisplayColorPicker] = useState(false)
+  const [mouseOver, setMouseOver] = useState(false)
+  const [mouseClick, setMouseClick] = useState(false)
+
   const palette = {
     red: '#ff0000',
     blue: '#0000ff',
@@ -29,6 +32,7 @@ function ColorPicker(props) {
   };
 
   const handleClick = () => {
+    setMouseClick(true)
     setDisplayColorPicker(!displayColorPicker)
   };
 
@@ -36,13 +40,20 @@ function ColorPicker(props) {
     setDisplayColorPicker(false )
   };
 
+  window.addEventListener('click', function(e){   
+    if (document.getElementById(name + "-box").contains(e.target)){
+      // Clicked in box
+    } else{
+      setMouseClick(false)
+    }
+  });
+
   return (
     <div className={className != null ? className : "form-group col"}>
       <Field name={name} autoComplete="off">
-        {({ form, field }) => {
-          const { setFieldValue } = form;
-          const { value } = field;
-
+        {(dat) => {
+          const { setFieldValue } = dat.form;
+          const { value } = dat.field;
           const styles = reactCSS({
             'default': {
               color: {
@@ -77,40 +88,26 @@ function ColorPicker(props) {
             },
           });
 
-          return (
-            <MuiColorInput
-            error={form.errors[name] != null}
-            label={label} 
-            format={'hex'}
-            id={name} 
-            value={value} 
-            helperText={form.errors[name]}
-            isAlphaHidden={true}
-            onChange={(val, e) => setFieldValue(name, e.hex) } 
-            {...rest}
-          />
-          )
-
-          return (
-            <div className="MuiFormControl-root MuiFormControl-marginNormal MuiFormControl-fullWidth MuiTextField-root css-17vbkzs-MuiFormControl-root-MuiTextField-root" onClick={handleClick}>
-              <label className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-outlined MuiFormLabel-colorPrimary MuiFormLabel-filled MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-outlined css-1jy569b-MuiFormLabel-root-MuiInputLabel-root" data-shrink="true" htmlFor={name} id={`${name}-label`}>{label}</label>
-              <div className="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl css-md26zr-MuiInputBase-root-MuiOutlinedInput-root">
-                <div className="MuiInputBase-input MuiOutlinedInput-input css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input rounded">
-                <fieldset aria-hidden="true" className="MuiOutlinedInput-notchedOutline css-1d3z3hw-MuiOutlinedInput-notchedOutline  overflow-visible">
-                  <legend className="css-14lo706">
+return (
+  <div id={name + "-box"} onMouseOver={() => setMouseOver(true)} onMouseOut={() => {setMouseOver(false)}} className="MuiFormControl-root MuiFormControl-marginNormal MuiFormControl-fullWidth css-1iledgx-MuiFormControl-root position-relative" onClick={handleClick}>
+  <label className={mouseClick?"MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-outlined MuiFormLabel-colorPrimary Mui-focused MuiFormLabel-filled MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-outlined css-1jy569b-MuiFormLabel-root-MuiInputLabel-root": "MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-outlined MuiFormLabel-colorPrimary MuiFormLabel-filled MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-outlined css-1jy569b-MuiFormLabel-root-MuiInputLabel-root"} data-shrink="true" htmlFor="link-to-navigation-color" id="link-to-navigation-color-label">{label}</label>
+  <div className={mouseClick?" MuiInputBase-root MuiOutlinedInput-root MuiOutlinedInput-notchedOutline MuiInputBase-colorPrimary MuiInputBase-fullWidth Mui-focused MuiInputBase-formControl css-md26zr-MuiInputBase-root-MuiOutlinedInput-root": "MuiInputBase-root MuiOutlinedInput-root MuiOutlinedInput-notchedOutline MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl css-md26zr-MuiInputBase-root-MuiOutlinedInput-root"}>
+    <div className="MuiInputBase-input MuiOutlinedInput-imput css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input rounded">
+    <fieldset aria-hidden="true" style={mouseClick? {border: '2px solid #1976d2'}: {}} className="MuiOutlinedInput-notchedOutline css-1d3z3hw-MuiOutlinedInput-notchedOutline  overflow-visible mui-border">
+      <legend className="css-14lo706">
                     <span>{label}</span>
                   </legend>
                   <div>
-                    <div className="d-flex flex-row">
+                    <div className="d-flex">
                       <div style={ styles.swatch } >
                         <div style={ styles.color } />
                       </div>
-                      <div className="pt-2 pl-2">{value}</div>
+                      <div className="pl-2 align-self-center">{value}</div>
                     </div>
                     {displayColorPicker ? <div style={ styles.popover }>
                       <div style={ styles.cover } onClick={handleClose}/>
                       <SketchPicker 
-                      {...field} 
+                      {...dat.field} 
                       {...rest}
                         id={name}
                         disableAlpha={true}
@@ -134,8 +131,24 @@ function ColorPicker(props) {
             // onChangeComplete={(val, e) => setFieldValue(name, val.hex)}
             // />
           );
+          return (
+            <MuiColorInput
+            error={form.errors[name] != null}
+            label={label} 
+            format={'hex'}
+            id={name} 
+            value={value} 
+            helperText={form.errors[name]}
+            isAlphaHidden={true}
+            onChange={(val, e) => setFieldValue(name, e.hex) } 
+            {...rest}
+          />
+          )
+
+          
         }}
       </Field>
+      <ErrorMessage name={name} component={TextError} />
     </div>
   );
 }

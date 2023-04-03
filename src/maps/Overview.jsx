@@ -8,17 +8,22 @@ import { MuiBtnType } from "../_helpers/MuiBtnType";
 import SendToApp from "../_components/SendToApp";
 import { NavLink } from "react-router-dom";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import { history } from "../_helpers"
 
 function Overview({ match }) {
-  const {isSet, setData, yearId, years} = useContext(AppContext)
+  const {isSet, setData, yearId, years, mapPins} = useContext(AppContext)
   const { path } = match;
   const [year, setYearId] = useState(yearId);
+  const [disabled, setDisabled] = useState(true);
 
   useEffect(() => {
     isSet()
   }, []);
 
+  useEffect(() => {setDisabled(mapPins.length == 0)}, [mapPins])
+
   const handleChange = (event) => {
+    setDisabled(true)
     mapsService.getMaps(event.target.value).then(e => {setYearId(event.target.value); setData(event.target.value)});
   };
 
@@ -44,9 +49,16 @@ function Overview({ match }) {
         }
         </div>
         <div>
-          <NavLink to={{pathname: `${path}/dodaj`, state: {yearId: year } }} className="nav-item center-divs">
-            <MuiButton icon={MuiBtnType.Add} text="Dodaj nową mapę" className="p-2 pr-4 pl-4" />
-          </NavLink>
+          {/* <NavLink to={{pathname: `${path}/dodaj`, state: {yearId: year } }} className="nav-item center-divs"> */}
+            <MuiButton 
+              icon={MuiBtnType.Add} 
+              text="Dodaj nową mapę" 
+              className="p-2 pr-4 pl-4" 
+              onClick={() => history.push({pathname: `${path}/dodaj`, state: {yearId: year } })}
+              disabled={disabled}
+              tooltip={"Musisz najpierw dodać pinezki map"}
+              />
+          {/* </NavLink> */}
         </div>
         <div><SendToApp /></div>
         </div>

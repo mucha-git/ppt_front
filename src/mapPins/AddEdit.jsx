@@ -9,7 +9,7 @@ import MuiButton from "../_components/MuiButton";
 import { MuiBtnType } from "../_helpers/MuiBtnType";
 
 function AddEdit({ history, popup, close, lista, setLista, yearId }) {
-  const {updateMapPins, set} = useContext(AppContext)
+  const {updateMapPins, set, maps} = useContext(AppContext)
   useEffect(() => {
     if(!set){
       const { from } = {from: { pathname: "/mapPins"}}
@@ -37,7 +37,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
 
   const validationSchema = Yup.object({
     name: Yup.string().required("Pole jest wymagane"),
-    pinSrc: Yup.string().min(1, "Minimum 1 znak").required("Pole jest wymagane"),
+    pinSrc: Yup.string().min(1, "Minimum 1 znak").required("Brak grafiki do wyświetlenia"),
     width: Yup.number().min(1, "Musi być większe od 0").required("Pole jest wymagane"),
     height: Yup.number().min(1, "Musi być większe od 0").required("Pole jest wymagane")
   });
@@ -140,8 +140,10 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                 </div>
                 <div className="ml-auto">
                   {(!popup && !isAddMode) && <MuiButton 
+                  tooltip={formik.isSubmitting || maps.find(e => e.markers.find( ma => ma.pinId == row.id))?"Ta pinezka jest przypisana w mapie": "Usuń pinezkę"}
                   icon={MuiBtnType.Delete} 
-                  disabled={formik.isSubmitting}
+                  showTooltip={true}
+                  disabled={formik.isSubmitting || maps.find(e => e.markers.find( ma => ma.pinId == row.id))}
                   onClick={() => onDelete(formik)}
                   />
                   }

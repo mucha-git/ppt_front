@@ -14,6 +14,7 @@ import { AppContext } from '../../_helpers/context';
 import { elementsService } from "@/_services";
 import MuiButton from "../../_components/MuiButton";
 import { MuiBtnType } from "../../_helpers/MuiBtnType";
+import { history } from "../../_helpers";
 
 function ElementsTable({ parentViewId, yearId, path }) {
     const { elements, views, updateElements, isSet } = useContext(AppContext);
@@ -92,9 +93,13 @@ const akcje = (cell, row, rowIndex) => {
   return (
     <div>
       <div className="d-flex justify-content-center mt-3">
-    <NavLink to={{pathname: `/elements/dodaj`, state: {yearId: yearId, parentViewId: parentViewId} }} className="nav-item center-divs">
-      <MuiButton icon={MuiBtnType.Add} text="Dodaj nowy element" className="p-2 pr-4 pl-4" />
-    </NavLink>
+    {/* <NavLink to={{pathname: `/elements/dodaj`, state: {yearId: yearId, parentViewId: parentViewId} }} className="nav-item center-divs"> */}
+      <MuiButton 
+        icon={MuiBtnType.Add} 
+        text="Dodaj nowy element" 
+        className="p-2 pr-4 pl-4"
+        onClick={() => history.push({pathname: `/elements/dodaj`, state: {yearId: yearId, parentViewId: parentViewId} })} />
+    {/* </NavLink> */}
     </div>
     <BootstrapTable
     bootstrap4

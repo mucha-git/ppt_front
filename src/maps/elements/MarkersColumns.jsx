@@ -23,7 +23,8 @@ function KolumnaTitle(){return{
         editable: true,
         editor: {
             type: Type.TEXTAREA
-          }
+          },
+        editorClasses: "shadow-none"
     }}
 
 function KolumnaDescription(){return{
@@ -35,8 +36,9 @@ function KolumnaDescription(){return{
         editable: true,
         editor: {
             type: Type.TEXTAREA,
-
-          }
+            
+          },
+        editorClasses: "shadow-none"
     }}
 
 function KolumnaPinId(options){return{

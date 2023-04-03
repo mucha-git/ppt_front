@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 import MuiButton from "../_components/MuiButton";
 import { MuiBtnType } from "../_helpers/MuiBtnType";
 import { accountService } from "../_services";
-import { Role } from "../_helpers";
+import { Role, history } from "../_helpers";
 
 function Overview({ match }) {
   const { path } = match;
@@ -18,9 +18,13 @@ function Overview({ match }) {
         
         {user.role == Role.Manager && <div className="d-flex justify-content-end">
           <div>
-            <NavLink to={{pathname: `${path}/dodaj`, pilgrimageId: user.pilgrimageId }} className="nav-item center-divs">
-              <MuiButton icon={MuiBtnType.Add} text="Dodaj nowy rocznik" className="p-2 pr-4 pl-4" />
-            </NavLink>
+            {/* <NavLink to={{pathname: `${path}/dodaj`, pilgrimageId: user.pilgrimageId }} className="nav-item center-divs"> */}
+              <MuiButton 
+                icon={MuiBtnType.Add} 
+                text="Dodaj nowy rocznik" 
+                className="p-2 pr-4 pl-4"
+                onClick={() => history.push({pathname: `${path}/dodaj`, pilgrimageId: user.pilgrimageId })} />
+            {/* </NavLink> */}
           </div>
         </div>
         }

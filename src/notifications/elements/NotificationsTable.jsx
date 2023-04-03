@@ -9,6 +9,7 @@ import MuiButton from "../../_components/MuiButton";
 import { MuiBtnType } from "../../_helpers/MuiBtnType";
 import { accountService, oneSignalService } from "../../_services";
 import moment from 'moment';
+import { history } from "../../_helpers";
 
 function NotificationsTable({ path }) {
   const user = accountService.userValue;
@@ -57,9 +58,13 @@ function NotificationsTable({ path }) {
           />
         </div>
         <div>
-          <NavLink to={{pathname: `${path}/dodaj`}} className="nav-item center-divs">
-            <MuiButton icon={MuiBtnType.Add} text="Dodaj powiadomienie" className="p-2 pr-4 pl-4" />
-          </NavLink>
+          {/* <NavLink to={{pathname: `${path}/dodaj`}} className="nav-item center-divs"> */}
+            <MuiButton 
+              icon={MuiBtnType.Add} 
+              text="Dodaj powiadomienie" 
+              className="p-2 pr-4 pl-4"
+              onClick={() => history.push({pathname: `${path}/dodaj`})} />
+          {/* </NavLink> */}
         </div>
       </div>
       <BootstrapTable

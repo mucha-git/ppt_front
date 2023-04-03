@@ -93,7 +93,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
       else return schema.nullable()
     }),
     imgSrc: Yup.string().when('type', (type, schema) => {
-      if (type == "Graphic" || type == "GraphicWithText") {return schema.required('Wymagane')}
+      if (type == "Graphic" || type == "GraphicWithText") {return schema.required('Brak grafiki do wyświetlenia')}
       else return schema.nullable()
     }),
     autoplay: Yup.boolean().when('type', {
@@ -272,6 +272,8 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                 <div className="ml-auto">
                   {(!popup && !isAddMode) && <MuiButton 
                   icon={MuiBtnType.Delete} 
+                  showTooltip={true}
+                  tooltip="Usuń element"
                   disabled={formik.isSubmitting}
                   onClick={() => onDelete(formik)}
                   />
@@ -349,7 +351,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                 margin="normal"
               />
               
-              {(formik.values.imgSrc != null && formik.values.imgSrc != "")? <img className="pt-2" src={formik.values.imgSrc} width={'100%'} height={'100%'} />: "Brak grafiki do wyświetlenia"}
+              {(formik.values.imgSrc != null && formik.values.imgSrc != "")? <img className="pt-2" src={formik.values.imgSrc} width={'100%'} height={'100%'} />: ""}
               <div className="clear" />
               </>}
               {(formik.values.type === "YoutubePlayer") &&

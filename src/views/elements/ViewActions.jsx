@@ -6,6 +6,7 @@ import { AppContext } from '../../_helpers/context';
 import MuiButton from "../../_components/MuiButton";
 import { MuiBtnType } from "../../_helpers/MuiBtnType";
 import { ListType } from "../../_helpers/ListType";
+import { history } from "../../_helpers";
 
 function Actions(props) {
     const { updateViews, views, elements } = useContext(AppContext);
@@ -40,18 +41,34 @@ function Actions(props) {
         <div className={"d-flex align-items-start flex-column h-100"}>
             <div className="d-flex justify-content-end w-100 h-100">
                 <div className="">
-                    {isInternalType() && <NavLink to={{pathname: addButtonPath(), state: {yearId: props.row.yearId, parentViewId: props.row.id} }} className="nav-item center-divs">
-                        <MuiButton icon={MuiBtnType.Add} onClick={() => {}} />
-                    </NavLink>}
-                    <NavLink
+                    {isInternalType() && //<NavLink to={{pathname: addButtonPath(), state: {yearId: props.row.yearId, parentViewId: props.row.id} }} className="nav-item center-divs">
+                        <MuiButton 
+                            icon={MuiBtnType.Add} 
+                            showTooltip={true}
+                            tooltip={"Dodaj podwidok/podelement"}
+                            onClick={() => history.push({pathname: addButtonPath(), state: {yearId: props.row.yearId, parentViewId: props.row.id} })} />
+                    //</NavLink>
+                }
+                    {/* <NavLink
                         to={{
                             pathname: `${props.path}/edytuj`,
                             state: {row: props.row},
                         }}
-                    >
-                        <MuiButton icon={MuiBtnType.Edit} onClick={() => {}} />
-                    </NavLink>
-                    <MuiButton icon={MuiBtnType.Delete} onClick={() => {
+                    > */}
+                        <MuiButton 
+                            icon={MuiBtnType.Edit} 
+                            showTooltip={true}
+                            tooltip={"Edytuj widok"}
+                            onClick={() => history.push({
+                            pathname: `${props.path}/edytuj`,
+                            state: {row: props.row},
+                        })} />
+                    {/* </NavLink> */}
+                    <MuiButton 
+                        icon={MuiBtnType.Delete} 
+                        showTooltip={true}
+                        tooltip={"Usuń widok"}
+                        onClick={() => {
                         viewsService._delete(props.cell).then(() => {
                             updateViews(props.row.yearId)
                         });
