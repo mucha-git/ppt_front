@@ -140,7 +140,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                 </div>
                 <div className="ml-auto">
                   {(!popup && !isAddMode) && <MuiButton 
-                  tooltip={formik.isSubmitting || maps.find(e => e.markers.find( ma => ma.pinId == row.id))?"Ta pinezka jest przypisana w mapie": "Usuń pinezkę"}
+                  tooltip={formik.isSubmitting || maps.find(e => e.markers.find( ma => ma.pinId == row.id))?"Nie można usunąć przypisanej pinezki": "Usuń pinezkę"}
                   icon={MuiBtnType.Delete} 
                   showTooltip={true}
                   disabled={formik.isSubmitting || maps.find(e => e.markers.find( ma => ma.pinId == row.id))}

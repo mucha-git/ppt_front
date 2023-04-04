@@ -29,7 +29,7 @@ function Actions(props) {
                 icon={MuiBtnType.Delete} 
                 showTooltip={true}
                 disabled={maps.find( m => m.markers.find(ma => ma.pinId == props.cell))}
-                tooltip={maps.find( m => m.markers.find(ma => ma.pinId == props.cell))? "Ta pinezka jest przypisana w mapie" : "Usuń pinezkę"}
+                tooltip={maps.find( m => m.markers.find(ma => ma.pinId == props.cell))? "Nie można usunąć przypisanej pinezki" : "Usuń pinezkę"}
                 onClick={() => {
                     mapPinsService._delete(props.cell).then(() => {
                         updateMapPins(props.row.yearId)

@@ -430,7 +430,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                   {(!popup && !isAddMode) && <MuiButton 
                   icon={MuiBtnType.Delete} 
                   showTooltip={true}
-                  tooltip={formik.isSubmitting || elements.find(e => e.type=="Map" && e.mapId == row.id)?"Ta mapa jest przypisana w elemencie": "Usuń mapę"}
+                  tooltip={formik.isSubmitting || elements.find(e => e.type=="Map" && e.mapId == row.id)?"Nie można usunąć przypisanej mapy": "Usuń mapę"}
                   disabled={formik.isSubmitting || elements.find(e => e.type=="Map" && e.mapId == row.id)}
                   onClick={() => onDelete(formik)}
                   />

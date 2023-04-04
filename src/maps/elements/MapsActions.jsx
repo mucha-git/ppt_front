@@ -29,7 +29,7 @@ function Actions(props) {
                 icon={MuiBtnType.Delete} 
                 showTooltip={true}
                 disabled={elements.find(e => e.type=="Map" && e.mapId == props.cell)}
-                tooltip={elements.find(e => e.type=="Map" && e.mapId == props.cell)?"Ta mapa jest przypisana w elemencie" : "Usuń mapę"}
+                tooltip={elements.find(e => e.type=="Map" && e.mapId == props.cell)?"Nie można usunąć przypisanej mapy" : "Usuń mapę"}
                 onClick={() => {
                     mapsService._delete(props.cell).then(() => {
                         updateMaps(props.row.yearId)
