@@ -27,6 +27,7 @@ function Actions(props) {
             {/* </NavLink> */}
             <MuiButton 
                 icon={MuiBtnType.Delete} 
+                id={"delete-maps-" + props.cell}
                 showTooltip={true}
                 disabled={elements.find(e => e.type=="Map" && e.mapId == props.cell)}
                 tooltip={elements.find(e => e.type=="Map" && e.mapId == props.cell)?"Nie można usunąć przypisanej mapy" : "Usuń mapę"}

@@ -26,10 +26,5 @@ function KolumnaAkcje(akcje){return{
         formatter: akcje,
         classes: "height1 pt-3 pb-3",
         headerClasses: "header-class",
-        headerStyle: { width: "110px"},
-        events: {
-            onClick: (e, column, columnIndex, row, rowIndex) => {
-              e.stopPropagation();
-            },
-        },
+        headerStyle: { width: "110px"}
     }}

@@ -40,10 +40,5 @@ function KolumnaOrder(){   return {
         classes: "padding-order",
         headerClasses: "header-class",
         headerStyle: { width: "50px" },
-        editable: true,
-        events: {
-            onClick: (e, column, columnIndex, row, rowIndex) => {
-              e.stopPropagation();
-            },
-        },
+        editable: true
     }}

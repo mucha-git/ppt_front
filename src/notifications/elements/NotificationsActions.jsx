@@ -8,6 +8,7 @@ function Actions(props) {
         <div className={"buttons"}>
             {!props.row.canceled && props.row.completed_at == null && <MuiButton 
                 icon={MuiBtnType.Delete} 
+                id={"delete-notification-" + props.cell}
                 showTooltip={true}
                 tooltip={"Usuń powiadomienie"}
                 onClick={() => {

@@ -9,7 +9,11 @@ import { faPlus,
     faMagnifyingGlass,
     faCloudArrowDown,
     faCloudArrowUp,
-    faArrowLeftLong } from '@fortawesome/free-solid-svg-icons'
+    faArrowLeftLong,
+    faXmark,
+    faCheck,
+    faFileExport } from '@fortawesome/free-solid-svg-icons'
+    import {  } from '@fortawesome/free-regular-svg-icons'
 
 export const MuiBtnType = {
     Add: {icon: faPlus, color: BtnColors.green},
@@ -26,5 +30,8 @@ export const MuiBtnType = {
     Submit: {icon: null, color: BtnColors.blue},
     SubmitAndNew: {icon: null, color: BtnColors.green},
     DeleteWithoutIcon: {icon: null, color: BtnColors.red},
-    ArrowBack: {icon: faArrowLeftLong, color: BtnColors.transparent}
+    ArrowBack: {icon: faArrowLeftLong, color: BtnColors.transparent},
+    Yes: {icon: faCheck, color: BtnColors.inverseGreen},
+    No: {icon: faXmark, color: BtnColors.inverseRed},
+    Copy: {icon: faFileExport, color: BtnColors.orange}
 }

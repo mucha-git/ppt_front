@@ -29,6 +29,7 @@ function Actions(props) {
             {/* </NavLink> */}
             {user.role == Role.Admin && <MuiButton 
                 icon={MuiBtnType.Delete} 
+                id={"delete-pilgrimages-" + props.cell}
                 showTooltip={true}
                 tooltip={"Usuń pielgrzymkę"}
                 onClick={() => {

@@ -61,6 +61,8 @@ module.exports = (env) => {
         externals: {
             // global app config object
             config: JSON.stringify({
+                //version: 46,
+                version: process.env.REACT_APP_VERSION,
                 apiUrl: process.env.REACT_APP_API_URL
                 //apiUrl: 'http://pielgrzymka.tplinkdns.com:7010'
                 //apiUrl: 'http://localhost:52171'

@@ -6,6 +6,7 @@ const baseUrl = `${config.apiUrl}/years`;
 export const yearsService = {
     getYears,
     create,
+    copy,
     update,
     _delete,
     resetYearInRedis
@@ -17,6 +18,10 @@ function getYears() {
 
 function create(params) {
     return fetchWrapper.post(baseUrl, params);
+}
+
+function copy(params) {
+    return fetchWrapper.post(`${baseUrl}/copy`, params);
 }
 
 function update(params) {

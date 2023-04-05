@@ -28,6 +28,7 @@ function Actions(props) {
             {/* </NavLink> */}
             <MuiButton 
                 icon={MuiBtnType.Delete} 
+                id={"delete-element-" + props.cell}
                 showTooltip={true}
                 tooltip="Usuń element"
                 onClick={() => {

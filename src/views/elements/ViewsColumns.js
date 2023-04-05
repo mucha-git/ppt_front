@@ -28,7 +28,7 @@ function KolumnaOrder(){   return {
     editable: true,
     events: {
         onClick: (e, column, columnIndex, row, rowIndex) => {
-          e.stopPropagation();
+                e.stopPropagation();
         },
     },
 }}
@@ -42,8 +42,10 @@ function KolumnaAkcje(akcje){return{
         headerStyle: { width: "210px" },
         events: {
             onClick: (e, column, columnIndex, row, rowIndex) => {
-              e.stopPropagation();
-            },
+                if(e.target.localName != "div"){
+                    e.stopPropagation();
+                }
+            }
         },
         editable: false,
     }}

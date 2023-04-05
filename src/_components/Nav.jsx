@@ -3,6 +3,7 @@ import { NavLink, Route } from 'react-router-dom';
 import { Role } from '@/_helpers';
 import { accountService, alertService  } from '@/_services';
 import { AppContext } from "../_helpers/context";
+import config from 'config';
 
 function Nav() {
     const { resetContext } = useContext(AppContext);
@@ -28,37 +29,36 @@ function Nav() {
 
     return (
         <div>
-            <nav className="navbar navbar-expand navbar-dark bg-dark">
-                <div className="navbar-nav w-75">
-                    <NavLink exact to="/" className="nav-item nav-link">Strona główna</NavLink>
+            <nav className="d-flex p-2 bg-primary text-white">
+                
+                    <NavLink exact to="/" className="nav-item nav-link text-white">Strona główna</NavLink>
                     {user.role != Role.Admin &&
-                        <NavLink exact to="/views" className="nav-item nav-link">Widoki</NavLink>
+                        <NavLink exact to="/views" className="nav-item nav-link text-white">Widoki</NavLink>
                     }
                     {user.role != Role.Admin &&
-                        <NavLink exact to="/maps" className="nav-item nav-link">Mapy</NavLink>
+                        <NavLink exact to="/maps" className="nav-item nav-link text-white">Mapy</NavLink>
                     }
                     {user.role != Role.Admin &&
-                        <NavLink exact to="/mapPins" className="nav-item nav-link">Pinezki Map</NavLink>
+                        <NavLink exact to="/mapPins" className="nav-item nav-link text-white">Pinezki Map</NavLink>
                     }
-                    <NavLink to="/profile" className="nav-item nav-link">Konto</NavLink>
+                    <NavLink to="/profile" className="nav-item nav-link text-white">Konto</NavLink>
                     {(user.role === Role.Admin || user.role === Role.Manager) &&
-                        <NavLink to="/admin" className="nav-item nav-link">Panel Administracyjny</NavLink>
+                        <NavLink to="/admin" className="nav-item nav-link text-white">Panel Administracyjny</NavLink>
                     }
                     {(user.role === Role.Admin || user.role === Role.Manager) &&
-                        <NavLink to="/pilgrimages" className="nav-item nav-link">Pielgrzymki</NavLink>
+                        <NavLink to="/pilgrimages" className="nav-item nav-link text-white">Pielgrzymki</NavLink>
                     }
                     {(user.role === Role.Manager) &&
-                        <NavLink to="/years" className="nav-item nav-link">Roczniki</NavLink>
+                        <NavLink to="/years" className="nav-item nav-link text-white">Roczniki</NavLink>
                     }
                     {(user.role === Role.Manager || user.role === Role.User) 
                         && user.oneSignalAppId != null 
                         && user.oneSignalApiKey != null
-                        && <NavLink to="/notifications" className="nav-item nav-link">Powiadomienia</NavLink>
+                        && <NavLink to="/notifications" className="nav-item nav-link text-white">Powiadomienia</NavLink>
                     }
                     <a onClick={logout} className="nav-item nav-link">Wyloguj</a>
                 
-                    
-                </div>
+                <div className="ml-auto" style={{fontSize: 'small'}}>v. 1.{config.version}</div>
             </nav>
             <Route path="/admin" component={AdminNav} />
         </div>
