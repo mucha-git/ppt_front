@@ -4,7 +4,6 @@ import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import {AppContext} from '../_helpers/context'
 import bcrypt from "bcryptjs";
-import config from 'config';
 
 import { accountService, alertService } from '@/_services';
 
@@ -14,7 +13,7 @@ function Login({ history, location }) {
         email: '',
         password: ''
     };
-    console.log(config)
+    
     const validationSchema = Yup.object().shape({
         email: Yup.string()
             .email('Email jest niepoprawny')
