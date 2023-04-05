@@ -13,7 +13,7 @@ function Login({ history, location }) {
         email: '',
         password: ''
     };
-
+    console.log(process.env)
     const validationSchema = Yup.object().shape({
         email: Yup.string()
             .email('Email jest niepoprawny')
