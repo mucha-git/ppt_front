@@ -38,8 +38,8 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
   const validationSchema = Yup.object({
     name: Yup.string().required("Pole jest wymagane"),
     pinSrc: Yup.string().min(1, "Minimum 1 znak").required("Brak grafiki do wyświetlenia"),
-    width: Yup.number().min(1, "Musi być większe od 0").required("Pole jest wymagane"),
-    height: Yup.number().min(1, "Musi być większe od 0").required("Pole jest wymagane")
+    width: Yup.number().required("Pole jest wymagane"),
+    height: Yup.number().min(1, "Minimalna wysokość to 1").max(100, "Maksymalna wysokość to 100").required("Pole jest wymagane")
   });
 
   function setImageData(val, formik) {
