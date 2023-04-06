@@ -108,7 +108,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
     }),
     mapHeight: Yup.number().when('type', {
       is: "Map",
-      then: fieldSchema => fieldSchema.min(0, "Minimum 0").required('Wymagane'),
+      then: fieldSchema => fieldSchema.min(0, "Minimum 0").max(1000, "Maksymalnie 1000").required('Wymagane'),
       otherwise: fieldSchema => fieldSchema.nullable()
     }),
     mapId: Yup.number().when('type', {
