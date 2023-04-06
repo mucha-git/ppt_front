@@ -8,7 +8,6 @@ import { history } from "../../_helpers"
 
 function Actions(props) {
     const { updateYears, years } = useContext(AppContext);
-    console.log(years.map( m => m.year))
     return (
         <div className={"buttons"}>
             {/* <NavLink

@@ -16,14 +16,11 @@ import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import { RenderMap } from "./Map";
-import { parseDocument } from "./functions";
 import MuiButton from "../_components/MuiButton";
 import { MuiBtnType } from "../_helpers/MuiBtnType";
 import { TextField } from "@mui/material";
-import { SketchPicker } from "react-color";
 import reactCSS from 'reactcss'
 import { MuiColorInput } from "mui-color-input";
-import { DataGrid } from '@mui/x-data-grid';
 import { strokeThick } from "../_helpers/strokeThick";
 import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
 
@@ -79,7 +76,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
   const initialValues = isAddMode
     ? {
         name: "",
-        strokeColor: "",
+        strokeColor: "#00ff00",
         strokeWidth: 5,
         mapSrc: "",
         //delta: 2.5
@@ -306,6 +303,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
       setDelta(deltaa)
       setMap(true)
       setTabDisabled(false)
+      setValue("1")
     }
   }
 
@@ -440,9 +438,9 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
               <Box sx={{ width: '100%', typography: 'body1' }}>
               <TabContext value={value}>
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                  <TabList variant="fullWidth" onChange={handleChange} aria-label="disabled tabs example">
-                    <Tab label="Ustawienia mapy" value={"0"} />
-                    <Tab label="Podgląd mapy" value={"1"} disabled={tabDisabled} />
+                  <TabList className="map-tabs" variant="fullWidth" onChange={handleChange} aria-label="map editing">
+                    <Tab label="Ustawienia mapy" value={"0"} style={{outline: 'none'}} />
+                    <Tab label="Podgląd mapy" value={"1"} disabled={tabDisabled} style={{outline: 'none'}} />
 
                   </TabList>
                 </Box>
@@ -617,14 +615,14 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
               text={"Zapisz i dodaj kolejny"} 
               icon={MuiBtnType.SubmitAndNew} 
               onClick={() => onSubmitMaps(formik, true)} 
-              disabled={formik.isSubmitting || !formik.isValid} />
+              disabled={formik.isSubmitting || !formik.isValid || !map} />
               }
               <MuiButton 
                 className="pl-5 pr-5 pt-2 pb-2"
                 text={"Zapisz"} 
                 icon={MuiBtnType.Submit} 
                 onClick={() => onSubmitMaps(formik, false)} 
-                disabled={formik.isSubmitting || !formik.isValid} 
+                disabled={formik.isSubmitting || !formik.isValid || !map} 
               />
               {popup ? (
                   <MuiButton disabled={formik.isSubmitting} onClick={() => close()}  className="pl-5 pr-5 pt-2 pb-2" text={"Anuluj"} icon={MuiBtnType.Cancel} />

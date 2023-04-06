@@ -1,13 +1,10 @@
 import React, { useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import { Field, ErrorMessage } from "formik";
-import { isWymagane } from "@/_helpers";
 import TextError from "./TextError";
 import { SketchPicker } from "react-color";
 import { MuiColorInput } from 'mui-color-input'
-
 import reactCSS from 'reactcss'
-import { InputLabel, FormControl, createTheme, ThemeProvider, CssBaseline, Typography } from "@mui/material";
 
 function ColorPicker(props) {
   const { label, name, className, inline, wymagane, ...rest } = props;
@@ -87,7 +84,19 @@ function ColorPicker(props) {
               },
             },
           });
-
+          return (
+            <MuiColorInput
+            error={form.errors[name] != null}
+            label={label} 
+            format={'hex'}
+            id={name} 
+            value={value} 
+            helperText={form.errors[name]}
+            isAlphaHidden={true}
+            onChange={(val, e) => setFieldValue(name, e.hex) } 
+            {...rest}
+          />
+          )
 return (
   <div id={name + "-box"} onMouseOver={() => setMouseOver(true)} onMouseOut={() => {setMouseOver(false)}} className="MuiFormControl-root MuiFormControl-marginNormal MuiFormControl-fullWidth css-1iledgx-MuiFormControl-root position-relative" onClick={handleClick}>
   <label className={mouseClick?"MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-outlined MuiFormLabel-colorPrimary Mui-focused MuiFormLabel-filled MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-outlined css-1jy569b-MuiFormLabel-root-MuiInputLabel-root": "MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-outlined MuiFormLabel-colorPrimary MuiFormLabel-filled MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-outlined css-1jy569b-MuiFormLabel-root-MuiInputLabel-root"} data-shrink="true" htmlFor="link-to-navigation-color" id="link-to-navigation-color-label">{label}</label>
@@ -114,6 +123,7 @@ return (
                         color={ value} 
                         onChangeComplete={(val, e) => setFieldValue(name, val.hex) } 
                       />
+                      <div>Paleta</div>
                     </div> : null }
                   </div>
                 </fieldset>
@@ -131,21 +141,6 @@ return (
             // onChangeComplete={(val, e) => setFieldValue(name, val.hex)}
             // />
           );
-          return (
-            <MuiColorInput
-            error={form.errors[name] != null}
-            label={label} 
-            format={'hex'}
-            id={name} 
-            value={value} 
-            helperText={form.errors[name]}
-            isAlphaHidden={true}
-            onChange={(val, e) => setFieldValue(name, e.hex) } 
-            {...rest}
-          />
-          )
-
-          
         }}
       </Field>
       <ErrorMessage name={name} component={TextError} />

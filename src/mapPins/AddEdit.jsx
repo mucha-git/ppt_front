@@ -42,6 +42,19 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
     height: Yup.number().min(1, "Musi być większe od 0").required("Pole jest wymagane")
   });
 
+  function setImageData(val, formik) {
+    formik.setFieldValue("pinSrc", val)
+    const img = new Image();
+    img.onload = function() {
+      formik.setFieldValue("width", this.width)
+      formik.setFieldValue("height", this.height)
+    }
+    img.src = val;
+    formik.setFieldValue("pinSrc", val)
+    
+    
+  }
+
   const onSubmitMapPins = (formik, openNew) => {
     let values = formik.values
     // pobrać wysokość i szerokość z grafiki
@@ -166,6 +179,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                 className="form-item-width"
                 fullWidth
                 margin="normal"
+                onChange={(val) => setImageData(val.target.value, formik)}
               />
               <FormikControl
                 control="inputNumber"
@@ -174,15 +188,29 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                 className="form-item-width"
                 fullWidth
                 margin="normal"
+                onChange={(value) => {
+                  let newValue = value.target.value
+                  const setValues = (width, height) => {
+                    formik.setFieldValue("height", parseInt( newValue ))
+                    formik.setFieldValue("width", parseInt( parseInt( newValue )* width / height))
+                  }
+                  const img = new Image();
+                  img.onload = function() {
+                    setValues(this.width, this.height)
+                  }
+                  img.src = formik.values.pinSrc;
+                  
+                 }}
               />
-              <FormikControl
+              {(formik.values.pinSrc != null && formik.values.pinSrc != "")? <img className="pt-2" src={formik.values.pinSrc} width={formik.values.width} height={formik.values.height} />: ""}
+              {/* <FormikControl
                 control="inputNumber"
                 label={"Szerokość"}
                 name="width"
                 className="form-item-width"
                 fullWidth
                 margin="normal"
-              />
+              /> */}
             </div>
             <div className="d-flex flex-row-reverse bg-light pl-5 pr-5 pt-3 pb-3" >
             {(!popup && isAddMode) && <MuiButton 
