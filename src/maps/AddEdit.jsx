@@ -439,8 +439,8 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
               <TabContext value={value}>
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                   <TabList className="map-tabs" variant="fullWidth" onChange={handleChange} aria-label="map editing">
-                    <Tab label="Ustawienia mapy" value={"0"} style={{outline: 'none'}} />
-                    <Tab label="Podgląd mapy" value={"1"} disabled={tabDisabled} style={{outline: 'none'}} />
+                    <Tab label="Ustawienia mapy" value={"0"} classes={"map-tab"} style={{outline: 'none'}} />
+                    <Tab label="Podgląd mapy" value={"1"} classes={"map-tab"} disabled={tabDisabled} style={{outline: 'none'}} />
 
                   </TabList>
                 </Box>
