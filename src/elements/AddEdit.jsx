@@ -406,6 +406,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                   className="form-item-width"
                   fullWidth
                   margin="normal"
+                  onChange={(value) => formik.setFieldValue("mapHeight", parseInt(value.target.value))}
                 />
               </>}
               {(formik.values.type === "Navigation") && 
