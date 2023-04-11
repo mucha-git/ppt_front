@@ -9,8 +9,6 @@ import { MuiBtnType } from "../_helpers/MuiBtnType";
 export default function MuiButton({ id, icon, text, onClick, className = "", disabled = false, tooltip = "Operacja zabroniona", showTooltip = false}) {
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
-  const [disableTooltip, setDisableTooltip] = useState(!disabled && !showTooltip)
-  const anchorRef = useRef(null);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
     setOpen((prev) => !prev);
@@ -22,7 +20,7 @@ export default function MuiButton({ id, icon, text, onClick, className = "", dis
 
   return (
     <>
-    <Tooltip arrow title={tooltip} placement="bottom" disableInteractive disableTouchListener={disableTooltip} disableHoverListener={disableTooltip} disableFocusListener={disableTooltip} >
+    <Tooltip arrow title={tooltip} placement="bottom" disableInteractive disableTouchListener={!disabled && !showTooltip} disableHoverListener={!disabled && !showTooltip} disableFocusListener={!disabled && !showTooltip} >
       <span>
         <button 
           id={id}

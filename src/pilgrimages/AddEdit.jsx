@@ -5,12 +5,14 @@ import FormikControl from "@/_components/Formik/FormikControl";
 import { alertService } from "@/_services";
 import { useLocation, Link } from "react-router-dom";
 import { AppContext } from "../_helpers/context";
-import { pilgrimagesService } from "../_services";
+import { pilgrimagesService, accountService } from "../_services";
 import MuiButton from "../_components/MuiButton";
 import { MuiBtnType } from "../_helpers/MuiBtnType";
+import { Role } from "../_helpers";
 
 function AddEdit({ history }) {
   const {updatePilgrimages} = useContext(AppContext)
+  const user = accountService.userValue
   let location = useLocation();
   const isAddMode = location.state == undefined;
   //material ui // domyślne wartości w formularzach
@@ -116,9 +118,10 @@ function AddEdit({ history }) {
                   </h2>
                 </div>
                 <div className="ml-auto">
-                  {(!isAddMode) && <MuiButton 
+                  {(!isAddMode) && user.role == Role.Admin && <MuiButton 
                   icon={MuiBtnType.Delete} 
                   showTooltip={true}
+                  id={"delete-pilgrimage-" + row.id}
                   tooltip={"Usuń pielgrzymkę"}
                   disabled={formik.isSubmitting}
                   onClick={() => onDelete(formik)}
@@ -180,6 +183,7 @@ function AddEdit({ history }) {
             <MuiButton 
               className="pl-5 pr-5 pt-2 pb-2"
               text={"Zapisz"} 
+              tooltip="Aby aktywować wypełnij poprawnie formularz"
               icon={MuiBtnType.Submit} 
               onClick={() => onSubmitPilgrimage(formik)} 
               disabled={formik.isSubmitting || !formik.isValid} />

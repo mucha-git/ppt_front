@@ -21,12 +21,20 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
   //material ui // domyślne wartości w formularzach
   let {row } = location.state
 
+  const pinHeighList = [
+    {key: "Bardzo mała", value: 10},
+    {key: "Mała", value: 20},
+    {key: "Standardowa", value: 30},
+    {key: "Duża", value: 50},
+    {key: "Bardzo duża", value: 100}
+  ]
+
   const initialValues = isAddMode
     ? {
         name: "",
         pinSrc: "",
         width: 0,
-        height: 0
+        height: 30
       }
     : {
         name: row.name,
@@ -153,6 +161,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                 </div>
                 <div className="ml-auto">
                   {(!popup && !isAddMode) && <MuiButton 
+                  id={"delete-mapPin-" + row.id}
                   tooltip={formik.isSubmitting || maps.find(e => e.markers.find( ma => ma.pinId == row.id))?"Nie można usunąć przypisanej pinezki": "Usuń pinezkę"}
                   icon={MuiBtnType.Delete} 
                   showTooltip={true}
@@ -182,17 +191,18 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                 onChange={(val) => setImageData(val.target.value, formik)}
               />
               <FormikControl
-                control="inputNumber"
+                control="muiSelect"
                 label={"Wysokość"}
                 name="height"
+                options={pinHeighList}
                 className="form-item-width"
                 fullWidth
                 margin="normal"
                 onChange={(value) => {
                   let newValue = value.target.value
                   const setValues = (width, height) => {
-                    formik.setFieldValue("height", parseInt( newValue ))
-                    formik.setFieldValue("width", parseInt( parseInt( newValue )* width / height))
+                    formik.setFieldValue("height", newValue)
+                    formik.setFieldValue("width", parseInt( newValue * width / height))
                   }
                   const img = new Image();
                   img.onload = function() {
@@ -217,6 +227,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
             className="pl-5 pr-5 pt-2 pb-2"
             text={"Zapisz i dodaj kolejny"} 
             icon={MuiBtnType.SubmitAndNew} 
+            tooltip="Aby aktywować wypełnij poprawnie formularz"
             onClick={() => onSubmitMapPins(formik, true)} 
             disabled={formik.isSubmitting || !formik.isValid} />
             }
@@ -224,6 +235,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
               className="pl-5 pr-5 pt-2 pb-2"
               text={"Zapisz"} 
               icon={MuiBtnType.Submit} 
+              tooltip="Aby aktywować wypełnij poprawnie formularz"
               onClick={() => onSubmitMapPins(formik, false)} 
               disabled={formik.isSubmitting || !formik.isValid} />
             {popup ? (

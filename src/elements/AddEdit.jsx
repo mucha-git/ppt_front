@@ -35,6 +35,14 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
     return e.filter(v => v.viewId == parentViewId)
   }
 
+  const mapsHeighList = [
+    {key: "Pełny ekran", value: 0},
+    {key: "Bardzo mała", value: 100},
+    {key: "Mała", value: 250},
+    {key: "Duża", value: 500},
+    {key: "Bardzo duża", value: 1000}
+  ]
+
   const initialValues = isAddMode
     ? {
         type: "Text",
@@ -271,6 +279,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                 </div>
                 <div className="ml-auto">
                   {(!popup && !isAddMode) && <MuiButton 
+                  id={"delete-element-" + row.id}
                   icon={MuiBtnType.Delete} 
                   showTooltip={true}
                   tooltip="Usuń element"
@@ -400,6 +409,15 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                   margin="normal"
                 />
                 <FormikControl
+                  control="muiSelect"
+                  label={"Wysokość mapy"}
+                  name="mapHeight"
+                  options={mapsHeighList}
+                  className="form-item-width"
+                  fullWidth
+                  margin="normal"
+                />
+                {/* <FormikControl
                   control="inputNumber"
                   label={"Wysokość mapy"}
                   name="mapHeight"
@@ -407,7 +425,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                   fullWidth
                   margin="normal"
                   onChange={(value) => formik.setFieldValue("mapHeight", parseInt(value.target.value))}
-                />
+                /> */}
               </>}
               {(formik.values.type === "Navigation") && 
               <>
@@ -429,6 +447,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                 className="pl-5 pr-5 pt-2 pb-2"
                 text={"Zapisz i dodaj kolejny"} 
                 icon={MuiBtnType.SubmitAndNew} 
+                tooltip="Aby aktywować wypełnij poprawnie formularz"
                 onClick={() => onSubmitElements(formik, true)} 
                 disabled={formik.isSubmitting || !formik.isValid} />
               }
@@ -436,6 +455,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                 className="pl-5 pr-5 pt-2 pb-2"
                 text={"Zapisz"} 
                 icon={MuiBtnType.Submit} 
+                tooltip="Aby aktywować wypełnij poprawnie formularz"
                 onClick={() => onSubmitElements(formik, false)} 
                 disabled={formik.isSubmitting || !formik.isValid }
               />

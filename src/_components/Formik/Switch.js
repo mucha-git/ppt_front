@@ -5,7 +5,7 @@ import {Switch as MuiSwitch} from '@mui/joy';
 import Typography from '@mui/joy/Typography';
 
 function SwitchMui(props) {
-  const { label, name, ...rest } = props;
+  const { label, name, disabled = false, ...rest } = props;
   return (
     <div>
       <Field
@@ -21,6 +21,7 @@ function SwitchMui(props) {
                 color={ value ? 'success' : 'neutral'}
                 checked={value}
                 variant="outlined"
+                disabled={disabled}
                 endDecorator={value ? 'Włączone' : 'Wyłączone'}
                 slotProps={{
                   endDecorator: {

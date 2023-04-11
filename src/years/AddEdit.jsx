@@ -47,7 +47,7 @@ function AddEdit({ history }) {
 
   const onSubmitYear = (formik) => {
     let values = formik.values
-    values.year = parseInt(values.year)
+    //values.year = parseInt(values.year)
     //if(typeof values.isActive === "string") values.isActive = values.isActive == "true"
     if (isAddMode) {
       values.pilgrimageId = location.pilgrimageId
@@ -125,8 +125,9 @@ function AddEdit({ history }) {
                   {(!isAddMode) && <MuiButton 
                   icon={MuiBtnType.Delete} 
                   showTooltip={true}
-                  tooltip={"Usuń rocznik"}
-                  disabled={formik.isSubmitting}
+                  id={"delete-year-" + row.id}
+                  tooltip={(!isAddMode && row.isActive )? "Nie można usunąć aktywnego rocznika" : "Usuń rocznik"}
+                  disabled={formik.isSubmitting || (!isAddMode && row.isActive )}
                   onClick={() => onDelete(formik)}
                   />
                   }
@@ -157,6 +158,7 @@ function AddEdit({ history }) {
                 name="isActive"
                 className="form-item-width"
                 margin="normal"
+                disabled={(!isAddMode && row.isActive)}
               />
               </div>
               <FormikControl
@@ -168,12 +170,14 @@ function AddEdit({ history }) {
                 fullWidth
                 margin="normal"
               />
+              {(formik.values.imgSrc != null && formik.values.imgSrc != "")? <img className="pt-2" src={formik.values.imgSrc} width={'100%'} />: ""}
             </div>
             <div className="d-flex flex-row-reverse bg-light pl-5 pr-5 pt-3 pb-3" >
             <MuiButton 
               className="pl-5 pr-5 pt-2 pb-2"
               text={"Zapisz"} 
               icon={MuiBtnType.Submit} 
+              tooltip="Aby aktywować wypełnij poprawnie formularz"
               onClick={() => onSubmitYear(formik)} 
               disabled={formik.isSubmitting || !formik.isValid} />
               <Link to={{

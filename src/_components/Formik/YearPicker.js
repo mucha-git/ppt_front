@@ -11,27 +11,18 @@ function YearPicker(props) {
   const { label, name, className, inline, wymagane, excluded = [], ...rest } = props;
   return (
     <div className={className != null ? className : "form-group col"}>
-      {inline == null ? (
-        <div>
-          <label htmlFor={name}>
-            {label}
-            {wymagane ? isWymagane() : ""}
-          </label>
-        </div>
-      ) : (
-        <label htmlFor={name}>
-          {label}
-          {wymagane ? isWymagane() : ""}
-        </label>
-      )}
       <Field name={name} autoComplete="off">
         {({ form, field }) => {
           const { setFieldValue } = form;
           const { value } = field;
           return <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DatePicker defaultValue={dayjs(value) } label={label} views={['year']} 
+                  <DatePicker 
+                    defaultValue={dayjs(value) } 
+                    label={label} 
+                    views={['year']} 
                     minDate={dayjs(new Date().getFullYear().toString())}
                     shouldDisableYear={(year) => excluded.find(y => y == year.year()) }
+                    onChange={(val) => setFieldValue(name ,val.$y)}
                   />
                 </LocalizationProvider>
         }}

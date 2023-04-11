@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Editor } from "react-draft-wysiwyg";
-import { convertToRaw, ContentState, EditorState } from "draft-js";
+import { convertToRaw, ContentState, EditorState, RichUtils } from "draft-js";
 import draftToHtml from "draftjs-to-html";
 import htmlToDraft from "html-to-draftjs";
 
@@ -26,9 +26,21 @@ export const TextEditor = ({ value, setFieldValue = (val) => {}, disabled = fals
     setFieldValue(forFormik);
     setEditorState(editorState);
   };
+
+  const handleKeyCommand = (command, eState) => {
+    const newState = RichUtils.handleKeyCommand(eState, command);
+
+    if (newState) {
+      onEditorStateChange(newState);
+      return 'handled';
+    }
+
+    return 'not-handled';
+  };
   return (
     <div>
       <Editor
+      handleKeyCommand={handleKeyCommand}
         readOnly={disabled}
         toolbarHidden={disabled}
         editorState={editorState}
@@ -40,7 +52,7 @@ export const TextEditor = ({ value, setFieldValue = (val) => {}, disabled = fals
           blockType: { className: 'd-none'},
           fontSize: { className: 'd-none'},
           fontFamily: { className: 'd-none'},
-          list: { className: 'd-none'},
+          //list: { className: 'd-none'},
           textAlign: { className: 'd-none'},
           colorPicker: { className: 'd-none'},
           link: { className: 'd-none'},

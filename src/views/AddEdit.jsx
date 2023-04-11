@@ -214,6 +214,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                 <div className="ml-auto">
                   {(!popup && !isAddMode) && <MuiButton 
                   icon={MuiBtnType.Delete} 
+                  id={"delete-view-" + row.id}
                   showTooltip={true}
                   tooltip={"Usuń widok"}
                   disabled={formik.isSubmitting}
@@ -292,12 +293,14 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
             className="pl-5 pr-5 pt-2 pb-2"
             text={"Zapisz i dodaj kolejny"} 
             icon={MuiBtnType.SubmitAndNew} 
+            tooltip="Aby aktywować wypełnij poprawnie formularz"
             onClick={() => onSubmitViews(formik, true)} 
             disabled={formik.isSubmitting || !formik.isValid} />
             }
             <MuiButton 
               className="pl-5 pr-5 pt-2 pb-2"
               text={"Zapisz"} 
+              tooltip="Aby aktywować wypełnij poprawnie formularz"
               icon={MuiBtnType.Submit} 
               onClick={() => onSubmitViews(formik, false)} 
               disabled={formik.isSubmitting || !formik.isValid} />
