@@ -7,6 +7,7 @@ import { accountService } from './_services';
 import { App } from './app';
 
 import './styles.less';
+import { SnackbarProvider } from 'notistack';
 
 // setup fake backend
 // import { configureFakeBackend } from './_helpers';
@@ -18,7 +19,9 @@ accountService.refreshToken().finally(startApp);
 function startApp() { 
     render(
         <Router history={history}>
+            <SnackbarProvider maxSnack={5}>
                 <App />
+            </SnackbarProvider>
         </Router>,
         document.getElementById('app')
     );

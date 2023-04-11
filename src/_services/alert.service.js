@@ -1,8 +1,10 @@
 import { Subject } from 'rxjs';
 import { filter } from 'rxjs/operators';
+import { enqueueSnackbar } from 'notistack';
 
 const alertSubject = new Subject();
 const defaultId = 'default-alert';
+//const { enqueueSnackbar } = useSnackbar();
 
 export const alertService = {
     onAlert,
@@ -28,19 +30,23 @@ function onAlert(id = defaultId) {
 
 // convenience methods
 function success(message, options) {
-    alert({ ...options, type: AlertType.Success, message });
+    enqueueSnackbar(message,{variant: 'success' } );
+    //alert({ ...options, type: AlertType.Success, message });
 }
 
 function error(message, options) {
-    alert({ ...options, type: AlertType.Error, message });
+    enqueueSnackbar(message, {variant: 'error'} );
+    //alert({ ...options, type: AlertType.Error, message });
 }
 
 function info(message, options) {
-    alert({ ...options, type: AlertType.Info, message });
+    enqueueSnackbar(message, {variant: 'info'} );
+    //alert({ ...options, type: AlertType.Info, message });
 }
 
 function warn(message, options) {
-    alert({ ...options, type: AlertType.Warning, message });
+    enqueueSnackbar(message, {variant: 'warning'} );
+    //alert({ ...options, type: AlertType.Warning, message });
 }
 
 // core alert method
