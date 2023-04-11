@@ -47,7 +47,7 @@ export default function MuiButton({ id, icon, text, onClick, className = "", dis
           <Paper>
             <ClickAwayListener disableReactTree={true} onClickAway={handleClose}>
               <Typography sx={{ p: 2 }}>
-                <div>Czy na pewno chcesz wykonać tą operację?</div>
+                <div>Czy na pewno chcesz wykonać tę operację?</div>
                 <div><MuiButton icon={MuiBtnType.Yes} text={"Tak"} onClick={() => {onClick(); setOpen(false)}} />
                 <MuiButton icon={MuiBtnType.No} text={"Nie"} onClick={() => setOpen(false)} /></div>
               </Typography>
