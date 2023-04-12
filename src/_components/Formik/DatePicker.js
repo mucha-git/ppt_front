@@ -1,22 +1,13 @@
 import React from "react";
 import DateView, { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { Field, ErrorMessage } from "formik";
+import { Field } from "formik";
 import { isWymagane } from "@/_helpers";
-import TextError from "./TextError";
-import pl from "date-fns/locale/pl"; // the locale you want
+import pl from "date-fns/locale/pl";
 
 registerLocale("pl", pl); // register it with the name you want
 function DatePicker(props) {
-  const {
-    label,
-    name,
-    className,
-    inline,
-    wymagane,
-    setValue,
-    ...rest
-  } = props;
+  const { label, name, className, inline, wymagane, setValue, ...rest } = props;
   return (
     <div className={className != null ? className : "form-group col"}>
       {inline == null ? (

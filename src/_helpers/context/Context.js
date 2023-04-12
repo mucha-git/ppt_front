@@ -1,11 +1,18 @@
 import React, { createContext, useState } from "react";
 import PropTypes from "prop-types";
-import { viewsService, elementsService, mapsService, mapPinsService, pilgrimagesService, yearsService, accountService } from "../../_services";
+import {
+  viewsService,
+  elementsService,
+  mapsService,
+  mapPinsService,
+  pilgrimagesService,
+  yearsService,
+  accountService,
+} from "../../_services";
 import { Role } from "../role";
 export const Context = createContext({});
 
 export const Provider = (props) => {
-  
   // Initial values are obtained from the props
   const {
     pilgrimages: initialPilgrimages,
@@ -16,7 +23,7 @@ export const Provider = (props) => {
     maps: initialMaps,
     elements: initialElements,
     set: initialSet,
-    children
+    children,
   } = props;
 
   // Use State to keep the values
@@ -30,32 +37,32 @@ export const Provider = (props) => {
   const [set, setSet] = useState(initialSet);
 
   async function setContext() {
-      let id = await updatePilgrimages()
-      if(accountService.userValue.role != Role.Admin){
-        setData(id)
-      }
-      setSet(true);
+    let id = await updatePilgrimages();
+    if (accountService.userValue.role != Role.Admin) {
+      setData(id);
+    }
+    setSet(true);
   }
 
-  function setData(a){
-        setYearId(a);
-        updateViews(a)
-        updateElements(a)
-        updateMaps(a)
-        updateMapPins(a)
+  function setData(a) {
+    setYearId(a);
+    updateViews(a);
+    updateElements(a);
+    updateMaps(a);
+    updateMapPins(a);
   }
 
   function updateViews(a) {
     viewsService.getViews(a).then((a) => {
-      setViews(a)
-      return a
+      setViews(a);
+      return a;
     });
   }
 
   function updateElements(a) {
     elementsService.getElements(a).then((a) => {
-      setElements(a)
-      return a
+      setElements(a);
+      return a;
     });
   }
 
@@ -73,11 +80,11 @@ export const Provider = (props) => {
 
   async function updatePilgrimages() {
     let ret = 0;
-    await pilgrimagesService.getPilgrimages().then(p => {
+    await pilgrimagesService.getPilgrimages().then((p) => {
       setPilgrimages(p);
-      if(accountService.userValue.role != Role.Admin){
+      if (accountService.userValue.role != Role.Admin) {
         setYears(p[0].years);
-        ret = p[0].years[p[0].years.length -1].id
+        ret = p[0].years[p[0].years.length - 1].id;
       }
     });
     return ret;
@@ -119,7 +126,7 @@ export const Provider = (props) => {
     setContext,
     resetContext,
     isSet,
-    set
+    set,
   };
 
   // pass the value in provider and return
@@ -134,7 +141,7 @@ Provider.propTypes = {
   maps: PropTypes.array,
   elements: PropTypes.array,
   pilgrimages: PropTypes.array,
-  years: PropTypes.array
+  years: PropTypes.array,
 };
 
 Provider.defaultProps = {
@@ -145,5 +152,5 @@ Provider.defaultProps = {
   pilgrimages: [],
   years: [],
   yearId: null,
-  set: false
+  set: false,
 };

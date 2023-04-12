@@ -8,10 +8,10 @@ function Elements({ match }) {
   return (
     <div className="p-4">
       <div className="container">
-          <Switch>
-            <Route path={`${path}/dodaj`} component={AddEdit} />
-            <Route path={`${path}/edytuj`} component={AddEdit} />
-          </Switch>
+        <Switch>
+          <Route path={`${path}/dodaj`} component={AddEdit} />
+          <Route path={`${path}/edytuj`} component={AddEdit} />
+        </Switch>
       </div>
     </div>
   );

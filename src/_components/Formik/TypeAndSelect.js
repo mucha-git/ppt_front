@@ -6,7 +6,6 @@ import { isWymagane } from "@/_helpers";
 import { PopupWindow } from "../../views/elements/Popup";
 
 function TypeAndSelect(props) {
-
   const {
     label,
     name,
@@ -23,9 +22,7 @@ function TypeAndSelect(props) {
     ...rest
   } = props;
   let propValue = value;
-  const list = options//.map((x) => {
-  //  return { label: x.key, value: x.value.toString() };
-  //});
+  const list = options;
   const filterOption = (option, inputValue) => {
     const { label, value } = option;
     const otherKey = list.filter(
@@ -82,11 +79,7 @@ function TypeAndSelect(props) {
             className={inline == true ? classNameSelect : null}
             classNamePrefix={name}
             value={value ? list.filter((x) => x.value == propValue) : null}
-            placeholder={
-              placeholder
-                ? placeholder
-                : "Wybierz"
-            }
+            placeholder={placeholder ? placeholder : "Wybierz"}
             noOptionsMessage={() => {
               return "Brak opcji";
             }}

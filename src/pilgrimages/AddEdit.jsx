@@ -1,9 +1,9 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import FormikControl from "@/_components/Formik/FormikControl";
 import { alertService } from "@/_services";
-import { useLocation, Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { AppContext } from "../_helpers/context";
 import { pilgrimagesService, accountService } from "../_services";
 import MuiButton from "../_components/MuiButton";
@@ -11,12 +11,11 @@ import { MuiBtnType } from "../_helpers/MuiBtnType";
 import { Role } from "../_helpers";
 
 function AddEdit({ history }) {
-  const {updatePilgrimages} = useContext(AppContext)
-  const user = accountService.userValue
+  const { updatePilgrimages } = useContext(AppContext);
+  const user = accountService.userValue;
   let location = useLocation();
   const isAddMode = location.state == undefined;
-  //material ui // domyślne wartości w formularzach
-  let row = isAddMode? null: location.state.row
+  let row = isAddMode ? null : location.state.row;
 
   const initialValues = isAddMode
     ? {
@@ -24,18 +23,20 @@ function AddEdit({ history }) {
         isActive: false,
         logoSrc: null,
         oneSignal: "",
-        oneSignalApiKey: ""
+        oneSignalApiKey: "",
       }
     : {
         name: row.name,
         isActive: row.isActive,
         logoSrc: row.logoSrc,
         oneSignal: row.oneSignal,
-        oneSignalApiKey: row.oneSignalApiKey
+        oneSignalApiKey: row.oneSignalApiKey,
       };
 
   const validationSchema = Yup.object({
-    name: Yup.string().max(500, "Maksymalnie 500 znaków").required("Pole jest wymagane"),
+    name: Yup.string()
+      .max(500, "Maksymalnie 500 znaków")
+      .required("Pole jest wymagane"),
     isActive: Yup.bool().required("Pole jest wymagane"),
     logoSrc: Yup.string().max(1000, "Maksymalnie 1000 znaków").nullable(),
     oneSignal: Yup.string().max(50, "Maksymalnie 50 znaków").nullable(),
@@ -43,30 +44,29 @@ function AddEdit({ history }) {
   });
 
   const onSubmitPilgrimage = (formik) => {
-    let values = formik.values
-    if(values.oneSignal == "") values.oneSignal = null
-    if(values.oneSignalApiKey == "") values.oneSignalApiKey = null
-    //if(typeof values.isActive === "string") values.isActive = values.isActive == "true"
+    let values = formik.values;
+    if (values.oneSignal == "") values.oneSignal = null;
+    if (values.oneSignalApiKey == "") values.oneSignalApiKey = null;
     if (isAddMode) {
       pilgrimagesService
         .create(values)
         .then((x) => {
-          updatePilgrimages()
+          updatePilgrimages();
           alertService.success("Sukces", {
             keepAfterRouteChange: true,
           });
-          history.push('/pilgrimages');
+          history.push("/pilgrimages");
         })
         .catch((error) => {
           formik.setSubmitting(false);
           alertService.error(error);
-        });  
+        });
     } else {
       values.id = row.id;
       pilgrimagesService
         .update(values)
         .then(() => {
-          updatePilgrimages()
+          updatePilgrimages();
           alertService.success("Sukces", {
             keepAfterRouteChange: true,
           });
@@ -77,18 +77,21 @@ function AddEdit({ history }) {
           alertService.error(error);
         });
     }
-  }
+  };
 
   const onDelete = (formik) => {
-    formik.setSubmitting(true)
-    pilgrimagesService._delete(row.id).then(() => {
-      updatePilgrimages()
-      history.push({ pathname: "/pilgrimages"})
-    }).catch((error) => {
-      formik.setSubmitting(false)
-      alertService.error(error);
-    })
-  }
+    formik.setSubmitting(true);
+    pilgrimagesService
+      ._delete(row.id)
+      .then(() => {
+        updatePilgrimages();
+        history.push({ pathname: "/pilgrimages" });
+      })
+      .catch((error) => {
+        formik.setSubmitting(false);
+        alertService.error(error);
+      });
+  };
 
   return (
     <div className="box-shadow-main bg-white">
@@ -104,29 +107,30 @@ function AddEdit({ history }) {
             <div className="pl-5 pr-5 pt-5 pb-3">
               <div className="d-flex">
                 <div>
-                  <Link to={{
-                    pathname: "/pilgrimages"
-                    }} >
-                    <h2><MuiButton className="pl-2 pr-2" icon={MuiBtnType.ArrowBack} /></h2>
-                  </Link>
+                  <h2>
+                    <MuiButton
+                      className="pl-2 pr-2"
+                      icon={MuiBtnType.ArrowBack}
+                      onClick={() => history.push({ pathname: "/pilgrimages" })}
+                    />
+                  </h2>
                 </div>
                 <div>
                   <h2>
-                    {isAddMode
-                      ? "Nowa pielgrzymka"
-                      : "Edycja pielgrzymki"}
+                    {isAddMode ? "Nowa pielgrzymka" : "Edycja pielgrzymki"}
                   </h2>
                 </div>
-                <div className="ml-auto">
-                  {(!isAddMode) && user.role == Role.Admin && <MuiButton 
-                  icon={MuiBtnType.Delete} 
-                  showTooltip={true}
-                  id={"delete-pilgrimage-" + row.id}
-                  tooltip={"Usuń pielgrzymkę"}
-                  disabled={formik.isSubmitting}
-                  onClick={() => onDelete(formik)}
-                  />
-                  }
+                <div className="ml-auto d-flex align-items-center">
+                  {!isAddMode && user.role == Role.Admin && (
+                    <MuiButton
+                      icon={MuiBtnType.Delete}
+                      showTooltip={true}
+                      id={"delete-pilgrimage-" + row.id}
+                      tooltip={"Usuń pielgrzymkę"}
+                      disabled={formik.isSubmitting}
+                      onClick={() => onDelete(formik)}
+                    />
+                  )}
                 </div>
               </div>
               <FormikControl
@@ -168,30 +172,34 @@ function AddEdit({ history }) {
               />
               <div className="d-flex justify-content-center m-3">
                 <FormikControl
-                control="switch"
-                label={"Aktywna"}
-                name="isActive"
-                className="form-item-width"
-                wymagane={true}
-                fullWidth
-                margin="normal"
-              />
+                  control="switch"
+                  label={"Aktywna"}
+                  name="isActive"
+                  className="form-item-width"
+                  wymagane={true}
+                  disabled={user.role != Role.Admin}
+                  tooltip="Tylko Administrator może dezaktywować pielgrzymkę"
+                  fullWidth
+                  margin="normal"
+                />
               </div>
-              
             </div>
-            <div className="d-flex flex-row-reverse bg-light pl-5 pr-5 pt-3 pb-3" >
-            <MuiButton 
-              className="pl-5 pr-5 pt-2 pb-2"
-              text={"Zapisz"} 
-              tooltip="Aby aktywować wypełnij poprawnie formularz"
-              icon={MuiBtnType.Submit} 
-              onClick={() => onSubmitPilgrimage(formik)} 
-              disabled={formik.isSubmitting || !formik.isValid} />
-            <Link to={{
-              pathname: "/pilgrimages"
-              }} >
-              <MuiButton disabled={formik.isSubmitting} className="pl-5 pr-5 pt-2 pb-2" text={"Anuluj"} icon={MuiBtnType.Cancel} />
-            </Link>
+            <div className="d-flex flex-row-reverse bg-light pl-5 pr-5 pt-3 pb-3">
+              <MuiButton
+                className="pl-5 pr-5 pt-2 pb-2"
+                text={"Zapisz"}
+                tooltip="Aby aktywować wypełnij poprawnie formularz"
+                icon={MuiBtnType.Submit}
+                onClick={() => onSubmitPilgrimage(formik)}
+                disabled={formik.isSubmitting || !formik.isValid}
+              />
+              <MuiButton
+                disabled={formik.isSubmitting}
+                className="pl-5 pr-5 pt-2 pb-2"
+                text={"Anuluj"}
+                icon={MuiBtnType.Cancel}
+                onClick={() => history.push({ pathname: "/pilgrimages" })}
+              />
             </div>
           </Form>
         )}

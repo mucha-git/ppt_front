@@ -33,7 +33,6 @@ function App() {
             <Nav />
             <Alert />
             <Switch>
-                
                 <PrivateRoute exact path="/" component={Home} />
                 <PrivateRoute path="/views" component={Views} />
                 <PrivateRoute path="/elements" component={Elements} />

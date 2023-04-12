@@ -3,9 +3,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { Field, ErrorMessage } from "formik";
 import { isWymagane } from "@/_helpers";
 import TextError from "./TextError";
-import { ChromePicker } from "react-color";
 import { TextEditor } from "./Editor";
-
 
 function HtmlEditor(props) {
   const { label, name, className, inline, wymagane, ...rest } = props;
@@ -28,8 +26,12 @@ function HtmlEditor(props) {
         {({ form, field }) => {
           const { setFieldValue } = form;
           const { value } = field;
-          return <TextEditor setFieldValue={(val) => setFieldValue(name, val)}
-          value={value} />
+          return (
+            <TextEditor
+              setFieldValue={(val) => setFieldValue(name, val)}
+              value={value}
+            />
+          );
         }}
       </Field>
       <ErrorMessage name={name} component={TextError} />

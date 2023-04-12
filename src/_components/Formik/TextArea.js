@@ -12,13 +12,11 @@ function TextArea(props) {
         {wymagane ? isWymagane() : ""}
       </label>
       <Field
-        //as="textarea"
         component="textarea"
         rows="6"
         id={name}
         name={name}
         autoComplete="off"
-        //{...rest}
         className="form-control"
       />
       <ErrorMessage name={name} component={TextError} />

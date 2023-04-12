@@ -1,85 +1,76 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import BootstrapTable from "@murasoftware/react-bootstrap-table-next";
-import paginationFactory from "@murasoftware/react-bootstrap-table2-paginator";
-import filterFactory, {textFilter} from "@murasoftware/react-bootstrap-table2-filter";
-import {kolumny} from './NotificationsColumns'
-import {Actions} from './NotificationsActions';
-import { NavLink } from "react-router-dom";
+import { kolumny } from "./NotificationsColumns";
+import { Actions } from "./NotificationsActions";
 import MuiButton from "../../_components/MuiButton";
 import { MuiBtnType } from "../../_helpers/MuiBtnType";
-import { accountService, oneSignalService } from "../../_services";
-import moment from 'moment';
+import { oneSignalService } from "../../_services";
 import { history } from "../../_helpers";
 
 function NotificationsTable({ path }) {
-  const user = accountService.userValue;
-  const [notifications, setNotifications] = useState({notifications: []})
+  const [notifications, setNotifications] = useState([]);
+  const [isLoaded, setIsLoaded] = useState(notifications != []);
   const akcje = (cell, row, rowIndex) => {
-      return (
-        <Actions cell={cell} row={row} path={path} />
-      );
-    };
-  
-  useEffect(() => {
-    oneSignalService.getNotifications().then(setNotifications)
-  }, [])
+    return (
+      <Actions
+        cell={cell}
+        row={row}
+        path={path}
+        setNotifications={setNotifications}
+      />
+    );
+  };
 
-  const columns = [
-        kolumny.KolumnaData(),
-        kolumny.KolumnaAkcje(akcje)
-    ]
+  useEffect(() => {
+    oneSignalService.getNotifications().then((x) => {
+      setNotifications(x.notifications);
+      setIsLoaded(x.notifications != []);
+    });
+  }, []);
+
+  useEffect(() => {
+    setIsLoaded(false);
+    console.log(notifications);
+    setIsLoaded(true);
+  }, [notifications]);
+
+  const columns = [kolumny.KolumnaData(), kolumny.KolumnaAkcje(akcje)];
 
   return (
     <>
       <div className="d-flex justify-content-end">
-        {/* <div>
-          <MuiButton 
-            icon={MuiBtnType.Upload} 
-            text={"Wyślij powiadomienie"} 
-            className={"p-2 pr-4 pl-4"} 
-            onClick={
-              () => oneSignalService
-                .create({name: "nazwa", 
-                        contents: { en:"wiadomość"}, 
-                        headings: {en: "Nagłówek nowy" }, 
-                        app_id: user.oneSignalAppId,
-                        included_segments: ['Subscribed Users'],
-                        send_after: moment(Date.now()).add(3 , 'm').format(),
-                        delayed_option: 'send_after' })
-                .then(() => oneSignalService.getNotifications().then(setNotifications))} 
-          />
-        </div> */}
-        <div>
-          <MuiButton 
-            icon={MuiBtnType.Download} 
-            text={"pobierz powiadomienia"} 
-            className={"p-2 pr-4 pl-4"} 
-            onClick={() => oneSignalService.getNotifications().then(setNotifications)} 
+        <div className="d-flex align-items-center">
+          <MuiButton
+            icon={MuiBtnType.Download}
+            text={"Pobierz powiadomienia"}
+            className={"p-2 pr-4 pl-4"}
+            onClick={() =>
+              oneSignalService.getNotifications().then(setNotifications)
+            }
           />
         </div>
-        <div>
-          {/* <NavLink to={{pathname: `${path}/dodaj`}} className="nav-item center-divs"> */}
-            <MuiButton 
-              icon={MuiBtnType.Add} 
-              text="Dodaj powiadomienie" 
-              className="p-2 pr-4 pl-4"
-              onClick={() => history.push({pathname: `${path}/dodaj`})} />
-          {/* </NavLink> */}
+        <div className="d-flex align-items-center">
+          <MuiButton
+            icon={MuiBtnType.Add}
+            text="Dodaj powiadomienie"
+            className="p-2 pr-4 pl-4"
+            onClick={() => history.push({ pathname: `${path}/dodaj` })}
+          />
         </div>
       </div>
-      <BootstrapTable
-        bootstrap4
-        keyField="id"
-        data={notifications.notifications}
-        columns={columns}
-        filter={filterFactory()}
-        filterPosition="top"
-        filtersClasses="top-filter-class"
-        hover
-        condensed
-        //pagination={paginationFactory()}
-        rowClasses="rowClasses"
-      />
+      {isLoaded && (
+        <BootstrapTable
+          bootstrap4
+          keyField="id"
+          data={notifications}
+          columns={columns}
+          filterPosition="top"
+          filtersClasses="top-filter-class"
+          hover
+          condensed
+          rowClasses="rowClasses"
+        />
+      )}
     </>
   );
 }

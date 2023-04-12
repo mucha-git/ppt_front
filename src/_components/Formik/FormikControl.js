@@ -7,7 +7,7 @@ import DatePicker from "./DatePicker";
 import YearPicker from "./YearPicker";
 import InputNumber from "./InputNumber";
 import TypeAndSelect from "./TypeAndSelect";
-import ColorPicker from "./ColorPicker"
+import ColorPicker from "./ColorPicker";
 import HtmlEditor from "./HtmlEditor";
 import MuiSelect from "./MuiSelect";
 import SwitchMui from "./Switch";
@@ -27,7 +27,7 @@ function FormikControl(props) {
     case "switch":
       return <SwitchMui {...rest} />;
     case "muiSelect":
-      return <MuiSelect {...rest} />
+      return <MuiSelect {...rest} />;
     case "typeSelect":
       return <TypeAndSelect {...rest} />;
     case "radio":

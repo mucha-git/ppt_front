@@ -7,7 +7,6 @@ function PopupWindow(props) {
 
   const form = (close) => {
     switch (name) {
-      
       case "destinationViewId":
         return (
           <div className="popup">
@@ -29,7 +28,11 @@ function PopupWindow(props) {
     <Popup
       style=""
       trigger={
-        <button type="button" id={name} className={"btn m-1 btn-success m-0 w-35"}>
+        <button
+          type="button"
+          id={name}
+          className={"btn m-1 btn-success m-0 w-35"}
+        >
           +
         </button>
       }

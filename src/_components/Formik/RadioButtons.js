@@ -4,15 +4,8 @@ import TextError from "./TextError";
 import { isWymagane } from "@/_helpers";
 
 function RadioButtons(props) {
-  const {
-    label,
-    name,
-    options,
-    wymagane,
-    className,
-    podpowiedz,
-    ...rest
-  } = props;
+  const { label, name, options, wymagane, className, podpowiedz, ...rest } =
+    props;
   return (
     <div className={className != null ? className : "form-group col"}>
       <label htmlFor={name}>

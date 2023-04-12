@@ -9,11 +9,11 @@ function MapPins({ match }) {
   return (
     <div className="p-4">
       <div className="container">
-          <Switch>
-            <Route exact path={path} component={Overview} />
-            <Route path={`${path}/dodaj`} component={AddEdit} />
-            <Route path={`${path}/edytuj`} component={AddEdit} />
-          </Switch>
+        <Switch>
+          <Route exact path={path} component={Overview} />
+          <Route path={`${path}/dodaj`} component={AddEdit} />
+          <Route path={`${path}/edytuj`} component={AddEdit} />
+        </Switch>
       </div>
     </div>
   );

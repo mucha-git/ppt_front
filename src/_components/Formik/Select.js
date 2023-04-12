@@ -4,13 +4,16 @@ import TextError from "./TextError";
 import { isWymagane } from "@/_helpers";
 
 function Select(props) {
-  const { label, name, options, className, wymagane, showLabel, ...rest } = props;
+  const { label, name, options, className, wymagane, showLabel, ...rest } =
+    props;
   return (
     <div className={className != null ? className : "form-group col"}>
-      {showLabel != false && (<label htmlFor={name}>
-        {label}
-        {wymagane ? isWymagane() : ""}
-      </label>)}
+      {showLabel != false && (
+        <label htmlFor={name}>
+          {label}
+          {wymagane ? isWymagane() : ""}
+        </label>
+      )}
       <Field
         as="select"
         id={name}
