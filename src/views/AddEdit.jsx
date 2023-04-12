@@ -246,6 +246,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                     {!popup && !isAddMode && (
                       <MuiButton
                         icon={MuiBtnType.Delete}
+                        type="button"
                         id={"delete-view-" + row.id}
                         showTooltip={true}
                         tooltip={"Usuń widok"}

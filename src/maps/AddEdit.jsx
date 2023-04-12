@@ -439,6 +439,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                   {!popup && !isAddMode && (
                     <MuiButton
                       id={"delete-map-" + row.id}
+                      type="button"
                       icon={MuiBtnType.Delete}
                       showTooltip={true}
                       tooltip={

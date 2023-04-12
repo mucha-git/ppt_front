@@ -125,6 +125,7 @@ function AddEdit({ history }) {
                     <MuiButton
                       icon={MuiBtnType.Delete}
                       showTooltip={true}
+                      type="button"
                       id={"delete-pilgrimage-" + row.id}
                       tooltip={"Usuń pielgrzymkę"}
                       disabled={formik.isSubmitting}

@@ -128,6 +128,7 @@ function AddEdit({ history }) {
                     <MuiButton
                       icon={MuiBtnType.Delete}
                       showTooltip={true}
+                      type="button"
                       id={"delete-year-" + row.id}
                       tooltip={
                         !isAddMode && row.isActive
@@ -170,7 +171,7 @@ function AddEdit({ history }) {
                   className="form-item-width"
                   margin="normal"
                   disabled={!isAddMode && row.isActive}
-                  tooltip="Tylko aktywacja innego rocznika dezaktywuje pozostałe"
+                  tooltip="Aby wyłączyć aktywuj inny rocznik"
                 />
               </div>
               <FormikControl

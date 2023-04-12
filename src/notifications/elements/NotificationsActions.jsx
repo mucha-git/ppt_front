@@ -5,7 +5,7 @@ import { MuiBtnType } from "../../_helpers/MuiBtnType";
 
 function Actions(props) {
   return (
-    <div className={"buttons d-flex"}>
+    <div className={"buttons d-flex justify-content-end"}>
       {!props.cell && props.row.completed_at == null && (
         <MuiButton
           icon={MuiBtnType.Delete}

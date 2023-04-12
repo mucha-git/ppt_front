@@ -10,6 +10,7 @@ export default function MuiButton({
   id,
   icon,
   text,
+  type = "submit",
   onClick = () => {},
   className = "",
   disabled = false,
@@ -49,7 +50,7 @@ export default function MuiButton({
             }
             onClick={(e) => (id == null ? onClick() : handleClick(e))}
             style={disabled ? { pointerEvents: "none" } : {}}
-            type="submit"
+            type={type}
             disabled={disabled}
           >
             {icon && icon.icon }
@@ -87,6 +88,7 @@ export default function MuiButton({
                       <MuiButton
                         icon={MuiBtnType.No}
                         text={"Nie"}
+                        type="button"
                         onClick={() => setOpen(false)}
                       />
                     </div>

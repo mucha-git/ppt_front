@@ -186,6 +186,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                   {!popup && !isAddMode && (
                     <MuiButton
                       id={"delete-mapPin-" + row.id}
+                      type="button"
                       tooltip={
                         formik.isSubmitting ||
                         maps.find((e) =>

@@ -27,9 +27,10 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
   const mapsHeighList = [
     { key: "Pełny ekran", value: 0 },
     { key: "Bardzo mała", value: 100 },
-    { key: "Mała", value: 250 },
-    { key: "Duża", value: 500 },
-    { key: "Bardzo duża", value: 1000 },
+    { key: "Mała", value: 200 },
+    { key: "Standardowa", value: 300 },
+    { key: "Duża", value: 400 },
+    { key: "Bardzo duża", value: 600 },
   ];
 
   const initialValues = isAddMode
@@ -46,7 +47,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
         autoplay: false,
         playlist: undefined,
         // Map
-        mapHeight: 0,
+        mapHeight: 300,
         mapId: 0,
         // Navigation
         destinationViewId: undefined,
@@ -129,7 +130,10 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
   const onSubmitElements = (formik, openNew) => {
     let values = formik.values;
     values.order = isAddMode ? null : row.order;
-    if (values.type != "Map") values.mapId = null;
+    if (values.type != "Map") {
+      values.mapId = null
+      values.mapHeight = null
+    }
     if (isAddMode) {
       values.viewId = parentViewId;
       popup
@@ -296,6 +300,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                     <MuiButton
                       id={"delete-element-" + row.id}
                       icon={MuiBtnType.Delete}
+                      type="button"
                       showTooltip={true}
                       tooltip="Usuń element"
                       disabled={formik.isSubmitting}
@@ -369,7 +374,6 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                 formik.values.type === "GraphicWithText") && (
                 <FormikControl
                   control="html"
-                  //type="text"
                   label={"Tekst"}
                   name="text"
                   className="form-item-width"

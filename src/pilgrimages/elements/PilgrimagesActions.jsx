@@ -10,18 +10,7 @@ function Actions(props) {
   const { updatePilgrimages } = useContext(AppContext);
   const user = accountService.userValue;
   return (
-    <div className={"buttons d-flex"}>
-      <MuiButton
-        icon={MuiBtnType.Edit}
-        showTooltip={true}
-        tooltip={"Edytuj pielgrzymkę"}
-        onClick={() =>
-          history.push({
-            pathname: `${props.path}/edytuj`,
-            state: { row: props.row },
-          })
-        }
-      />
+    <div className={"buttons d-flex justify-content-end"}>
       {user.role == Role.Admin && (
         <MuiButton
           icon={MuiBtnType.Delete}
@@ -35,6 +24,18 @@ function Actions(props) {
           }}
         />
       )}
+      <MuiButton
+        icon={MuiBtnType.Edit}
+        showTooltip={true}
+        tooltip={"Edytuj pielgrzymkę"}
+        onClick={() =>
+          history.push({
+            pathname: `${props.path}/edytuj`,
+            state: { row: props.row },
+          })
+        }
+      />
+      
     </div>
   );
 }
