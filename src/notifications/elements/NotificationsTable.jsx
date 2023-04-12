@@ -6,10 +6,11 @@ import MuiButton from "../../_components/MuiButton";
 import { MuiBtnType } from "../../_helpers/MuiBtnType";
 import { oneSignalService } from "../../_services";
 import { history } from "../../_helpers";
+import { LinearProgress } from "@mui/material";
 
 function NotificationsTable({ path }) {
   const [notifications, setNotifications] = useState([]);
-  const [isLoaded, setIsLoaded] = useState(notifications != []);
+  const [isLoaded, setIsLoaded] = useState(false);
   const akcje = (cell, row, rowIndex) => {
     return (
       <Actions
@@ -24,15 +25,9 @@ function NotificationsTable({ path }) {
   useEffect(() => {
     oneSignalService.getNotifications().then((x) => {
       setNotifications(x.notifications);
-      setIsLoaded(x.notifications != []);
+      setIsLoaded(true);
     });
   }, []);
-
-  useEffect(() => {
-    setIsLoaded(false);
-    console.log(notifications);
-    setIsLoaded(true);
-  }, [notifications]);
 
   const columns = [kolumny.KolumnaData(), kolumny.KolumnaAkcje(akcje)];
 
@@ -44,8 +39,12 @@ function NotificationsTable({ path }) {
             icon={MuiBtnType.Download}
             text={"Pobierz powiadomienia"}
             className={"p-2 pr-4 pl-4"}
-            onClick={() =>
-              oneSignalService.getNotifications().then(setNotifications)
+            disabled={!isLoaded}
+            onClick={() =>{
+              setIsLoaded(false)
+              oneSignalService.getNotifications().then(x => setNotifications(x.notifications)).then(y => setIsLoaded(true))
+            }
+              
             }
           />
         </div>
@@ -58,7 +57,7 @@ function NotificationsTable({ path }) {
           />
         </div>
       </div>
-      {isLoaded && (
+      {isLoaded? (
         <BootstrapTable
           bootstrap4
           keyField="id"
@@ -70,7 +69,9 @@ function NotificationsTable({ path }) {
           condensed
           rowClasses="rowClasses"
         />
-      )}
+      ):
+      <LinearProgress className="m-5" />
+      }
     </>
   );
 }
