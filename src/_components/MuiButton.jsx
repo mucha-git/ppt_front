@@ -40,7 +40,7 @@ export default function MuiButton({
         disableHoverListener={!disabled && !showTooltip}
         disableFocusListener={!disabled && !showTooltip}
       >
-        <span>
+        <span style={{height: "fit-content"}}>
           <button
             id={id}
             className={
