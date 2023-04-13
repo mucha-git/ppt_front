@@ -62,10 +62,10 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
         autoplay: row.autoplay,
         playlist: row.playlist,
         mapHeight: row.mapHeight == null ? 0 : row.mapHeight,
-        mapId: row.mapId,
+        mapId: row.mapId == null ? 0 : row.mapId,
         destinationViewId: row.destinationViewId,
       };
-
+//#region validation
   const validationSchema = Yup.object({
     type: Yup.string().required("Pole jest wymagane"),
     color: Yup.string().when("type", {
@@ -126,13 +126,14 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
       otherwise: (fieldSchema) => fieldSchema.nullable(),
     }),
   });
-
-  const onSubmitElements = (formik, openNew) => {
+//#endregion
+  
+const onSubmitElements = (formik, openNew) => {
     let values = formik.values;
     values.order = isAddMode ? null : row.order;
     if (values.type != "Map") {
-      values.mapId = null
-      values.mapHeight = null
+      values.mapId = null;
+      values.mapHeight = null;
     }
     if (isAddMode) {
       values.viewId = parentViewId;
