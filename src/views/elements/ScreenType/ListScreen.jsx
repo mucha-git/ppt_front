@@ -5,7 +5,12 @@ function ListScreen({ view, path, opened }) {
   return (
     <div>
       <div className="container">
-        <ViewsTable parentViewId={view.id} yearId={view.yearId} path={path} opened={opened} />
+        <ViewsTable
+          parentViewId={view.id}
+          yearId={view.yearId}
+          path={path}
+          opened={opened}
+        />
       </div>
     </div>
   );

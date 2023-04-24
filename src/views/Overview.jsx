@@ -18,7 +18,6 @@ function Overview({ match, location }) {
   useEffect(() => {
     setYearId(yearId);
   }, [yearId]);
-
   const handleChange = (event) => {
     viewsService.getViews(event.target.value).then((e) => {
       setYearId(event.target.value);
@@ -73,7 +72,12 @@ function Overview({ match, location }) {
             <SendToApp />
           </div>
         </div>
-        <ViewsTable parentViewId={null} yearId={year} path={path} opened={location.state?.opened} />
+        <ViewsTable
+          parentViewId={null}
+          yearId={year}
+          path={path}
+          opened={location.state?.opened}
+        />
       </div>
     </div>
   );

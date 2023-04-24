@@ -13,7 +13,7 @@ import { history } from "../../_helpers";
 
 function ViewsTable({ parentViewId, yearId, path, opened }) {
   const { views, elements, updateViews } = useContext(AppContext);
-  const [expanded, setExpanded] = useState(opened? opened : []);
+  const [expanded, setExpanded] = useState(opened ? opened : []);
   const [filteredViews, setFilteredViews] = useState(viewFilter(views));
   function viewFilter(e) {
     return e.filter((v) => v.viewId == parentViewId);
@@ -22,6 +22,19 @@ function ViewsTable({ parentViewId, yearId, path, opened }) {
     setFilteredViews(viewFilter(views));
   }, [views]);
 
+  useEffect(() => {
+    if (expanded.length > 0 && filteredViews.find((e) => e.id == expanded[0])) {
+      setTimeout(function () {
+        const element = document.getElementById(`${expanded[0]}`);
+
+        const y = element.getBoundingClientRect().top;
+        window.scroll({
+          top: y,
+          behavior: "smooth",
+        });
+      }, 1000);
+    }
+  }, []);
   const akcje = (cell, row, rowIndex) => {
     return (
       <Actions
@@ -125,7 +138,7 @@ function ViewsTable({ parentViewId, yearId, path, opened }) {
   ];
 
   return (
-    <div className="pt-3">
+    <div id={`${parentViewId}`} className="pt-3">
       {parentViewId && (
         <div className="d-flex justify-content-center">
           <MuiButton
@@ -135,7 +148,11 @@ function ViewsTable({ parentViewId, yearId, path, opened }) {
             onClick={() =>
               history.push({
                 pathname: `${path}/dodaj`,
-                state: { yearId: yearId, parentViewId: parentViewId, opened: expanded },
+                state: {
+                  yearId: yearId,
+                  parentViewId: parentViewId,
+                  opened: expanded,
+                },
               })
             }
           />
@@ -158,9 +175,7 @@ function ViewsTable({ parentViewId, yearId, path, opened }) {
         defaultSorted={defaultSorted}
         rowClasses="rowClasses"
       />
-      
     </div>
-    
   );
 }
 

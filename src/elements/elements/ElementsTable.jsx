@@ -79,7 +79,7 @@ function ElementsTable({ parentViewId, yearId, path, opened }) {
   ];
 
   return (
-    <div>
+    <div id={`${parentViewId}`}>
       <div className="d-flex justify-content-center mt-3">
         <MuiButton
           icon={MuiBtnType.Add}
@@ -88,7 +88,11 @@ function ElementsTable({ parentViewId, yearId, path, opened }) {
           onClick={() =>
             history.push({
               pathname: `/elements/dodaj`,
-              state: { yearId: yearId, parentViewId: parentViewId, opened: opened },
+              state: {
+                yearId: yearId,
+                parentViewId: parentViewId,
+                opened: opened,
+              },
             })
           }
         />

@@ -4,7 +4,6 @@ import { ListScreen } from "./ScreenType/ListScreen";
 import { TextScreen } from "./ScreenType/TextScreen";
 
 function Elements({ view, path, opened }) {
-  console.log(opened)
   const SubView = () => {
     switch (view.screenType) {
       case ScreenType[1].value:

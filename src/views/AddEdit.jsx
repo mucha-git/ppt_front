@@ -140,14 +140,17 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                     state: {
                       yearId: location.state.yearId,
                       parentViewId: parentViewId,
-                      opened: location.state.opened
+                      opened: location.state.opened,
                     },
                   },
                 }
               : {
                   from: {
                     pathname: "/views",
-                    state: { yearId: location.state.yearId, opened: location.state.opened },
+                    state: {
+                      yearId: location.state.yearId,
+                      opened: location.state.opened,
+                    },
                   },
                 };
             formik.resetForm();
@@ -172,7 +175,10 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
           const { from } = {
             from: {
               pathname: "/views",
-              state: { yearId: location.state.yearId, opened: location.state.opened },
+              state: {
+                yearId: location.state.yearId,
+                opened: location.state.opened,
+              },
             },
           };
           history.push(from);
@@ -191,7 +197,10 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
       .then(() => {
         updateViews(row.yearId);
         alertService.success("Pomyslnie usunięto widok");
-        history.push({ pathname: "/views", state: { yearId: row.yearId, opened: location.state.opened } });
+        history.push({
+          pathname: "/views",
+          state: { yearId: row.yearId, opened: location.state.opened },
+        });
       })
       .catch((error) => {
         formik.setSubmitting(false);
@@ -233,7 +242,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                               pathname: "/views",
                               state: {
                                 yearId: popup ? yearId : location.state.yearId,
-                                opened: location.state.opened
+                                opened: location.state.opened,
                               },
                             });
                           }}
@@ -378,7 +387,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                         pathname: "/views",
                         state: {
                           yearId: popup ? yearId : location.state.yearId,
-                          opened: location.state.opened
+                          opened: location.state.opened,
                         },
                       })
                     }
