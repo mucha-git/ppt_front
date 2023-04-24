@@ -384,6 +384,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
       ._delete(row.id)
       .then(() => {
         updateMaps(row.yearId);
+        alertService.success("Pomyslnie usunięto mapę");
         history.push({ pathname: "/maps", state: { yearId: row.yearId } });
       })
       .catch((error) => {

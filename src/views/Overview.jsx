@@ -8,15 +8,13 @@ import { MuiBtnType } from "../_helpers/MuiBtnType";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { history } from "../_helpers";
 
-function Overview({ match }) {
+function Overview({ match, location }) {
   const { isSet, setData, yearId, years } = useContext(AppContext);
   const { path } = match;
   const [year, setYearId] = useState(yearId);
-
   useEffect(() => {
     isSet();
   }, []);
-
   useEffect(() => {
     setYearId(yearId);
   }, [yearId]);
@@ -75,7 +73,7 @@ function Overview({ match }) {
             <SendToApp />
           </div>
         </div>
-        <ViewsTable parentViewId={null} yearId={year} path={path} />
+        <ViewsTable parentViewId={null} yearId={year} path={path} opened={location.state?.opened} />
       </div>
     </div>
   );

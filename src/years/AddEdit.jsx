@@ -88,6 +88,7 @@ function AddEdit({ history }) {
       ._delete(row.id)
       .then(() => {
         updateYears();
+        alertService.success("Pomyslnie usunięto rocznik");
         history.push({ pathname: "/years" });
       })
       .catch((error) => {

@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { AppContext } from "../../_helpers/context";
 import MuiButton from "../../_components/MuiButton";
 import { MuiBtnType } from "../../_helpers/MuiBtnType";
-import { yearsService } from "../../_services";
+import { yearsService, alertService } from "../../_services";
 import { history } from "../../_helpers";
 
 function Actions(props) {
@@ -33,6 +33,7 @@ function Actions(props) {
         onClick={() => {
           yearsService._delete(props.cell).then(() => {
             updateYears();
+            alertService.success("Pomyslnie usunięto rocznik");
           });
         }}
       />

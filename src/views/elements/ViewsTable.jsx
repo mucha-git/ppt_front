@@ -11,14 +11,13 @@ import { MuiBtnType } from "../../_helpers/MuiBtnType";
 import { viewsService } from "@/_services";
 import { history } from "../../_helpers";
 
-function ViewsTable({ parentViewId, yearId, path }) {
+function ViewsTable({ parentViewId, yearId, path, opened }) {
   const { views, elements, updateViews } = useContext(AppContext);
-  const [expanded, setExpanded] = useState([]);
+  const [expanded, setExpanded] = useState(opened? opened : []);
   const [filteredViews, setFilteredViews] = useState(viewFilter(views));
   function viewFilter(e) {
     return e.filter((v) => v.viewId == parentViewId);
   }
-
   useEffect(() => {
     setFilteredViews(viewFilter(views));
   }, [views]);
@@ -55,7 +54,7 @@ function ViewsTable({ parentViewId, yearId, path }) {
 
   const handleOnExpand = (row, isExpand, rowIndex, e) => {
     if (isExpand) {
-      setExpanded([row.id]);
+      setExpanded([row.id].concat(expanded));
     } else {
       setExpanded(expanded.filter((x) => x !== row.id));
     }
@@ -80,7 +79,7 @@ function ViewsTable({ parentViewId, yearId, path }) {
         return <MuiButton icon={MuiBtnType.ArrowDown} />;
       }
     },
-    renderer: (row) => <Elements view={row} path={path} />,
+    renderer: (row) => <Elements view={row} path={path} opened={expanded} />,
   };
 
   const options = {
@@ -136,7 +135,7 @@ function ViewsTable({ parentViewId, yearId, path }) {
             onClick={() =>
               history.push({
                 pathname: `${path}/dodaj`,
-                state: { yearId: yearId, parentViewId: parentViewId },
+                state: { yearId: yearId, parentViewId: parentViewId, opened: expanded },
               })
             }
           />
@@ -159,7 +158,9 @@ function ViewsTable({ parentViewId, yearId, path }) {
         defaultSorted={defaultSorted}
         rowClasses="rowClasses"
       />
+      
     </div>
+    
   );
 }
 

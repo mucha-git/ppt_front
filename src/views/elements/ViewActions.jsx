@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { viewsService } from "@/_services";
+import { viewsService, alertService } from "@/_services";
 import { ScreenType } from "../../_helpers/ScreenType";
 import { AppContext } from "../../_helpers/context";
 import MuiButton from "../../_components/MuiButton";
@@ -39,7 +39,7 @@ function Actions(props) {
         <div className={visability}>
           <MuiButton
             icon={MuiBtnType.ArrowUp}
-            onClick={() => props.setExpanded([])}
+            onClick={() => props.setExpanded(props.expanded.filter((x) => x !== props.row.id))}
           />
         </div>
       );
@@ -48,7 +48,7 @@ function Actions(props) {
         <div className={visability}>
           <MuiButton
             icon={MuiBtnType.ArrowDown}
-            onClick={() => props.setExpanded([props.row.id])}
+            onClick={() => props.setExpanded([props.row.id].concat(props.expanded))}
           />
         </div>
       );
@@ -70,6 +70,7 @@ function Actions(props) {
                   state: {
                     yearId: props.row.yearId,
                     parentViewId: props.row.id,
+                    opened: props.expanded
                   },
                 })
               }
@@ -83,7 +84,7 @@ function Actions(props) {
             onClick={() =>
               history.push({
                 pathname: `${props.path}/edytuj`,
-                state: { row: props.row },
+                state: { row: props.row, opened: props.expanded },
               })
             }
           />
@@ -95,6 +96,7 @@ function Actions(props) {
             onClick={() => {
               viewsService._delete(props.cell).then(() => {
                 updateViews(props.row.yearId);
+                alertService.success("Pomyslnie usunięto widok");
               });
             }}
           />

@@ -33,7 +33,7 @@ function MuiSelect(props) {
               >
                 {options.map((option) => {
                   return (
-                    <MenuItem key={option.value} value={option.value}>
+                    <MenuItem key={name + "-" + option.value} value={option.value}>
                       {option.key}
                     </MenuItem>
                   );

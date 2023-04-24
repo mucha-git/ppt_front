@@ -13,7 +13,7 @@ import { strokeThick } from "../_helpers/strokeThick";
 import { margins } from "../_helpers/margins";
 
 function AddEdit({ history, popup, close, lista, setLista, yearId }) {
-  const { updateElements, views, maps } = useContext(AppContext);
+  const { updateElements, views, elements, maps } = useContext(AppContext);
   let location = useLocation();
   const isAddMode = location.state.row == null || popup ? true : false;
   const mapsList = [
@@ -23,7 +23,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
     }),
   ];
   let { row, parentViewId } = location.state;
-
+  const viewId = isAddMode? parentViewId : row.viewId
   const mapsHeighList = [
     { key: "Pełny ekran", value: 0 },
     { key: "Bardzo mała", value: 100 },
@@ -65,7 +65,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
         mapId: row.mapId == null ? 0 : row.mapId,
         destinationViewId: row.destinationViewId,
       };
-//#region validation
+  //#region validation
   const validationSchema = Yup.object({
     type: Yup.string().required("Pole jest wymagane"),
     color: Yup.string().when("type", {
@@ -126,17 +126,18 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
       otherwise: (fieldSchema) => fieldSchema.nullable(),
     }),
   });
-//#endregion
-  
-const onSubmitElements = (formik, openNew) => {
+  //#endregion
+
+  const onSubmitElements = (formik, openNew) => {
     let values = formik.values;
     values.order = isAddMode ? null : row.order;
     if (values.type != "Map") {
       values.mapId = null;
       values.mapHeight = null;
     }
+    values.viewId = viewId
     if (isAddMode) {
-      values.viewId = parentViewId;
+      //values.viewId = parentViewId;
       popup
         ? (values.yearId = yearId)
         : (values.yearId = location.state.yearId);
@@ -160,14 +161,15 @@ const onSubmitElements = (formik, openNew) => {
                     pathname: "/elements/dodaj",
                     state: {
                       yearId: location.state.yearId,
-                      parentViewId: parentViewId,
+                      parentViewId: viewId,
+                      opened: location.state.opened
                     },
                   },
                 }
               : {
                   from: {
                     pathname: "/views",
-                    state: { yearId: location.state.yearId },
+                    state: { yearId: location.state.yearId, opened: location.state.opened },
                   },
                 };
             formik.resetForm();
@@ -181,7 +183,7 @@ const onSubmitElements = (formik, openNew) => {
         });
     } else {
       values.id = row.id;
-      values.viewId = row.viewId;
+      //values.viewId = row.viewId;
       values.yearId = row.yearId;
       elementsService
         .update(values)
@@ -193,7 +195,7 @@ const onSubmitElements = (formik, openNew) => {
           const { from } = {
             from: {
               pathname: "/views",
-              state: { yearId: location.state.yearId },
+              state: { yearId: location.state.yearId, opened: location.state.opened },
             },
           };
           history.push(from);
@@ -245,13 +247,22 @@ const onSubmitElements = (formik, openNew) => {
       ._delete(row.id)
       .then(() => {
         updateElements(row.yearId);
-        history.push({ pathname: "/views", state: { yearId: row.yearId } });
+        alertService.success("Pomyslnie usunięto element");
+        history.push({ pathname: "/views", state: { yearId: row.yearId, opened: location.state.opened } });
       })
       .catch((error) => {
         formik.setSubmitting(false);
         alertService.error(error);
       });
   };
+
+  const filterTypes = (arr) => {
+    let thereIsAnMapElementInView = elements.find( e => e.viewId === viewId && e.type === "Map")
+    if(( isAddMode && thereIsAnMapElementInView) || (!isAddMode && row.type != "Map" && thereIsAnMapElementInView)){
+      return arr.filter( a => a.value != "Map")
+    }
+    return arr
+  }
 
   return (
     <div className="box-shadow-main bg-white">
@@ -286,6 +297,7 @@ const onSubmitElements = (formik, openNew) => {
                             pathname: "/views",
                             state: {
                               yearId: popup ? yearId : location.state.yearId,
+                              opened: location.state.opened
                             },
                           });
                         }}
@@ -314,7 +326,7 @@ const onSubmitElements = (formik, openNew) => {
                 control="muiSelect"
                 label={"Typ"}
                 name="type"
-                options={arrayFromEnum(ElementType)}
+                options={filterTypes(arrayFromEnum(ElementType))}
                 className="form-item-width"
                 fullWidth
                 margin="normal"
@@ -431,9 +443,9 @@ const onSubmitElements = (formik, openNew) => {
                           className="rounded"
                           src={getYoutubeSrc(formik.values.playlist)}
                           title="YouTube video player"
-                          frameborder="0"
+                          frameBorder="0"
                           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                          allowfullscreen
+                          allowFullScreen
                         />
                       </div>
                     </div>
@@ -522,7 +534,7 @@ const onSubmitElements = (formik, openNew) => {
                   onClick={() => {
                     history.push({
                       pathname: "/views",
-                      state: { yearId: popup ? yearId : location.state.yearId },
+                      state: { yearId: popup ? yearId : location.state.yearId, opened: location.state.opened },
                     });
                   }}
                 />

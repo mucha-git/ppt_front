@@ -1,5 +1,5 @@
 import React from "react";
-import { oneSignalService } from "@/_services";
+import { oneSignalService, alertService } from "@/_services";
 import MuiButton from "../../_components/MuiButton";
 import { MuiBtnType } from "../../_helpers/MuiBtnType";
 
@@ -25,6 +25,7 @@ function Actions(props) {
                   }
                 });
               });
+              alertService.success("Pomyslnie usunięto powiadomienie");
             });
           }}
         />

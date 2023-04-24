@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { elementsService } from "@/_services";
+import { elementsService, alertService } from "@/_services";
 import { AppContext } from "../../_helpers/context";
 import MuiButton from "../../_components/MuiButton";
 import { MuiBtnType } from "../../_helpers/MuiBtnType";
@@ -16,7 +16,7 @@ function Actions(props) {
         onClick={() =>
           history.push({
             pathname: `${props.path}/edytuj`,
-            state: { row: props.row },
+            state: { row: props.row, opened: props.opened },
           })
         }
       />
@@ -28,6 +28,7 @@ function Actions(props) {
         onClick={() => {
           elementsService._delete(props.cell).then(() => {
             updateElements(props.row.yearId);
+            alertService.success("Pomyslnie usunięto element");
           });
         }}
       />

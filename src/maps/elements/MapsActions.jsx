@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { mapsService } from "@/_services";
+import { mapsService, alertService } from "@/_services";
 import { AppContext } from "../../_helpers/context";
 import MuiButton from "../../_components/MuiButton";
 import { MuiBtnType } from "../../_helpers/MuiBtnType";
@@ -35,6 +35,7 @@ function Actions(props) {
         onClick={() => {
           mapsService._delete(props.cell).then(() => {
             updateMaps(props.row.yearId);
+            alertService.success("Pomyslnie usunięto mapę");
           });
         }}
       />

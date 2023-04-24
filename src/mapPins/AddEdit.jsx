@@ -131,6 +131,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
       ._delete(row.id)
       .then(() => {
         updateMapPins(row.yearId);
+        alertService.success("Pomyslnie usunięto pinezkę");
         history.push({ pathname: "/mapPins", state: { yearId: row.yearId } });
       })
       .catch((error) => {

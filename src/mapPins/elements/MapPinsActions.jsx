@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { mapPinsService } from "@/_services";
+import { mapPinsService, alertService } from "@/_services";
 import { AppContext } from "../../_helpers/context";
 import MuiButton from "../../_components/MuiButton";
 import { MuiBtnType } from "../../_helpers/MuiBtnType";
@@ -35,6 +35,7 @@ function Actions(props) {
         onClick={() => {
           mapPinsService._delete(props.cell).then(() => {
             updateMapPins(props.row.yearId);
+            alertService.success("Pomyslnie usunięto pinezkę");
           });
         }}
       />

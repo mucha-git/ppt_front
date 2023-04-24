@@ -11,7 +11,7 @@ import MuiButton from "../../_components/MuiButton";
 import { MuiBtnType } from "../../_helpers/MuiBtnType";
 import { history } from "../../_helpers";
 
-function ElementsTable({ parentViewId, yearId, path }) {
+function ElementsTable({ parentViewId, yearId, path, opened }) {
   const { elements, views, updateElements } = useContext(AppContext);
   const [filteredElements, setFilteredElements] = useState(
     viewFilter(elements)
@@ -26,7 +26,7 @@ function ElementsTable({ parentViewId, yearId, path }) {
   }
 
   const akcje = (cell, row, rowIndex) => {
-    return <Actions cell={cell} row={row} path={"/elements"} />;
+    return <Actions cell={cell} row={row} path={"/elements"} opened={opened} />;
   };
 
   const columns = [
@@ -49,7 +49,7 @@ function ElementsTable({ parentViewId, yearId, path }) {
     nonExpandable: rowsNotToExpand(),
     renderer: (row) => {
       let view = views.find((v) => v.id == row.destinationViewId);
-      return <Elements view={view} path={"/elements"} />;
+      return <Elements view={view} path={"/elements"} opened={opened} />;
     },
   };
 
@@ -88,7 +88,7 @@ function ElementsTable({ parentViewId, yearId, path }) {
           onClick={() =>
             history.push({
               pathname: `/elements/dodaj`,
-              state: { yearId: yearId, parentViewId: parentViewId },
+              state: { yearId: yearId, parentViewId: parentViewId, opened: opened },
             })
           }
         />

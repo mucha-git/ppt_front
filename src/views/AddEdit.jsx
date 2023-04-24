@@ -18,7 +18,6 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
   }, []);
   let location = useLocation();
   const isAddMode = location.state.row == null || popup ? true : false;
-
   const btnTypes = [
     { key: "Tekst", value: "Text" },
     { key: "Grafika", value: "Graphic" },
@@ -141,13 +140,14 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                     state: {
                       yearId: location.state.yearId,
                       parentViewId: parentViewId,
+                      opened: location.state.opened
                     },
                   },
                 }
               : {
                   from: {
                     pathname: "/views",
-                    state: { yearId: location.state.yearId },
+                    state: { yearId: location.state.yearId, opened: location.state.opened },
                   },
                 };
             formik.resetForm();
@@ -172,7 +172,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
           const { from } = {
             from: {
               pathname: "/views",
-              state: { yearId: location.state.yearId },
+              state: { yearId: location.state.yearId, opened: location.state.opened },
             },
           };
           history.push(from);
@@ -190,7 +190,8 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
       ._delete(row.id)
       .then(() => {
         updateViews(row.yearId);
-        history.push({ pathname: "/views", state: { yearId: row.yearId } });
+        alertService.success("Pomyslnie usunięto widok");
+        history.push({ pathname: "/views", state: { yearId: row.yearId, opened: location.state.opened } });
       })
       .catch((error) => {
         formik.setSubmitting(false);
@@ -232,6 +233,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                               pathname: "/views",
                               state: {
                                 yearId: popup ? yearId : location.state.yearId,
+                                opened: location.state.opened
                               },
                             });
                           }}
@@ -376,6 +378,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                         pathname: "/views",
                         state: {
                           yearId: popup ? yearId : location.state.yearId,
+                          opened: location.state.opened
                         },
                       })
                     }

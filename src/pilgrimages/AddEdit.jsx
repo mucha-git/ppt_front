@@ -85,6 +85,7 @@ function AddEdit({ history }) {
       ._delete(row.id)
       .then(() => {
         updatePilgrimages();
+        alertService.success("Pomyslnie usunięto pielgrzymkę")
         history.push({ pathname: "/pilgrimages" });
       })
       .catch((error) => {

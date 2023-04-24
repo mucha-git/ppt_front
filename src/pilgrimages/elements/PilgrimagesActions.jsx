@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { pilgrimagesService } from "@/_services";
+import { pilgrimagesService, alertService } from "@/_services";
 import { AppContext } from "../../_helpers/context";
 import MuiButton from "../../_components/MuiButton";
 import { MuiBtnType } from "../../_helpers/MuiBtnType";
@@ -20,6 +20,7 @@ function Actions(props) {
           onClick={() => {
             pilgrimagesService._delete(props.cell).then(() => {
               updatePilgrimages();
+              alertService.success("Pomyslnie usunięto pielgrzymkę");
             });
           }}
         />
@@ -35,7 +36,6 @@ function Actions(props) {
           })
         }
       />
-      
     </div>
   );
 }
