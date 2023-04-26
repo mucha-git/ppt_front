@@ -13,8 +13,8 @@ export function showView(row) {
     case ListType[2].value:
       return (
         <div>
-          <strong>Link zewnętrzny: </strong>
-          {row.externalUrl}
+          <img src={row.imgSrc} width={"10%"} className="mr-2" />
+          <strong>{row.title}</strong>
         </div>
       );
     case ListType[3].value:
@@ -22,7 +22,29 @@ export function showView(row) {
         <div>
           <strong>Link zewnętrzny: </strong>
           {row.externalUrl}
+        </div>
+      );
+
+    case ListType[4].value:
+      return (
+        <div>
+          <strong>Link zewnętrzny: </strong>
+          {row.externalUrl}
           <img src={row.imgSrc} width={"100%"} />
+        </div>
+      );
+
+    case ListType[5].value:
+      return (
+        <div className="flex-column">
+          <div className="flex-row">
+            <strong>Link zewnętrzny: </strong>
+            {row.externalUrl}
+          </div>
+          <div className="flex-row">
+            <img src={row.imgSrc} width={"10%"} className="mr-2" />
+            {row.title}
+          </div>
         </div>
       );
   }

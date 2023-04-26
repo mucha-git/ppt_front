@@ -20,7 +20,9 @@ function Actions(props) {
 
   const isInternalType = () => {
     return (
-      props.row.type == ListType[0].value || props.row.type == ListType[1].value
+      props.row.type == ListType[0].value 
+      || props.row.type == ListType[1].value 
+      || props.row.type == ListType[2].value
     );
   };
 

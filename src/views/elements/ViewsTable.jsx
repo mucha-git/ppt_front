@@ -57,7 +57,9 @@ function ViewsTable({ parentViewId, yearId, path, opened }) {
     let rows = filteredViews
       .filter(
         (r) =>
-          (r.type != "Text" && r.type != "Graphic") ||
+          (r.type != "Text" &&
+            r.type != "Graphic" &&
+            r.type != "GraphicWithText") ||
           (elements.filter((e) => e.viewId == r.id).length == 0 &&
             views.filter((v) => v.viewId == r.id).length == 0)
       )

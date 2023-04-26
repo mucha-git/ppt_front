@@ -21,6 +21,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
   const btnTypes = [
     { key: "Tekst", value: "Text" },
     { key: "Grafika", value: "Graphic" },
+    { key: "Grafika z tekstem", value: "GraphicWithText" },
   ];
 
   const contentTypes = [
@@ -49,6 +50,10 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
     }
   };
 
+  const setBtnType = (type) => {
+    return type.includes("Text") ? type.includes("Graphic")? "GraphicWithText" :"Text" : "Graphic";
+  }
+
   let { row, parentViewId } = location.state;
 
   const initialValues = isAddMode
@@ -64,7 +69,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
     : {
         title: row.title,
         headerText: row.headerText,
-        btnType: row.type.includes("Text") ? "Text" : "Graphic",
+        btnType: setBtnType(row.type),
         contentType: setContentType(row),
         imgSrc: row.imgSrc,
         viewId: row.viewId,
@@ -90,6 +95,11 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
         is: "Graphic",
         then: (fieldSchema) =>
           fieldSchema.required("Brak grafiki do wyświetlenia"),
+      })
+      .when("btnType", {
+        is: "GraphicWithText",
+        then: (fieldSchema) =>
+          fieldSchema.required("Brak grafiki do wyświetlenia"),
       }),
     externalUrl: Yup.string()
       .max(1000, "Maksymalna liczba znaków to 1000")
@@ -110,10 +120,10 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
   const onSubmitViews = (formik, openNew) => {
     let values = formik.values;
     const screenType = getScreenType(values);
-    (values.type =
-      screenType != null ? values.btnType : values.btnType + "ExternalLink"),
-      (values.screenType = screenType),
-      (values.order = isAddMode ? null : row.order);
+    values.type =
+      screenType != null ? values.btnType : values.btnType + "ExternalLink";
+    values.screenType = screenType;
+    values.order = isAddMode ? null : row.order;
     if (isAddMode) {
       popup
         ? (values.yearId = yearId)
@@ -321,7 +331,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                     margin="normal"
                   />
                 )}
-                {formik.values.btnType === "Graphic" &&
+                {(formik.values.btnType === "Graphic" || formik.values.btnType === "GraphicWithText") &&
                   formik.values.contentType != null && (
                     <>
                       <FormikControl
