@@ -37,7 +37,7 @@ function ElementsTable({ parentViewId, yearId, path, opened }) {
 
   const rowsNotToExpand = () => {
     let rows = filteredElements
-      .filter((r) => r.type != "Navigation")
+      .filter((r) => r.type != "Navigation" || (r.type == "Navigation" && views.find(v => v.id == r.destinationViewId).viewId != parentViewId))
       .map((e) => e.id);
     return rows;
   };

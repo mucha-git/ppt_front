@@ -53,7 +53,6 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
   const setBtnType = (type) => {
     return type.includes("Text") ? type.includes("Graphic")? "GraphicWithText" :"Text" : "Graphic";
   }
-
   let { row, parentViewId } = location.state;
 
   const initialValues = isAddMode
@@ -139,7 +138,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
 
           if (popup) {
             let i = lista;
-            i.push({ label: x.title, value: x.id.toString() });
+            i.push(x);
             setLista(i);
             close();
           } else {

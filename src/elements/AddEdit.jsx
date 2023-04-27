@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import FormikControl from "@/_components/Formik/FormikControl";
@@ -11,9 +11,11 @@ import MuiButton from "../_components/MuiButton";
 import { MuiBtnType } from "../_helpers/MuiBtnType";
 import { strokeThick } from "../_helpers/strokeThick";
 import { margins } from "../_helpers/margins";
+import { PopupWindow } from "../views/elements/Popup";
 
 function AddEdit({ history, popup, close, lista, setLista, yearId }) {
-  const { updateElements, views, elements, maps } = useContext(AppContext);
+  const { updateElements, views, updateViews, elements, maps } = useContext(AppContext);
+  const [viewsList, setViewsList] = useState(views)
   let location = useLocation();
   const isAddMode = location.state.row == null || popup ? true : false;
   const mapsList = [
@@ -488,13 +490,21 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                     control="muiSelect"
                     label={"Widok"}
                     name="destinationViewId"
-                    options={views.map((o) => {
+                    options={viewsList.map((o) => {
                       return { key: o.title, value: o.id };
                     })}
                     className="form-item-width"
                     fullWidth
                     margin="normal"
                   />
+                  <PopupWindow 
+                    name="destinationViewId"
+                    options={viewsList}
+                    setLista={(x) => {
+                      setViewsList(x)
+                      updateViews(isAddMode? location.state.yearId : row.yearId)
+                    }}
+                    yearId={isAddMode? location.state.yearId : row.yearId} />
                 </>
               )}
             </div>
