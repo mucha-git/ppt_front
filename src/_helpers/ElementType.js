@@ -6,4 +6,5 @@ export const ElementType = {
   Divider: "Separator",
   Map: "Mapa",
   Navigation: "Przekierowanie",
+  View: "Widok"
 };

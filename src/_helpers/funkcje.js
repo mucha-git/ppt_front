@@ -57,3 +57,8 @@ export function arrayFromEnum(enumObject) {
   }
   return all;
 }
+
+export function SetOpenedArray(array, newId){
+  if(array.find( a => a == newId)) return array;
+  return [newId].concat(array)
+}

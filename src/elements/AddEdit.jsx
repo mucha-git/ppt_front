@@ -6,12 +6,13 @@ import { alertService, elementsService } from "@/_services";
 import { useLocation } from "react-router-dom";
 import { ElementType } from "../_helpers/ElementType";
 import { AppContext } from "../_helpers/context";
-import { arrayFromEnum } from "../_helpers";
+import { SetOpenedArray, arrayFromEnum } from "../_helpers";
 import MuiButton from "../_components/MuiButton";
 import { MuiBtnType } from "../_helpers/MuiBtnType";
 import { strokeThick } from "../_helpers/strokeThick";
 import { margins } from "../_helpers/margins";
 import { PopupWindow } from "../views/elements/Popup";
+import { btnTypes, contentTypes, setContentType, getScreenType, setBtnType } from "../_helpers/viewsHelpers"
 
 function AddEdit({ history, popup, close, lista, setLista, yearId }) {
   const { updateElements, views, updateViews, elements, maps } = useContext(AppContext);
@@ -26,6 +27,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
   ];
   let { row, parentViewId } = location.state;
   const viewId = isAddMode? parentViewId : row.viewId
+  const subView = isAddMode? null : row.type == "View"? views.find(v => v.id == row.destinationViewId) : null
   const mapsHeighList = [
     { key: "Pełny ekran", value: 0 },
     { key: "Bardzo mała", value: 100 },
@@ -53,6 +55,12 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
         mapId: 0,
         // Navigation
         destinationViewId: undefined,
+        // View
+        title: "",
+        headerText: null,
+        btnType: "Text",
+        contentType: "List",
+        externalUrl: null,
       }
     : {
         type: row.type,
@@ -60,12 +68,17 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
         margin: row.margin == null ? 0 : row.margin,
         height: row.height == null ? 0 : row.height,
         text: row.text,
-        imgSrc: row.imgSrc,
+        imgSrc: row.type=="View"? subView.imgSrc :row.imgSrc,
         autoplay: row.autoplay,
         playlist: row.playlist,
         mapHeight: row.mapHeight == null ? 0 : row.mapHeight,
         mapId: row.mapId == null ? 0 : row.mapId,
         destinationViewId: row.destinationViewId,
+        title: row.type=="View"? subView.title: "", 
+        headerText: row.type=="View"? subView.headerText: null, 
+        btnType: row.type=="View"? setBtnType(subView.type): "Text", 
+        contentType: row.type=="View"? setContentType(subView): "List", 
+        externalUrl: row.type=="View"? subView.externalUrl: null, 
       };
   //#region validation
   const validationSchema = Yup.object({
@@ -127,6 +140,21 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
       then: (fieldSchema) => fieldSchema.required("Wymagane"),
       otherwise: (fieldSchema) => fieldSchema.nullable(),
     }),
+    title: Yup.string().when("type", {
+      is: "View",
+      then: (fieldSchema) => fieldSchema.required("Wymagane"),
+      otherwise: (fieldSchema) => fieldSchema.nullable(),
+    }),
+    headerText: Yup.string().nullable(),
+    btnType: Yup.string(),
+    contentType: Yup.string(),
+    externalUrl: Yup.string().when(["type", "contentType"], (values, schema) => {
+      if(values[0] == "View" && values[1] == "ExternalLink"){
+         return schema.required("Wymagane")
+      } else {
+        return schema.nullable()
+      }
+    }),
   });
   //#endregion
 
@@ -137,6 +165,12 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
       values.mapId = null;
       values.mapHeight = null;
     }
+    if(values.type == "View") {
+      const screenType = getScreenType(values);
+      values.viewType =
+        screenType != null ? values.btnType : values.btnType + "ExternalLink";
+      values.screenType = screenType;
+    }
     values.viewId = viewId
     if (isAddMode) {
       //values.viewId = parentViewId;
@@ -146,6 +180,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
       elementsService
         .create(values)
         .then((x) => {
+          updateViews(values.yearId);
           updateElements(values.yearId);
           alertService.success("Sukces", {
             keepAfterRouteChange: true,
@@ -164,14 +199,17 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                     state: {
                       yearId: location.state.yearId,
                       parentViewId: viewId,
-                      opened: location.state.opened
+                      opened: SetOpenedArray(location.state.opened, viewId)
                     },
                   },
                 }
               : {
                   from: {
                     pathname: "/views",
-                    state: { yearId: location.state.yearId, opened: location.state.opened },
+                    state: { 
+                      yearId: location.state.yearId, 
+                      opened: SetOpenedArray(location.state.opened, viewId) 
+                    },
                   },
                 };
             formik.resetForm();
@@ -190,6 +228,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
       elementsService
         .update(values)
         .then(() => {
+          updateViews(values.yearId);
           updateElements(values.yearId);
           alertService.success("Sukces", {
             keepAfterRouteChange: true,
@@ -264,6 +303,17 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
       return arr.filter( a => a.value != "Map")
     }
     return arr
+  }
+
+  const viewListForNavigation = (parentId = null, list = [], sign = "") => {
+    const currentLvl = viewsList.filter(e => e.viewId == parentId)
+    
+    currentLvl.forEach(element => {
+      list.push({key: sign + element.title, value: element.id})
+      list.concat(viewListForNavigation(element.id, list, sign + "-> "))
+    });
+    //console.log(list)
+    return list
   }
 
   return (
@@ -396,8 +446,67 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                   margin="normal"
                 />
               )}
+              {(formik.values.type === "View") && (
+                <>
+                  <FormikControl
+                  control="input"
+                  type="text"
+                  label={"Tytuł"}
+                  name="title"
+                  className="form-item-width"
+                  fullWidth
+                  margin="normal"
+                />
+                <FormikControl
+                  control="muiSelect"
+                  label={"Rodzaj kafelka"}
+                  name="btnType"
+                  options={btnTypes}
+                  fullWidth
+                  margin="normal"
+                />
+                <FormikControl
+                  control="muiSelect"
+                  label={"Rodzaj zawartości"}
+                  name="contentType"
+                  options={contentTypes}
+                  className="form-item-width"
+                  fullWidth
+                  margin="normal"
+                />
+                {formik.values.contentType != null && (
+                  <div className="pt-3">
+                    <h5>Szczegóły widoku</h5>
+                  </div>
+                )}
+                {(formik.values.contentType === "List" ||
+                  formik.values.contentType === "Elements") && (
+                  <FormikControl
+                    control="input"
+                    type="text"
+                    label={"Nagłówek"}
+                    name="headerText"
+                    className="form-item-width"
+                    fullWidth
+                    margin="normal"
+                  />
+                )}
+                {formik.values.contentType === "ExternalLink" && (
+                  <FormikControl
+                    control="input"
+                    type="text"
+                    label={"Link zewnętrzny"}
+                    name="externalUrl"
+                    className="form-item-width"
+                    fullWidth
+                    margin="normal"
+                  />
+                )}
+                </>
+              )}
               {(formik.values.type === "Graphic" ||
-                formik.values.type === "GraphicWithText") && (
+                formik.values.type === "GraphicWithText" ||
+                (formik.values.type === "View" && (formik.values.btnType === "Graphic" || formik.values.btnType === "GraphicWithText"))) && (
                 <>
                   <FormikControl
                     control="input"
@@ -490,21 +599,19 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                     control="muiSelect"
                     label={"Widok"}
                     name="destinationViewId"
-                    options={viewsList.map((o) => {
-                      return { key: o.title, value: o.id };
-                    })}
+                    options={viewListForNavigation()}
                     className="form-item-width"
                     fullWidth
                     margin="normal"
                   />
-                  <PopupWindow 
+                  {/* <PopupWindow 
                     name="destinationViewId"
                     options={viewsList}
                     setLista={(x) => {
                       setViewsList(x)
                       updateViews(isAddMode? location.state.yearId : row.yearId)
                     }}
-                    yearId={isAddMode? location.state.yearId : row.yearId} />
+                    yearId={isAddMode? location.state.yearId : row.yearId} /> */}
                 </>
               )}
             </div>

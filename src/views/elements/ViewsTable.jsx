@@ -149,7 +149,7 @@ function ViewsTable({ parentViewId, yearId, path, opened }) {
             className="p-2 pr-4 pl-4"
             onClick={() =>
               history.push({
-                pathname: `${path}/dodaj`,
+                pathname: `/views/dodaj`,
                 state: {
                   yearId: yearId,
                   parentViewId: parentViewId,
@@ -167,7 +167,7 @@ function ViewsTable({ parentViewId, yearId, path, opened }) {
         columns={columns}
         hover
         condensed
-        pagination={paginationFactory(options)}
+        //pagination={paginationFactory(options)}
         expandRow={expandRow}
         cellEdit={cellEditFactory({
           mode: "click",

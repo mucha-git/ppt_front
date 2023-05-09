@@ -27,6 +27,7 @@ function PopupWindow(props) {
   return name ? (
     <Popup
       style=""
+      nested={true}
       trigger={
         <button
           type="button"

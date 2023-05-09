@@ -53,6 +53,12 @@ function Element({ row }) {
           <NavigationElement row={row} />
         </DefaultTableView>
       );
+    case "View":
+      return (
+        <DefaultTableView text={ElementType.View}>
+          <NavigationElement row={row} />
+        </DefaultTableView>
+      );
     default:
       break;
   }

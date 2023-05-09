@@ -7,7 +7,14 @@ import { MuiBtnType } from "../../../_helpers/MuiBtnType";
 function NavigationElement({ row }) {
   const { views } = useContext(AppContext);
   const view = views.find((v) => v.id == row.destinationViewId);
-  return row.viewId == view.viewId? <View row={view} />: <div><MuiButton text={view.title} type="button" className={"font-weight-bold cursor-default"} icon={MuiBtnType.ArrowRight} /></div>;
+  function setText(view) {
+    let text = view.title
+    if(view.viewId != null){
+      text = setText(view.view) + " / " + text;
+    }
+    return text
+  }
+  return row.viewId == view.viewId? <View row={view} />: <div><MuiButton text={setText(view)} type="button" className={"font-weight-bold cursor-default"} icon={MuiBtnType.ArrowRight} /></div>;
 }
 
 export { NavigationElement };

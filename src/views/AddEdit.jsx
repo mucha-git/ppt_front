@@ -7,6 +7,8 @@ import { useLocation } from "react-router-dom";
 import { AppContext } from "../_helpers/context";
 import MuiButton from "../_components/MuiButton";
 import { MuiBtnType } from "../_helpers/MuiBtnType";
+import { SetOpenedArray } from "../_helpers";
+import { btnTypes, contentTypes, setContentType, getScreenType, setBtnType } from "../_helpers/viewsHelpers"
 
 function AddEdit({ history, popup, close, lista, setLista, yearId }) {
   const { updateViews, set } = useContext(AppContext);
@@ -18,41 +20,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
   }, []);
   let location = useLocation();
   const isAddMode = location.state.row == null || popup ? true : false;
-  const btnTypes = [
-    { key: "Tekst", value: "Text" },
-    { key: "Grafika", value: "Graphic" },
-    { key: "Grafika z tekstem", value: "GraphicWithText" },
-  ];
-
-  const contentTypes = [
-    { key: "Lista", value: "List" },
-    { key: "Treści", value: "Elements" },
-    { key: "Link zewnętrzny", value: "ExternalLink" },
-  ];
-
-  const setContentType = (row) => {
-    if (row.type.includes("External")) return "ExternalLink";
-    switch (row.screenType) {
-      case "ListScreen":
-        return "List";
-      case "TextScreen":
-        return "Elements";
-    }
-  };
-
-  const getScreenType = (values) => {
-    if (values.contentType.includes("External")) return null;
-    switch (values.contentType) {
-      case "List":
-        return "ListScreen";
-      case "Elements":
-        return "TextScreen";
-    }
-  };
-
-  const setBtnType = (type) => {
-    return type.includes("Text") ? type.includes("Graphic")? "GraphicWithText" :"Text" : "Graphic";
-  }
+  
   let { row, parentViewId } = location.state;
 
   const initialValues = isAddMode
@@ -149,7 +117,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                     state: {
                       yearId: location.state.yearId,
                       parentViewId: parentViewId,
-                      opened: location.state.opened,
+                      opened: SetOpenedArray(location.state.opened, parentViewId),
                     },
                   },
                 }
@@ -158,7 +126,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                     pathname: "/views",
                     state: {
                       yearId: location.state.yearId,
-                      opened: location.state.opened,
+                      opened: SetOpenedArray(location.state.opened, parentViewId),
                     },
                   },
                 };
