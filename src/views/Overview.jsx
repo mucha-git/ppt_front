@@ -63,7 +63,7 @@ function Overview({ match, location }) {
               onClick={() =>
                 history.push({
                   pathname: `${path}/dodaj`,
-                  state: { yearId: year, parentViewId: null },
+                  state: { yearId: year, parentViewId: null, opened: [] },
                 })
               }
             />
