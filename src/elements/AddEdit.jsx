@@ -334,6 +334,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                     <a onClick={close}>
                       <h2>
                         <MuiButton
+                          type="button"
                           className="pl-2 pr-2"
                           icon={MuiBtnType.ArrowBack}
                         />
@@ -343,6 +344,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                     <h2>
                       <MuiButton
                         className="pl-2 pr-2"
+                        type="button"
                         icon={MuiBtnType.ArrowBack}
                         onClick={() => {
                           history.push({
@@ -629,6 +631,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
               <MuiButton
                 className="pl-5 pr-5 pt-2 pb-2"
                 text={"Zapisz"}
+                type={(!popup && isAddMode)? "button" : "submit"}
                 icon={MuiBtnType.Submit}
                 tooltip="Aby aktywować wypełnij poprawnie formularz"
                 onClick={() => onSubmitElements(formik, false)}
@@ -638,6 +641,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                 <MuiButton
                   className="pl-5 pr-5 pt-2 pb-2"
                   text={"Anuluj"}
+                  type="button"
                   icon={MuiBtnType.Cancel}
                   disabled={formik.isSubmitting}
                   onClick={() => close()}
@@ -646,6 +650,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                 <MuiButton
                   className="pl-5 pr-5 pt-2 pb-2"
                   text={"Anuluj"}
+                  type="button"
                   icon={MuiBtnType.Cancel}
                   disabled={formik.isSubmitting}
                   onClick={() => {
