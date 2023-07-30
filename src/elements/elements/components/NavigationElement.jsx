@@ -14,6 +14,7 @@ function NavigationElement({ row }) {
     }
     return text
   }
+  if (view == null) return <div></div>
   return row.viewId == view.viewId? <View row={view} />: <div><MuiButton text={setText(view)} type="button" className={"font-weight-bold cursor-default"} icon={MuiBtnType.ArrowRight} /></div>;
 }
 
