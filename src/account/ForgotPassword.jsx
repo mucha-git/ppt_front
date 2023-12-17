@@ -19,7 +19,7 @@ function ForgotPassword() {
     function onSubmit({ email }, { setSubmitting }) {
         alertService.clear();
         accountService.forgotPassword(email)
-            .then(() => alertService.success('Proszę sprawdź swoją skrzynkę mailową w celu dalszych instrukcji odzyskiwania hasła'))
+            .then(() => alertService.success('W celu uzyskania dalszych insrukcji dotyczących odzyskiwania hasła, sporawdź swoją skrzynkę mailową'))
             .catch(error => alertService.error(error))
             .finally(() => setSubmitting(false));
     }

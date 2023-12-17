@@ -13,6 +13,7 @@ function Actions(props) {
         icon={MuiBtnType.Edit}
         showTooltip={true}
         tooltip="Edytuj element"
+        data-testid={`widoki-${props.row.id}.edytujElement-button`}
         onClick={() =>
           history.push({
             pathname: `${props.path}/edytuj`,
@@ -25,6 +26,7 @@ function Actions(props) {
         id={"delete-element-" + props.cell}
         showTooltip={true}
         tooltip="Usuń element"
+        data-testid={`widoki-${props.row.id}.usunElement-button`}
         onClick={() => {
           elementsService._delete(props.cell).then(() => {
             updateElements(props.row.yearId);

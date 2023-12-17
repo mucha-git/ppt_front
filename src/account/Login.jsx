@@ -17,7 +17,7 @@ function Login({ history, location }) {
     const validationSchema = Yup.object().shape({
         email: Yup.string()
             .email('Email jest niepoprawny')
-            .required('podaj email'),
+            .required('Podaj email'),
         password: Yup.string().required('Podaj hasło')
     });
 
@@ -30,7 +30,7 @@ function Login({ history, location }) {
             )
             .then(() => 
                 isSet()).then( () => {
-                const { from } = location.state || { from: { pathname: "/" } };
+                const { from } = location.state || { from: { pathname: "/views" } };
                 history.push(from);
             })
             .catch(error => {
@@ -48,17 +48,17 @@ function Login({ history, location }) {
                     <div className="card-body">
                         <div className="form-group">
                             <label>Email</label>
-                            <Field name="email" type="text" className={'form-control' + (errors.email && touched.email ? ' is-invalid' : '')} />
+                            <Field name="email" type="text" data-testid="login-email-field" className={'form-control' + (errors.email && touched.email ? ' is-invalid' : '')} />
                             <ErrorMessage name="email" component="div" className="invalid-feedback" />
                         </div>
                         <div className="form-group">
                             <label>Hasło</label>
-                            <Field name="password" type="password" className={'form-control' + (errors.password && touched.password ? ' is-invalid' : '')} />
+                            <Field name="password" type="password" data-testid="login-password-field" className={'form-control' + (errors.password && touched.password ? ' is-invalid' : '')} />
                             <ErrorMessage name="password" component="div" className="invalid-feedback" />
                         </div>
                         <div className="form-row">
                             <div className="form-group col">
-                                <button type="submit" disabled={isSubmitting} className="btn m-1 btn-primary">
+                                <button type="submit" data-testid="login-zaloguj-button" disabled={isSubmitting} className="btn m-1 btn-primary">
                                     {isSubmitting && <span className="spinner-border spinner-border-sm mr-1"></span>}
                                     Zaloguj
                                 </button>

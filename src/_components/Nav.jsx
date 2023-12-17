@@ -30,9 +30,6 @@ function Nav() {
   return (
     <div>
       <nav className="d-flex p-2 bg-primary text-white">
-        <NavLink exact to="/" className="nav-item nav-link text-white">
-          Strona główna
-        </NavLink>
         {user.role != Role.Admin && (
           <NavLink exact to="/views" className="nav-item nav-link text-white">
             Widoki

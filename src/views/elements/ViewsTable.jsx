@@ -140,12 +140,13 @@ function ViewsTable({ parentViewId, yearId, path, opened }) {
   ];
 
   return (
-    <div id={`${parentViewId}`} className="pt-3">
+    <div id={`${parentViewId}`} data-testid='widoki-list-container' className="pt-3">
       {parentViewId && (
         <div className="d-flex justify-content-center">
           <MuiButton
             icon={MuiBtnType.Add}
             text="Dodaj nowy widok"
+            data-testid={`widoki-${parentViewId}.dodajWidok-button`}
             className="p-2 pr-4 pl-4"
             onClick={() =>
               history.push({
