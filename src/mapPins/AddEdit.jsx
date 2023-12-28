@@ -128,7 +128,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
   const onDelete = (formik) => {
     formik.setSubmitting(true);
     mapPinsService
-      ._delete(row.id)
+      ._delete({yearId: row.yearId, id: row.id})
       .then(() => {
         updateMapPins(row.yearId);
         alertService.success("Pomyslnie usunięto pinezkę");

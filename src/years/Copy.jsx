@@ -9,15 +9,19 @@ import { yearsService } from "../_services";
 import MuiButton from "../_components/MuiButton";
 import { MuiBtnType } from "../_helpers/MuiBtnType";
 
-function AddEdit({ history }) {
+function Copy({ history }) {
   const { updateYears, years } = useContext(AppContext);
 
   let location = useLocation();
   const isAddMode = location.state == undefined;
   let row = isAddMode ? null : location.state.row;
-  const excludedYears = isAddMode
-    ? years.map((m) => m.year)
-    : years.filter((f) => f.id != row.id).map((m) => m.year);
+  const excludedYears = years.map((m) => m.year);
+  const yearsList = [
+    { key: "Wybierz rocznik źródłowy...", value: 0 },
+    ...years.map((o) => {
+      return { key: o.year, value: o.id };
+    }),
+  ];
   const findFirstAcceptableYear = () => {
     let year = new Date().getFullYear();
     while (excludedYears.find((y) => y == year)) {
@@ -25,31 +29,25 @@ function AddEdit({ history }) {
     }
     return year.toString();
   };
-  const initialValues = isAddMode
-    ? {
+  const initialValues = {
         year: findFirstAcceptableYear(),
         yearTopic: "",
         isActive: false,
         imgSrc: null,
+        sourceYearId: row.id
       }
-    : {
-        year: row.year.toString(),
-        yearTopic: row.yearTopic,
-        isActive: row.isActive,
-        imgSrc: row.imgSrc,
-      };
 
   const validationSchema = Yup.object({
     year: Yup.string().required("Pole jest wymagane"),
     yearTopic: Yup.string().required("Pole jest wymagane"),
     isActive: Yup.bool().required("Pole jest wymagane"),
     imgSrc: Yup.string().max(1000, "Maksymalnie 1000 znaków").nullable(),
+    sourceYearId: Yup.number().min(1, "Rocznik źródłowy jest wymagany").required("Rocznik źródłowy jest wymagany")
   });
 
-  const onSubmitYear = (formik) => {
+  const onSubmitCopy = (formik) => {
     let values = formik.values;
-    if (isAddMode) {
-      values.pilgrimageId = location.pilgrimageId;
+      values.pilgrimageId = row.pilgrimageId;
       yearsService
         .create(values)
         .then((x) => {
@@ -63,38 +61,6 @@ function AddEdit({ history }) {
           formik.setSubmitting(false);
           alertService.error(error);
         });
-    } else {
-      values.id = row.id;
-      values.pilgrimageId = row.pilgrimageId;
-      yearsService
-        .update(values)
-        .then(() => {
-          updateYears();
-          alertService.success("Sukces", {
-            keepAfterRouteChange: true,
-          });
-          history.push("/years");
-        })
-        .catch((error) => {
-          formik.setSubmitting(false);
-          alertService.error(error);
-        });
-    }
-  };
-
-  const onDelete = (formik) => {
-    formik.setSubmitting(true);
-    yearsService
-      ._delete({ id: row.id})
-      .then(() => {
-        updateYears();
-        alertService.success("Pomyslnie usunięto rocznik");
-        history.push({ pathname: "/years" });
-      })
-      .catch((error) => {
-        formik.setSubmitting(false);
-        alertService.error(error);
-      });
   };
 
   return (
@@ -122,49 +88,27 @@ function AddEdit({ history }) {
                   </h2>
                 </div>
                 <div>
-                  <h2>{isAddMode ? "Nowy rocznik" : "Edycja rocznika"}</h2>
-                </div>
-                <div className="ml-auto d-flex align-items-center">
-                  {!isAddMode && (
-                    <MuiButton
-                      icon={MuiBtnType.Delete}
-                      showTooltip={true}
-                      type="button"
-                      id={"delete-year-" + row.id}
-                      tooltip={
-                        !isAddMode && row.isActive
-                          ? "Nie można usunąć aktywnego rocznika"
-                          : "Usuń rocznik"
-                      }
-                      disabled={
-                        formik.isSubmitting || (!isAddMode && row.isActive)
-                      }
-                      onClick={() => onDelete(formik)}
-                    />
-                  )}
+                  <h2>"Kopiuj rocznik"</h2>
                 </div>
               </div>
-              {isAddMode? (
-                <FormikControl
-                  control="year"
-                  label={"Rocznik"}
-                  name="year"
-                  className="form-item-width"
-                  excluded={excludedYears}
-                  fullWidth
-                  margin="normal"
-                />
-              ):
-              (<FormikControl
-                control="input"
-                type="text"
-                label={"Rocznik"}
-                name="year"
+              <FormikControl
+                control="muiSelect"
+                label={"Rocznik źródłowy"}
+                name="sourceYearId"
+                options={yearsList}
                 className="form-item-width"
                 fullWidth
                 margin="normal"
-                disabled={true}
-              />)}
+              />
+              <FormikControl
+                control="year"
+                label={"Rocznik docelowy"}
+                name="year"
+                className="form-item-width"
+                excluded={excludedYears}
+                fullWidth
+                margin="normal"
+              />
               <FormikControl
                 control="input"
                 type="text"
@@ -181,28 +125,9 @@ function AddEdit({ history }) {
                   name="isActive"
                   className="form-item-width"
                   margin="normal"
-                  disabled={!isAddMode && row.isActive}
                   tooltip="Aby wyłączyć aktywuj inny rocznik"
                 />
               </div>
-              {/* <FormikControl
-                control="input"
-                type="text"
-                label={"Źródło grafiki"}
-                name="imgSrc"
-                className="form-item-width"
-                fullWidth
-                margin="normal"
-              />
-              {formik.values.imgSrc != null && formik.values.imgSrc != "" ? (
-                <img
-                  className="pt-2"
-                  src={formik.values.imgSrc}
-                  width={"100%"}
-                />
-              ) : (
-                ""
-              )} */}
             </div>
             <div className="d-flex flex-row-reverse bg-light pl-5 pr-5 pt-3 pb-3">
               <MuiButton
@@ -210,7 +135,7 @@ function AddEdit({ history }) {
                 text={"Zapisz"}
                 icon={MuiBtnType.Submit}
                 tooltip="Aby aktywować wypełnij poprawnie formularz"
-                onClick={() => onSubmitYear(formik)}
+                onClick={() => onSubmitCopy(formik)}
                 disabled={formik.isSubmitting || !formik.isValid}
               />
               <MuiButton
@@ -230,4 +155,4 @@ function AddEdit({ history }) {
   );
 }
 
-export { AddEdit };
+export { Copy };

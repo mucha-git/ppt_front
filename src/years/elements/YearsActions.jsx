@@ -10,6 +10,17 @@ function Actions(props) {
   return (
     <div className={"buttons d-flex"}>
       <MuiButton
+        icon={MuiBtnType.CopyYear}
+        showTooltip={true}
+        tooltip={"Kopiuj rocznik"}
+        onClick={() =>
+          history.push({
+            pathname: `${props.path}/kopiuj`,
+            state: { row: props.row },
+          })
+        }
+      />
+      <MuiButton
         icon={MuiBtnType.Edit}
         showTooltip={true}
         tooltip={"Edytuj rocznik"}
@@ -31,7 +42,7 @@ function Actions(props) {
         }
         disabled={props.row.isActive}
         onClick={() => {
-          yearsService._delete(props.cell).then(() => {
+          yearsService._delete({ id: props.cell}).then(() => {
             updateYears();
             alertService.success("Pomyslnie usunięto rocznik");
           });

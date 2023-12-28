@@ -26,7 +26,7 @@ function Actions(props) {
         showTooltip={true}
         tooltip="Usuń element"
         onClick={() => {
-          elementsService._delete(props.cell).then(() => {
+          elementsService._delete({ yearId: props.row.yearId, id: props.cell}).then(() => {
             updateElements(props.row.yearId);
             alertService.success("Pomyslnie usunięto element");
           });

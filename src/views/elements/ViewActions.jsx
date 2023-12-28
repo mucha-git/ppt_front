@@ -96,7 +96,7 @@ function Actions(props) {
             showTooltip={true}
             tooltip={"Usuń widok"}
             onClick={() => {
-              viewsService._delete(props.cell).then(() => {
+              viewsService._delete({ yearId: props.row.yearId, id: props.cell}).then(() => {
                 updateViews(props.row.yearId);
                 alertService.success("Pomyslnie usunięto widok");
               });

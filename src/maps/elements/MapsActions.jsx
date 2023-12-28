@@ -33,7 +33,7 @@ function Actions(props) {
             : "Usuń mapę"
         }
         onClick={() => {
-          mapsService._delete(props.cell).then(() => {
+          mapsService._delete({ yearId: props.row.yearId, id: props.cell}).then(() => {
             updateMaps(props.row.yearId);
             alertService.success("Pomyslnie usunięto mapę");
           });

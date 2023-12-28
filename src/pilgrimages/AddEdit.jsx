@@ -82,7 +82,7 @@ function AddEdit({ history }) {
   const onDelete = (formik) => {
     formik.setSubmitting(true);
     pilgrimagesService
-      ._delete(row.id)
+      ._delete({id: row.id})
       .then(() => {
         updatePilgrimages();
         alertService.success("Pomyslnie usunięto pielgrzymkę")
