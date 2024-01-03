@@ -161,6 +161,11 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
   const onSubmitElements = (formik, openNew) => {
     let values = formik.values;
     values.order = isAddMode ? null : row.order;
+    if (values.type != "Divider") {
+      values.color = null;
+      values.margin = null;
+      values.height = null;
+    }
     if (values.type != "Map") {
       values.mapId = null;
       values.mapHeight = null;
