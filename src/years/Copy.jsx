@@ -8,6 +8,7 @@ import { AppContext } from "../_helpers/context";
 import { yearsService } from "../_services";
 import MuiButton from "../_components/MuiButton";
 import { MuiBtnType } from "../_helpers/MuiBtnType";
+import { columnsCount } from "../_helpers/columnsCount";
 
 function Copy({ history }) {
   const { updateYears, years } = useContext(AppContext);
@@ -34,6 +35,7 @@ function Copy({ history }) {
         yearTopic: "",
         isActive: false,
         imgSrc: null,
+        columnsCount: 1,
         sourceYearId: row.id
       }
 
@@ -42,6 +44,7 @@ function Copy({ history }) {
     yearTopic: Yup.string().required("Pole jest wymagane"),
     isActive: Yup.bool().required("Pole jest wymagane"),
     imgSrc: Yup.string().max(1000, "Maksymalnie 1000 znaków").nullable(),
+    columnsCount: Yup.number().min(1, "Minimum 1").max(3, "Maksimum 3").required("Wymagane"),
     sourceYearId: Yup.number().min(1, "Rocznik źródłowy jest wymagany").required("Rocznik źródłowy jest wymagany")
   });
 
@@ -115,6 +118,14 @@ function Copy({ history }) {
                 label={"Hasło rocznika"}
                 name="yearTopic"
                 className="form-item-width"
+                fullWidth
+                margin="normal"
+              />
+              <FormikControl
+                control="muiSelect"
+                label={"Ilość kolumn w Menu"}
+                name="columnsCount"
+                options={columnsCount}
                 fullWidth
                 margin="normal"
               />

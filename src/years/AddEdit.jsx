@@ -8,6 +8,7 @@ import { AppContext } from "../_helpers/context";
 import { yearsService } from "../_services";
 import MuiButton from "../_components/MuiButton";
 import { MuiBtnType } from "../_helpers/MuiBtnType";
+import { columnsCount } from "../_helpers/columnsCount";
 
 function AddEdit({ history }) {
   const { updateYears, years } = useContext(AppContext);
@@ -31,19 +32,22 @@ function AddEdit({ history }) {
         yearTopic: "",
         isActive: false,
         imgSrc: null,
+        columnsCount: 1
       }
     : {
         year: row.year.toString(),
         yearTopic: row.yearTopic,
         isActive: row.isActive,
         imgSrc: row.imgSrc,
+        columnsCount: row.columnsCount
       };
 
   const validationSchema = Yup.object({
-    year: Yup.string().required("Pole jest wymagane"),
-    yearTopic: Yup.string().required("Pole jest wymagane"),
-    isActive: Yup.bool().required("Pole jest wymagane"),
+    year: Yup.string().required("Wymagane"),
+    yearTopic: Yup.string().required("Wymagane"),
+    isActive: Yup.bool().required("Wymagane"),
     imgSrc: Yup.string().max(1000, "Maksymalnie 1000 znaków").nullable(),
+    columnsCount: Yup.number().min(1, "Minimum 1").max(3, "Maksimum 3").required("Wymagane")
   });
 
   const onSubmitYear = (formik) => {
@@ -171,6 +175,14 @@ function AddEdit({ history }) {
                 label={"Hasło rocznika"}
                 name="yearTopic"
                 className="form-item-width"
+                fullWidth
+                margin="normal"
+              />
+              <FormikControl
+                control="muiSelect"
+                label={"Ilość kolumn w Menu"}
+                name="columnsCount"
+                options={columnsCount}
                 fullWidth
                 margin="normal"
               />
