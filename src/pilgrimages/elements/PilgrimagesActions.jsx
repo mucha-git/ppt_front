@@ -18,7 +18,7 @@ function Actions(props) {
           showTooltip={true}
           tooltip={"Usuń pielgrzymkę"}
           onClick={() => {
-            pilgrimagesService._delete(props.cell).then(() => {
+            pilgrimagesService._delete({ id: props.cell}).then(() => {
               updatePilgrimages();
               alertService.success("Pomyslnie usunięto pielgrzymkę");
             });

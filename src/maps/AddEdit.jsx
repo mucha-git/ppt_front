@@ -381,7 +381,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
   const onDelete = (formik) => {
     formik.setSubmitting(true);
     mapsService
-      ._delete(row.id)
+      ._delete({yearId: row.yearId, id: row.id})
       .then(() => {
         updateMaps(row.yearId);
         alertService.success("Pomyslnie usunięto mapę");

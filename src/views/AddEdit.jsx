@@ -170,7 +170,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
   const onDelete = (formik) => {
     formik.setSubmitting(true);
     viewsService
-      ._delete(row.id)
+      ._delete({yearId: row.yearId, id: row.id})
       .then(() => {
         updateViews(row.yearId);
         alertService.success("Pomyslnie usunięto widok");

@@ -33,7 +33,7 @@ function Actions(props) {
             : "Usuń pinezkę"
         }
         onClick={() => {
-          mapPinsService._delete(props.cell).then(() => {
+          mapPinsService._delete({ yearId: props.row.yearId, id: props.cell}).then(() => {
             updateMapPins(props.row.yearId);
             alertService.success("Pomyslnie usunięto pinezkę");
           });
