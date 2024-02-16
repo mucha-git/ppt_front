@@ -41,6 +41,7 @@ function Actions(props) {
         <div className={visability}>
           <MuiButton
             icon={MuiBtnType.ArrowUp}
+            data-testid={`widoki-${props.row.id}.rozwin-button`}
             onClick={() => props.setExpanded(props.expanded.filter((x) => x !== props.row.id))}
           />
         </div>
@@ -50,6 +51,7 @@ function Actions(props) {
         <div className={visability}>
           <MuiButton
             icon={MuiBtnType.ArrowDown}
+            data-testid={`widoki-${props.row.id}.rozwin-button`}
             onClick={() => props.setExpanded([props.row.id].concat(props.expanded))}
           />
         </div>
@@ -66,6 +68,7 @@ function Actions(props) {
               icon={MuiBtnType.Add}
               showTooltip={true}
               tooltip={"Dodaj podwidok/podelement"}
+              data-testid={`widoki-${props.row.id}.dodajPodwidok-button`}
               onClick={() =>
                 history.push({
                   pathname: addButtonPath(),
@@ -83,6 +86,7 @@ function Actions(props) {
             icon={MuiBtnType.Edit}
             showTooltip={true}
             tooltip={"Edytuj widok"}
+            data-testid={`widoki-${props.row.id}.edytujWidok-button`}
             onClick={() =>
               history.push({
                 pathname: `${props.path}/edytuj`,
@@ -95,6 +99,7 @@ function Actions(props) {
             id={"delete-view-" + props.cell}
             showTooltip={true}
             tooltip={"Usuń widok"}
+            data-testid={`widoki-${props.row.id}.usunWidok-button`}
             onClick={() => {
               viewsService._delete({ yearId: props.row.yearId, id: props.cell}).then(() => {
                 updateViews(props.row.yearId);

@@ -64,6 +64,7 @@ module.exports = (env) => {
                 //version: 46,
                 version: process.env.REACT_APP_VERSION,
                 apiUrl: process.env.REACT_APP_API_URL
+                //apiUrl: 'https://api.pielgrzymappka.pl'
                 //apiUrl: 'https://apidev.pielgrzymappka.pl'
                 //apiUrl: 'http://localhost:52171'
             })

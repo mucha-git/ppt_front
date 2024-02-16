@@ -45,7 +45,7 @@ function App() {
                 <PrivateRoute path="/admin" roles={[Role.Admin, Role.Manager]} component={Admin} />
                 <Route path="/account" component={Account} />
                 <Redirect from="/:url*(/+)" to={pathname} />
-                <Redirect from="*" to="/" />
+                <Redirect from="*" to="/views" />
             </Switch>
             </AppContextProvider>
         </div>

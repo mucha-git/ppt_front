@@ -375,6 +375,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                       type="button"
                       showTooltip={true}
                       tooltip="Usuń element"
+                      data-testid={`element-${row.id}.usunElement-button`}
                       disabled={formik.isSubmitting}
                       onClick={() => onDelete(formik)}
                     />

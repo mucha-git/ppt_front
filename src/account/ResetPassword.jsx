@@ -44,7 +44,7 @@ function ResetPassword({ history }) {
                 .min(6, 'Hasło musi zawierać przynajmniej 6 znaków')
                 .required('Podaj hasło'),
             confirmPassword: Yup.string()
-                .oneOf([Yup.ref('password'), null], 'Hasła muszą być identyczne')
+                .oneOf([Yup.ref('password'), null], 'Hasła muszą się zgadzać')
                 .required('Musisz powtórzyć hasło'),
         });
 
