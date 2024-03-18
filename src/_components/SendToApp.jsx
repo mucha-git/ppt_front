@@ -18,6 +18,7 @@ export default function SendToApp() {
       text={"Wyślij do aplikacji"}
       onClick={saveChangesToApp}
       className="p-2 pr-4 pl-4"
+      data-testid="widoki-wyslij-button"
     />
   );
 }

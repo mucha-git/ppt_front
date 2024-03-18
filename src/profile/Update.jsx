@@ -27,12 +27,12 @@ function Update({ history }) {
             .email('Email jest niepoprawny')
             .required('Podaj email'),
         password: Yup.string()
-            .min(6, 'Hasło musi zawierać przynajmniej 6 znakó∑'),
+            .min(6, 'Hasło musi zawierać co najmniej 6 znaków'),
         confirmPassword: Yup.string()
             .when('password', (password, schema) => {
                 if (password != "" && password != null) return schema.required('Powtórz hasło');
             })
-            .oneOf([Yup.ref('password')], 'HAsła muszą być identyczne')
+            .oneOf([Yup.ref('password')], 'Hasła muszą być identyczne')
     });
 
     function onSubmit(fields, { setStatus, setSubmitting }) {

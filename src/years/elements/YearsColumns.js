@@ -14,9 +14,6 @@ function KolumnaImgSrc() {
       return (
         <DefaultTableView text={row.yearTopic} displayOrder={false}>
           <div className="d-flex justify-content-start">
-            <div>
-              {cell != null ? <img src={cell} height={100} /> : "brak grafiki"}
-            </div>
             <div className="ml-2">
               <div>
                 <strong>Rocznik: </strong>
@@ -44,6 +41,6 @@ function KolumnaAkcje(akcje) {
     formatter: akcje,
     classes: "height1 pt-3 pb-3",
     headerClasses: "header-class",
-    headerStyle: { width: "110px" },
+    headerStyle: { width: "170px" },
   };
 }

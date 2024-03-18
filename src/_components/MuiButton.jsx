@@ -16,6 +16,7 @@ export default function MuiButton({
   disabled = false,
   tooltip = "Operacja zabroniona",
   showTooltip = false,
+  'data-testid': dataTestId,
 }) {
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -52,6 +53,7 @@ export default function MuiButton({
             style={disabled ? { pointerEvents: "none" } : {}}
             type={type}
             disabled={disabled}
+            data-testid={dataTestId}
           >
             {icon && icon.icon }
             {text && <span className="ml-1">{text}</span>}
@@ -80,6 +82,7 @@ export default function MuiButton({
                       <MuiButton
                         icon={MuiBtnType.Yes}
                         text={"Tak"}
+                        data-testid={"popup-tak-button"}
                         onClick={() => {
                           onClick();
                           setOpen(false);
@@ -89,6 +92,7 @@ export default function MuiButton({
                         icon={MuiBtnType.No}
                         text={"Nie"}
                         type="button"
+                        data-testid={"popup-nie-button"}
                         onClick={() => setOpen(false)}
                       />
                     </div>

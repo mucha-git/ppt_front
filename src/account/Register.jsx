@@ -20,27 +20,27 @@ function Register({ history }) {
         title: Yup.string()
             .required('Title is required'),
         firstName: Yup.string()
-            .required('First Name is required'),
+            .required('Imię jest wymagane'),
         lastName: Yup.string()
-            .required('Last Name is required'),
+            .required('Nazwisko jest wymagane'),
         email: Yup.string()
-            .email('Email is invalid')
-            .required('Email is required'),
+            .email('Email jest niepoprawny')
+            .required('Email jest wymagany'),
         password: Yup.string()
-            .min(6, 'Password must be at least 6 characters')
-            .required('Password is required'),
+            .min(6, 'Hasło powinno zawierać co najmniej 6 znaków')
+            .required('Hasło jest wymagane'),
         confirmPassword: Yup.string()
-            .oneOf([Yup.ref('password'), null], 'Passwords must match')
-            .required('Confirm Password is required'),
+            .oneOf([Yup.ref('password'), null], 'Hasła muszą się zgadzać')
+            .required('Potwierdzenie hasła jest wymagane'),
         acceptTerms: Yup.bool()
-            .oneOf([true], 'Accept Terms & Conditions is required')
+            .oneOf([true], 'Akceptacja regulaminu jest wymagana')
     });
 
     function onSubmit(fields, { setStatus, setSubmitting }) {
         setStatus();
         accountService.register(fields)
             .then(() => {
-                alertService.success('Registration successful, please check your email for verification instructions', { keepAfterRouteChange: true });
+                alertService.success('Rejestracja udana! Sprawdż swoją skrzynkę mailową w celu weryfikacji.', { keepAfterRouteChange: true });
                 history.push('login');
             })
             .catch(error => {

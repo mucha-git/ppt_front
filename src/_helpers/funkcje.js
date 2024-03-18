@@ -9,11 +9,11 @@ export function showView(row) {
     case ListType[0].value:
       return <div></div>;
     case ListType[1].value:
-      return <img src={row.imgSrc} width={"100%"} />;
+      return <img src={row.imgSrc} data-testid={`widoki-${row.id}-img`} width={"100%"} />;
     case ListType[2].value:
       return (
         <div>
-          <img src={row.imgSrc} width={"10%"} className="mr-2" />
+          <img src={row.imgSrc} data-testid={`widoki-${row.id}-img`} width={"10%"} className="mr-2" />
           <strong>{row.title}</strong>
         </div>
       );

@@ -14,6 +14,7 @@ import { faPlus,
     faArrowRightLong,
     faXmark,
     faCheck,
+    faCopy,
     faFileExport } from '@fortawesome/free-solid-svg-icons'
     import {  } from '@fortawesome/free-regular-svg-icons'
     import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
@@ -51,5 +52,6 @@ export const MuiBtnType = {
     ArrowRight: {icon: <FontAwesomeIcon icon={faArrowRightLong} />, color: BtnColors.transparent},
     Yes: {icon: <FontAwesomeIcon icon={faCheck} />, color: BtnColors.inverseGreen},
     No: {icon: <FontAwesomeIcon icon={faXmark} />, color: BtnColors.inverseRed},
-    Copy: {icon: <FontAwesomeIcon icon={faFileExport} />, color: BtnColors.orange}
+    Copy: {icon: <FontAwesomeIcon icon={faFileExport} />, color: BtnColors.orange},
+    CopyYear: {icon: <FontAwesomeIcon icon={faCopy} />, color: BtnColors.green}
 }

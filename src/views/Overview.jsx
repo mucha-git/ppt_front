@@ -29,7 +29,7 @@ function Overview({ match, location }) {
     <div className="p-4 box-shadow-main">
       <div className="container ">
         <div>
-          <h2>Widoki</h2>
+          <h2 data-testid='widoki-title-text'>Widoki</h2>
         </div>
         <div className="d-flex">
           <div className="mr-auto d-flex align-items-center">
@@ -39,14 +39,13 @@ function Overview({ match, location }) {
                   Rok
                 </InputLabel>
                 <Select
-                  labelId="demo-simple-select-filled-label"
-                  id="demo-simple-select-filled"
+                  data-testid='widoki-rok-dropdown'
                   value={year}
                   onChange={handleChange}
                 >
                   {years.map((y) => {
                     return (
-                      <MenuItem key={y.id} value={y.id}>
+                      <MenuItem data-testid={`widoki-${y.year}-option`} key={y.id} value={y.id}>
                         {y.year}
                       </MenuItem>
                     );
@@ -58,6 +57,7 @@ function Overview({ match, location }) {
           <div className="d-flex align-items-center">
             <MuiButton
               icon={MuiBtnType.Add}
+              data-testid='widoki-dodajWidok-button'
               text="Dodaj nowy widok"
               className="p-2 pr-4 pl-4"
               onClick={() =>
