@@ -59,8 +59,8 @@ function Nav() {
           </NavLink>
         )}
         {user.role === Role.Manager && (
-          <NavLink to="/years" className="nav-item nav-link text-white">
-            Roczniki
+          <NavLink to="/events" className="nav-item nav-link text-white">
+            Wydarzenia
           </NavLink>
         )}
         {(user.role === Role.Manager || user.role === Role.User) &&

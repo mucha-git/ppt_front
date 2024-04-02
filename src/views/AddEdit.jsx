@@ -32,6 +32,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
         imgSrc: null,
         viewId: parentViewId,
         externalUrl: null,
+        isSearchable: false
       }
     : {
         title: row.title,
@@ -41,6 +42,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
         imgSrc: row.imgSrc,
         viewId: row.viewId,
         externalUrl: row.externalUrl,
+        isSearchable: row.isSearchable
       };
 
   const validationSchema = Yup.object().shape({
@@ -299,6 +301,19 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                     fullWidth
                     margin="normal"
                   />
+                )}
+                {formik.values.contentType === "List" && (
+                  <div className="d-flex justify-content-center m-3">
+                  <FormikControl
+                    control="switch"
+                    label={"Wyszukiwanie"}
+                    name="isSearchable"
+                    className="form-item-width"
+                    margin="normal"
+                    disabled={false}
+                    tooltip="Włącz aby umożliwić wyszukiwanie po nazwie"
+                  />
+                </div>
                 )}
                 {(formik.values.btnType === "Graphic" || formik.values.btnType === "GraphicWithText") &&
                   formik.values.contentType != null && (

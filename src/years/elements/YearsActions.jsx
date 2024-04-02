@@ -12,7 +12,7 @@ function Actions(props) {
       <MuiButton
         icon={MuiBtnType.CopyYear}
         showTooltip={true}
-        tooltip={"Kopiuj rocznik"}
+        tooltip={"Kopiuj wydarzenie"}
         onClick={() =>
           history.push({
             pathname: `${props.path}/kopiuj`,
@@ -23,7 +23,7 @@ function Actions(props) {
       <MuiButton
         icon={MuiBtnType.Edit}
         showTooltip={true}
-        tooltip={"Edytuj rocznik"}
+        tooltip={"Edytuj wydarzenie"}
         onClick={() =>
           history.push({
             pathname: `${props.path}/edytuj`,
@@ -37,14 +37,14 @@ function Actions(props) {
         showTooltip={true}
         tooltip={
           props.row.isActive
-            ? "Nie można usunąć aktywnego rocznika"
-            : "Usuń rocznik"
+            ? "Nie można usunąć aktywnego wydarzenia"
+            : "Usuń wydarzenie"
         }
         disabled={props.row.isActive}
         onClick={() => {
           yearsService._delete({ id: props.cell}).then(() => {
             updateYears();
-            alertService.success("Pomyslnie usunięto rocznik");
+            alertService.success("Pomyslnie usunięto wydarzenie");
           });
         }}
       />

@@ -16,7 +16,7 @@ function KolumnaImgSrc() {
           <div className="d-flex justify-content-start">
             <div className="ml-2">
               <div>
-                <strong>Rocznik: </strong>
+                <strong>Wydarzenie: </strong>
                 {row.year}
               </div>
               <div>
