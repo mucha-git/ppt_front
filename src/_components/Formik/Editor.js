@@ -50,6 +50,7 @@ export const TextEditor = ({
         wrapperClassName="custom-wrapper"
         editorClassName="custom-editor"
         onEditorStateChange={onEditorStateChange}
+        stripPastedStyles={true}
         toolbar={{
           inline: { options: ["bold", "italic", "underline"] },
           blockType: { className: "d-none" },
