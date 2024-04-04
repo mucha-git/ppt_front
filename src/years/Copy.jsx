@@ -91,7 +91,7 @@ function Copy({ history }) {
                   </h2>
                 </div>
                 <div>
-                  <h2>"Kopiuj wydarzenie"</h2>
+                  <h2>Kopiuj wydarzenie</h2>
                 </div>
               </div>
               <FormikControl
