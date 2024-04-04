@@ -45,8 +45,8 @@ function Overview({ match, location }) {
                 >
                   {years.map((y) => {
                     return (
-                      <MenuItem data-testid={`widoki-${y.year}-option`} key={y.id} value={y.id}>
-                        {y.year}
+                      <MenuItem data-testid={`widoki-${y.id}-option`} key={y.id} value={y.id}>
+                        {y.yearTopic}
                       </MenuItem>
                     );
                   })}

@@ -16,22 +16,22 @@ function Copy({ history }) {
   let location = useLocation();
   const isAddMode = location.state == undefined;
   let row = isAddMode ? null : location.state.row;
-  const excludedYears = years.map((m) => m.year);
+  //const excludedYears = years.map((m) => m.year);
   const yearsList = [
     { key: "Wybierz wydarzenie źródłowe...", value: 0 },
     ...years.map((o) => {
-      return { key: o.year, value: o.id };
+      return { key: o.yearTopic, value: o.id };
     }),
   ];
-  const findFirstAcceptableYear = () => {
+  /*const findFirstAcceptableYear = () => {
     let year = new Date().getFullYear();
     while (excludedYears.find((y) => y == year)) {
       year++;
     }
     return year.toString();
-  };
+  };*/
   const initialValues = {
-        year: findFirstAcceptableYear(),
+        year: 1, //findFirstAcceptableYear(),
         yearTopic: "",
         isActive: false,
         imgSrc: null,
@@ -40,7 +40,7 @@ function Copy({ history }) {
       }
 
   const validationSchema = Yup.object({
-    year: Yup.string().required("Pole jest wymagane"),
+    //year: Yup.string().required("Pole jest wymagane"),
     yearTopic: Yup.string().required("Pole jest wymagane"),
     isActive: Yup.bool().required("Pole jest wymagane"),
     imgSrc: Yup.string().max(1000, "Maksymalnie 1000 znaków").nullable(),
@@ -103,7 +103,7 @@ function Copy({ history }) {
                 fullWidth
                 margin="normal"
               />
-              <FormikControl
+              {/*<FormikControl
                 control="year"
                 label={"Wydarzenie docelowe"}
                 name="year"
@@ -111,7 +111,7 @@ function Copy({ history }) {
                 excluded={excludedYears}
                 fullWidth
                 margin="normal"
-              />
+                    />*/}
               <FormikControl
                 control="input"
                 type="text"

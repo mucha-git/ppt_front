@@ -46,7 +46,7 @@ function Overview({ match }) {
                   {years.map((y) => {
                     return (
                       <MenuItem key={y.id} value={y.id}>
-                        {y.year}
+                        {y.yearTopic}
                       </MenuItem>
                     );
                   })}
