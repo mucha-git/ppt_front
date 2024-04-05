@@ -5,13 +5,13 @@ import FormikControl from "@/_components/Formik/FormikControl";
 import { alertService } from "@/_services";
 import { useLocation } from "react-router-dom";
 import { AppContext } from "../_helpers/context";
-import { pilgrimagesService, accountService } from "../_services";
+import { applicationsService, accountService } from "../_services";
 import MuiButton from "../_components/MuiButton";
 import { MuiBtnType } from "../_helpers/MuiBtnType";
 import { Role } from "../_helpers";
 
 function AddEdit({ history }) {
-  const { updatePilgrimages } = useContext(AppContext);
+  const { updateApplications } = useContext(AppContext);
   const user = accountService.userValue;
   let location = useLocation();
   const isAddMode = location.state == undefined;
@@ -43,19 +43,20 @@ function AddEdit({ history }) {
     oneSignalApiKey: Yup.string().max(50, "Maksymalnie 50 znaków").nullable(),
   });
 
-  const onSubmitPilgrimage = (formik) => {
+  const onSubmitApplication = (formik) => {
+    console.log("weszlo")
     let values = formik.values;
     if (values.oneSignal == "") values.oneSignal = null;
     if (values.oneSignalApiKey == "") values.oneSignalApiKey = null;
     if (isAddMode) {
-      pilgrimagesService
+      applicationsService
         .create(values)
         .then((x) => {
-          updatePilgrimages();
+          updateApplications();
           alertService.success("Sukces", {
             keepAfterRouteChange: true,
           });
-          history.push("/pilgrimages");
+          history.push("/applications");
         })
         .catch((error) => {
           formik.setSubmitting(false);
@@ -63,14 +64,14 @@ function AddEdit({ history }) {
         });
     } else {
       values.id = row.id;
-      pilgrimagesService
+      applicationsService
         .update(values)
         .then(() => {
-          updatePilgrimages();
+          updateApplications();
           alertService.success("Sukces", {
             keepAfterRouteChange: true,
           });
-          history.push("/pilgrimages");
+          history.push("/applications");
         })
         .catch((error) => {
           formik.setSubmitting(false);
@@ -81,12 +82,12 @@ function AddEdit({ history }) {
 
   const onDelete = (formik) => {
     formik.setSubmitting(true);
-    pilgrimagesService
+    applicationsService
       ._delete({id: row.id})
       .then(() => {
-        updatePilgrimages();
-        alertService.success("Pomyslnie usunięto pielgrzymkę")
-        history.push({ pathname: "/pilgrimages" });
+        updateApplications();
+        alertService.success("Pomyslnie usunięto aplikację")
+        history.push({ pathname: "/applications" });
       })
       .catch((error) => {
         formik.setSubmitting(false);
@@ -112,13 +113,13 @@ function AddEdit({ history }) {
                     <MuiButton
                       className="pl-2 pr-2"
                       icon={MuiBtnType.ArrowBack}
-                      onClick={() => history.push({ pathname: "/pilgrimages" })}
+                      onClick={() => history.push({ pathname: "/applications" })}
                     />
                   </h2>
                 </div>
                 <div>
                   <h2>
-                    {isAddMode ? "Nowa pielgrzymka" : "Edycja pielgrzymki"}
+                    {isAddMode ? "Nowa aplikacja" : "Edycja aplikacji"}
                   </h2>
                 </div>
                 <div className="ml-auto d-flex align-items-center">
@@ -127,8 +128,8 @@ function AddEdit({ history }) {
                       icon={MuiBtnType.Delete}
                       showTooltip={true}
                       type="button"
-                      id={"delete-pilgrimage-" + row.id}
-                      tooltip={"Usuń pielgrzymkę"}
+                      id={"delete-Application-" + row.id}
+                      tooltip={"Usuń aplikację"}
                       disabled={formik.isSubmitting}
                       onClick={() => onDelete(formik)}
                     />
@@ -180,7 +181,7 @@ function AddEdit({ history }) {
                   className="form-item-width"
                   wymagane={true}
                   disabled={user.role != Role.Admin}
-                  tooltip="Tylko Administrator może dezaktywować pielgrzymkę"
+                  tooltip="Tylko Administrator może dezaktywować aplikację"
                   fullWidth
                   margin="normal"
                 />
@@ -192,7 +193,7 @@ function AddEdit({ history }) {
                 text={"Zapisz"}
                 tooltip="Aby aktywować wypełnij poprawnie formularz"
                 icon={MuiBtnType.Submit}
-                onClick={() => onSubmitPilgrimage(formik)}
+                onClick={() => onSubmitApplication(formik)}
                 disabled={formik.isSubmitting || !formik.isValid}
               />
               <MuiButton
@@ -200,7 +201,7 @@ function AddEdit({ history }) {
                 className="pl-5 pr-5 pt-2 pb-2"
                 text={"Anuluj"}
                 icon={MuiBtnType.Cancel}
-                onClick={() => history.push({ pathname: "/pilgrimages" })}
+                onClick={() => history.push({ pathname: "/applications" })}
               />
             </div>
           </Form>

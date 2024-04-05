@@ -36,7 +36,7 @@ function Overview({ match, location }) {
             {years.length > 1 && (
               <FormControl variant="filled" sx={{ m: 1, minWidth: 200 }}>
                 <InputLabel id="demo-simple-select-filled-label">
-                  Rok
+                  Wydarzenie
                 </InputLabel>
                 <Select
                   data-testid='widoki-rok-dropdown'

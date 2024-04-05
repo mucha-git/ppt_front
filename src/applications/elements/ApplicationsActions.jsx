@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { pilgrimagesService, alertService } from "@/_services";
+import { applicationsService, alertService } from "@/_services";
 import { AppContext } from "../../_helpers/context";
 import MuiButton from "../../_components/MuiButton";
 import { MuiBtnType } from "../../_helpers/MuiBtnType";
@@ -7,20 +7,20 @@ import { accountService } from "../../_services";
 import { Role, history } from "../../_helpers";
 
 function Actions(props) {
-  const { updatePilgrimages } = useContext(AppContext);
+  const { updateApplications } = useContext(AppContext);
   const user = accountService.userValue;
   return (
     <div className={"buttons d-flex justify-content-end"}>
       {user.role == Role.Admin && (
         <MuiButton
           icon={MuiBtnType.Delete}
-          id={"delete-pilgrimages-" + props.cell}
+          id={"delete-applications-" + props.cell}
           showTooltip={true}
-          tooltip={"Usuń pielgrzymkę"}
+          tooltip={"Usuń aplikację"}
           onClick={() => {
-            pilgrimagesService._delete({ id: props.cell}).then(() => {
-              updatePilgrimages();
-              alertService.success("Pomyslnie usunięto pielgrzymkę");
+            applicationsService._delete({ id: props.cell}).then(() => {
+              updateApplications();
+              alertService.success("Pomyslnie usunięto aplikację");
             });
           }}
         />
@@ -28,7 +28,7 @@ function Actions(props) {
       <MuiButton
         icon={MuiBtnType.Edit}
         showTooltip={true}
-        tooltip={"Edytuj pielgrzymkę"}
+        tooltip={"Edytuj aplikację"}
         onClick={() =>
           history.push({
             pathname: `${props.path}/edytuj`,

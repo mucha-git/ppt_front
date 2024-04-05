@@ -6,6 +6,7 @@ import {AppContext} from '../_helpers/context'
 import bcrypt from "bcryptjs";
 
 import { accountService, alertService } from '@/_services';
+import { Role } from '../_helpers';
 
 function Login({ history, location }) {
     const { isSet } = useContext(AppContext);
@@ -30,8 +31,8 @@ function Login({ history, location }) {
             )
             .then(() => 
                 isSet()).then( () => {
-                const { from } = location.state || { from: { pathname: "/views" } };
-                history.push(from);
+                    const { from } = location.state || { from: { pathname: "/applications" } };
+                    history.push(from);
             })
             .catch(error => {
                 setSubmitting(false);

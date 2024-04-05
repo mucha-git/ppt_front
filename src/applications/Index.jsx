@@ -3,7 +3,7 @@ import { Route, Switch } from "react-router-dom";
 import { Overview } from "./Overview";
 import { AddEdit } from "./AddEdit";
 
-function Pilgrimages({ match }) {
+function Applications({ match }) {
   const { path } = match;
 
   return (
@@ -19,4 +19,4 @@ function Pilgrimages({ match }) {
   );
 }
 
-export { Pilgrimages };
+export { Applications };

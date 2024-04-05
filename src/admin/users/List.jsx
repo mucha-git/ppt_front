@@ -5,7 +5,7 @@ import { AppContext } from '../../_helpers/context';
 import { accountService } from '@/_services';
 
 function List({ match }) {
-    const { pilgrimages } = useContext(AppContext)
+    const { applications } = useContext(AppContext)
     const { path } = match;
     const [users, setUsers] = useState(null);
 
@@ -34,7 +34,7 @@ function List({ match }) {
                         <th style={{ width: '25%' }}>Nazwa</th>
                         <th style={{ width: '25%' }}>Email</th>
                         <th style={{ width: '15%' }}>Rola</th>
-                        <th style={{ width: '25%' }}>Pielgrzymka</th>
+                        <th style={{ width: '25%' }}>Aplikacja</th>
                         <th style={{ width: '10%' }}></th>
                     </tr>
                 </thead>
@@ -44,7 +44,7 @@ function List({ match }) {
                             <td>{user.title} {user.firstName} {user.lastName}</td>
                             <td>{user.email}</td>
                             <td>{user.role}</td>
-                            <td>{pilgrimages.find( p => p.id === user.pilgrimageId)?.name}</td>
+                            <td>{applications.find( p => p.id === user.pilgrimageId)?.name}</td>
                             <td style={{ whiteSpace: 'nowrap' }}>
                                 <Link to={`${path}/edit/${user.id}`} className="btn m-1 btn-sm btn-primary mr-1">Edytuj</Link>
                                 <button onClick={() => deleteUser(user.id)} className="btn m-1 btn-sm btn-danger" style={{ width: '60px' }} disabled={user.isDeleting}>

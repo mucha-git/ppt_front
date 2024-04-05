@@ -3,15 +3,15 @@ import { fetchWrapper } from "@/_helpers";
 
 const baseUrl = `${config.apiUrl}/pilgrimages`;
 
-export const pilgrimagesService = {
-  getPilgrimages,
+export const applicationsService = {
+  getApplications,
   create,
   postMessage,
   update,
   _delete,
 };
 
-function getPilgrimages() {
+function getApplications() {
   return fetchWrapper.get(baseUrl);
 }
 

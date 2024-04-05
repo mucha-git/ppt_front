@@ -1,5 +1,5 @@
 import React from "react";
-import { PilgrimagesTable } from "./elements/PilgrimagesTable";
+import { ApplicationsTable } from "./elements/ApplicationsTable";
 import MuiButton from "../_components/MuiButton";
 import { MuiBtnType } from "../_helpers/MuiBtnType";
 import { accountService } from "../_services";
@@ -12,21 +12,21 @@ function Overview({ match }) {
     <div className="p-4 box-shadow-main">
       <div className="container">
         <div>
-          <h2>Pielgrzymki</h2>
+          <h2>Aplikacje</h2>
         </div>
         {user.role == Role.Admin && (
           <div className="d-flex justify-content-end">
             <div className="d-flex align-items-center">
               <MuiButton
                 icon={MuiBtnType.Add}
-                text="Dodaj nową pielgrzymkę"
+                text="Dodaj nową aplikację"
                 className="p-2 pr-4 pl-4"
                 onClick={() => history.push({ pathname: `${path}/dodaj` })}
               />
             </div>
           </div>
         )}
-        <PilgrimagesTable path={path} />
+        <ApplicationsTable path={path} />
       </div>
     </div>
   );

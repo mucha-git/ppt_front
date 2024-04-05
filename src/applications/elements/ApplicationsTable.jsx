@@ -1,12 +1,12 @@
 import React, { useContext, useEffect } from "react";
 import BootstrapTable from "@murasoftware/react-bootstrap-table-next";
 import paginationFactory from "@murasoftware/react-bootstrap-table2-paginator";
-import { kolumny } from "./PilgrimagesColumns";
-import { Actions } from "./PilgrimagesActions";
+import { kolumny } from "./ApplicationsColumns";
+import { Actions } from "./ApplicationsActions";
 import { AppContext } from "../../_helpers/context";
 
-function PilgrimagesTable({ path }) {
-  const { pilgrimages, isSet } = useContext(AppContext);
+function ApplicationsTable({ path }) {
+  const { applications, isSet } = useContext(AppContext);
   useEffect(() => {
     isSet();
   }, []);
@@ -21,7 +21,7 @@ function PilgrimagesTable({ path }) {
     <BootstrapTable
       bootstrap4
       keyField="id"
-      data={pilgrimages}
+      data={applications}
       columns={columns}
       hover
       condensed
@@ -31,4 +31,4 @@ function PilgrimagesTable({ path }) {
   );
 }
 
-export { PilgrimagesTable };
+export { ApplicationsTable };
