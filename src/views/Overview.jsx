@@ -36,7 +36,7 @@ function Overview({ match, location }) {
             {years.length > 1 && (
               <FormControl variant="filled" sx={{ m: 1, minWidth: 200 }}>
                 <InputLabel id="demo-simple-select-filled-label">
-                  Rok
+                  Wydarzenie
                 </InputLabel>
                 <Select
                   data-testid='widoki-rok-dropdown'
@@ -45,8 +45,8 @@ function Overview({ match, location }) {
                 >
                   {years.map((y) => {
                     return (
-                      <MenuItem data-testid={`widoki-${y.year}-option`} key={y.id} value={y.id}>
-                        {y.year}
+                      <MenuItem data-testid={`widoki-${y.id}-option`} key={y.id} value={y.id}>
+                        {y.yearTopic}
                       </MenuItem>
                     );
                   })}

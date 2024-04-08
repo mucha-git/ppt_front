@@ -13,7 +13,7 @@ import { AppContextProvider } from '../_helpers/context';
 import "@murasoftware/react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
 import { Elements } from '@/elements';
 import { Maps } from '../maps/Index';
-import { Pilgrimages } from '../pilgrimages/Index';
+import { Applications } from '../applications/Index';
 import { Years } from '../years/Index';
 import { MapPins } from '../mapPins/Index';
 import { Notifications } from '../notifications/Index';
@@ -33,13 +33,12 @@ function App() {
             <Nav />
             <Alert />
             <Switch>
-                <PrivateRoute exact path="/" component={Home} />
                 <PrivateRoute path="/views" component={Views} />
                 <PrivateRoute path="/elements" component={Elements} />
                 <PrivateRoute path="/maps" component={Maps} />
                 <PrivateRoute path="/mapPins" component={MapPins} />
-                <PrivateRoute path="/pilgrimages" component={Pilgrimages} roles={[Role.Admin, Role.Manager]} />
-                <PrivateRoute path="/years" component={Years} roles={[Role.Manager]} />
+                <PrivateRoute path="/applications" component={Applications} roles={[Role.Admin]} />
+                <PrivateRoute path="/events" component={Years} roles={[Role.Manager]} />
                 <PrivateRoute path="/profile" component={Profile} />
                 <PrivateRoute path="/notifications" component={Notifications} roles={[Role.Manager, Role.User]} />
                 <PrivateRoute path="/admin" roles={[Role.Admin, Role.Manager]} component={Admin} />

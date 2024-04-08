@@ -41,7 +41,7 @@ function Overview({ match }) {
             {years.length > 1 && (
               <FormControl variant="filled" sx={{ m: 1, minWidth: 200 }}>
                 <InputLabel id="demo-simple-select-filled-label">
-                  Rok
+                  Wydarzenie
                 </InputLabel>
                 <Select
                   labelId="demo-simple-select-filled-label"
@@ -52,7 +52,7 @@ function Overview({ match }) {
                   {years.map((y) => {
                     return (
                       <MenuItem key={y.id} value={y.id}>
-                        {y.year}
+                        {y.yearTopic}
                       </MenuItem>
                     );
                   })}

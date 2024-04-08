@@ -8,7 +8,7 @@ import { Role } from '../../_helpers/role';
 import { AppContext } from '../../_helpers/context';
 
 function AddEdit({ history, match }) {
-    const { pilgrimages } = useContext(AppContext);
+    const { applications } = useContext(AppContext);
     const { id } = match.params;
     const isAddMode = !id;
     const initialValues = {
@@ -35,7 +35,7 @@ function AddEdit({ history, match }) {
         role: Yup.string()
             .required('Wybierz rolę'),
         pilgrimageId: Yup.string()
-            .required('Wybierz pielgrzymkę'),
+            .required('Wybierz aplikację'),
         password: Yup.string()
             .concat(isAddMode ? Yup.string().required('Podaj hasło') : null)
             .min(6, 'Hasło musi zawierać przynajmniej 6 znaków'),
@@ -137,10 +137,10 @@ function AddEdit({ history, match }) {
                         </div>
                         <div className='form-row'>
                         <div className="form-group col">
-                                <label>Pielgrzymka</label>
+                                <label>Aplikacja</label>
                                 <Field name="pilgrimageId" as="select" className={'form-control' + (errors.pilgrimageId && touched.pilgrimageId ? ' is-invalid' : '')}>
                                     <option value=""></option>
-                                    {pilgrimages.map(element => <option value={element.id} >{element.name}</option>
+                                    {applications.map(element => <option value={element.id} >{element.name}</option>
                                     )}
                                 </Field>
                                 <ErrorMessage name="role" component="div" className="invalid-feedback" />

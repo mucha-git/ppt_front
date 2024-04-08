@@ -53,14 +53,14 @@ function Nav() {
             Panel Administracyjny
           </NavLink>
         )}
-        {(user.role === Role.Admin || user.role === Role.Manager) && (
-          <NavLink to="/pilgrimages" className="nav-item nav-link text-white">
-            Pielgrzymki
+        {(user.role === Role.Admin) && (
+          <NavLink to="/applications" className="nav-item nav-link text-white">
+            Aplikacje
           </NavLink>
         )}
         {user.role === Role.Manager && (
-          <NavLink to="/years" className="nav-item nav-link text-white">
-            Roczniki
+          <NavLink to="/events" className="nav-item nav-link text-white">
+            Wydarzenia
           </NavLink>
         )}
         {(user.role === Role.Manager || user.role === Role.User) &&

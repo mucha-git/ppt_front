@@ -5,7 +5,7 @@ import {
   elementsService,
   mapsService,
   mapPinsService,
-  pilgrimagesService,
+  applicationsService,
   yearsService,
   accountService,
 } from "../../_services";
@@ -15,7 +15,7 @@ export const Context = createContext({});
 export const Provider = (props) => {
   // Initial values are obtained from the props
   const {
-    pilgrimages: initialPilgrimages,
+    applications: initialApplications,
     years: initialYears,
     yearId: initialYearId,
     views: initialViews,
@@ -27,7 +27,7 @@ export const Provider = (props) => {
   } = props;
 
   // Use State to keep the values
-  const [pilgrimages, setPilgrimages] = useState(initialPilgrimages);
+  const [applications, setApplications] = useState(initialApplications);
   const [years, setYears] = useState(initialYears);
   const [yearId, setYearId] = useState(initialYearId);
   const [views, setViews] = useState(initialViews);
@@ -37,7 +37,7 @@ export const Provider = (props) => {
   const [set, setSet] = useState(initialSet);
 
   async function setContext() {
-    let id = await updatePilgrimages();
+    let id = await updateApplications();
     if (accountService.userValue.role != Role.Admin) {
       setData(id);
     }
@@ -78,10 +78,10 @@ export const Provider = (props) => {
     yearsService.getYears().then(setYears);
   }
 
-  async function updatePilgrimages() {
+  async function updateApplications() {
     let ret = 0;
-    await pilgrimagesService.getPilgrimages().then((p) => {
-      setPilgrimages(p);
+    await applicationsService.getApplications().then((p) => {
+      setApplications(p);
       if (accountService.userValue.role != Role.Admin) {
         setYears(p[0].years);
         ret = p[0].years[p[0].years.length - 1].id;
@@ -91,7 +91,7 @@ export const Provider = (props) => {
   }
 
   const resetContext = () => {
-    setPilgrimages([]);
+    setApplications([]);
     setYears([]);
     setYearId(null);
     setViews([]);
@@ -117,8 +117,8 @@ export const Provider = (props) => {
     updateMaps,
     elements,
     updateElements,
-    pilgrimages,
-    updatePilgrimages,
+    applications,
+    updateApplications,
     years,
     updateYears,
     yearId,
@@ -140,7 +140,7 @@ Provider.propTypes = {
   mapPins: PropTypes.array,
   maps: PropTypes.array,
   elements: PropTypes.array,
-  pilgrimages: PropTypes.array,
+  applications: PropTypes.array,
   years: PropTypes.array,
 };
 
@@ -149,7 +149,7 @@ Provider.defaultProps = {
   mapPins: [],
   maps: [],
   elements: [],
-  pilgrimages: [],
+  applications: [],
   years: [],
   yearId: null,
   set: false,

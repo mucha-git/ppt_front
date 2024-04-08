@@ -16,26 +16,26 @@ function AddEdit({ history }) {
   let location = useLocation();
   const isAddMode = location.state == undefined;
   let row = isAddMode ? null : location.state.row;
-  const excludedYears = isAddMode
+  /*const excludedYears = isAddMode
     ? years.map((m) => m.year)
-    : years.filter((f) => f.id != row.id).map((m) => m.year);
-  const findFirstAcceptableYear = () => {
+    : years.filter((f) => f.id != row.id).map((m) => m.year);*/
+  /*const findFirstAcceptableYear = () => {
     let year = new Date().getFullYear();
     while (excludedYears.find((y) => y == year)) {
       year++;
     }
     return year.toString();
-  };
+  };*/
   const initialValues = isAddMode
     ? {
-        year: findFirstAcceptableYear(),
+        year: 1, //findFirstAcceptableYear(),
         yearTopic: "",
         isActive: false,
         imgSrc: null,
         columnsCount: 1
       }
     : {
-        year: row.year.toString(),
+        year: 1,//row.year.toString(),
         yearTopic: row.yearTopic,
         isActive: row.isActive,
         imgSrc: row.imgSrc,
@@ -43,7 +43,7 @@ function AddEdit({ history }) {
       };
 
   const validationSchema = Yup.object({
-    year: Yup.string().required("Wymagane"),
+    //year: Yup.string().required("Wymagane"),
     yearTopic: Yup.string().required("Wymagane"),
     isActive: Yup.bool().required("Wymagane"),
     imgSrc: Yup.string().max(1000, "Maksymalnie 1000 znaków").nullable(),
@@ -61,7 +61,7 @@ function AddEdit({ history }) {
           alertService.success("Sukces", {
             keepAfterRouteChange: true,
           });
-          history.push("/years");
+          history.push("/events");
         })
         .catch((error) => {
           formik.setSubmitting(false);
@@ -77,7 +77,7 @@ function AddEdit({ history }) {
           alertService.success("Sukces", {
             keepAfterRouteChange: true,
           });
-          history.push("/years");
+          history.push("/events");
         })
         .catch((error) => {
           formik.setSubmitting(false);
@@ -92,8 +92,8 @@ function AddEdit({ history }) {
       ._delete({ id: row.id})
       .then(() => {
         updateYears();
-        alertService.success("Pomyslnie usunięto rocznik");
-        history.push({ pathname: "/years" });
+        alertService.success("Pomyslnie usunięto wydarzenie");
+        history.push({ pathname: "/events" });
       })
       .catch((error) => {
         formik.setSubmitting(false);
@@ -120,13 +120,13 @@ function AddEdit({ history }) {
                       className="pl-2 pr-2"
                       icon={MuiBtnType.ArrowBack}
                       onClick={() => {
-                        history.push({ pathname: "/years" });
+                        history.push({ pathname: "/events" });
                       }}
                     />
                   </h2>
                 </div>
                 <div>
-                  <h2>{isAddMode ? "Nowy rocznik" : "Edycja rocznika"}</h2>
+                  <h2>{isAddMode ? "Nowe wydarzenie" : "Edycja wydarzenia"}</h2>
                 </div>
                 <div className="ml-auto d-flex align-items-center">
                   {!isAddMode && (
@@ -137,8 +137,8 @@ function AddEdit({ history }) {
                       id={"delete-year-" + row.id}
                       tooltip={
                         !isAddMode && row.isActive
-                          ? "Nie można usunąć aktywnego rocznika"
-                          : "Usuń rocznik"
+                          ? "Nie można usunąć aktywnego wydarzenia"
+                          : "Usuń wydarzenie"
                       }
                       disabled={
                         formik.isSubmitting || (!isAddMode && row.isActive)
@@ -148,10 +148,10 @@ function AddEdit({ history }) {
                   )}
                 </div>
               </div>
-              {isAddMode? (
+              { /*isAddMode? (
                 <FormikControl
                   control="year"
-                  label={"Rocznik"}
+                  label={"Wydarzenie"}
                   name="year"
                   className="form-item-width"
                   excluded={excludedYears}
@@ -162,17 +162,17 @@ function AddEdit({ history }) {
               (<FormikControl
                 control="input"
                 type="text"
-                label={"Rocznik"}
+                label={"Wydarzenie"}
                 name="year"
                 className="form-item-width"
                 fullWidth
                 margin="normal"
                 disabled={true}
-              />)}
+              />)*/}
               <FormikControl
                 control="input"
                 type="text"
-                label={"Hasło rocznika"}
+                label={"Nazwa wydarzenia"}
                 name="yearTopic"
                 className="form-item-width"
                 fullWidth
@@ -180,7 +180,7 @@ function AddEdit({ history }) {
               />
               <FormikControl
                 control="muiSelect"
-                label={"Ilość kolumn w Menu"}
+                label={"Liczba kolumn w menu"}
                 name="columnsCount"
                 options={columnsCount}
                 fullWidth
@@ -194,7 +194,7 @@ function AddEdit({ history }) {
                   className="form-item-width"
                   margin="normal"
                   disabled={!isAddMode && row.isActive}
-                  tooltip="Aby wyłączyć aktywuj inny rocznik"
+                  tooltip="Aby wyłączyć aktywuj inne wydarzenie"
                 />
               </div>
               {/* <FormikControl
@@ -231,7 +231,7 @@ function AddEdit({ history }) {
                 text={"Anuluj"}
                 icon={MuiBtnType.Cancel}
                 onClick={() => {
-                  history.push({ pathname: "/years" });
+                  history.push({ pathname: "/events" });
                 }}
               />
             </div>

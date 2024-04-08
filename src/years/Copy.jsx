@@ -16,22 +16,22 @@ function Copy({ history }) {
   let location = useLocation();
   const isAddMode = location.state == undefined;
   let row = isAddMode ? null : location.state.row;
-  const excludedYears = years.map((m) => m.year);
+  //const excludedYears = years.map((m) => m.year);
   const yearsList = [
-    { key: "Wybierz rocznik źródłowy...", value: 0 },
+    { key: "Wybierz wydarzenie źródłowe...", value: 0 },
     ...years.map((o) => {
-      return { key: o.year, value: o.id };
+      return { key: o.yearTopic, value: o.id };
     }),
   ];
-  const findFirstAcceptableYear = () => {
+  /*const findFirstAcceptableYear = () => {
     let year = new Date().getFullYear();
     while (excludedYears.find((y) => y == year)) {
       year++;
     }
     return year.toString();
-  };
+  };*/
   const initialValues = {
-        year: findFirstAcceptableYear(),
+        year: 1, //findFirstAcceptableYear(),
         yearTopic: "",
         isActive: false,
         imgSrc: null,
@@ -40,12 +40,12 @@ function Copy({ history }) {
       }
 
   const validationSchema = Yup.object({
-    year: Yup.string().required("Pole jest wymagane"),
+    //year: Yup.string().required("Pole jest wymagane"),
     yearTopic: Yup.string().required("Pole jest wymagane"),
     isActive: Yup.bool().required("Pole jest wymagane"),
     imgSrc: Yup.string().max(1000, "Maksymalnie 1000 znaków").nullable(),
     columnsCount: Yup.number().min(1, "Minimum 1").max(3, "Maksimum 3").required("Wymagane"),
-    sourceYearId: Yup.number().min(1, "Rocznik źródłowy jest wymagany").required("Rocznik źródłowy jest wymagany")
+    sourceYearId: Yup.number().min(1, "Wydarzenie źródłowe jest wymagane").required("Wydarzenie źródłowe jest wymagane")
   });
 
   const onSubmitCopy = (formik) => {
@@ -58,7 +58,7 @@ function Copy({ history }) {
           alertService.success("Sukces", {
             keepAfterRouteChange: true,
           });
-          history.push("/years");
+          history.push("/events");
         })
         .catch((error) => {
           formik.setSubmitting(false);
@@ -85,37 +85,37 @@ function Copy({ history }) {
                       className="pl-2 pr-2"
                       icon={MuiBtnType.ArrowBack}
                       onClick={() => {
-                        history.push({ pathname: "/years" });
+                        history.push({ pathname: "/events" });
                       }}
                     />
                   </h2>
                 </div>
                 <div>
-                  <h2>"Kopiuj rocznik"</h2>
+                  <h2>Kopiuj wydarzenie</h2>
                 </div>
               </div>
               <FormikControl
                 control="muiSelect"
-                label={"Rocznik źródłowy"}
+                label={"Wydarzenie źródłowe"}
                 name="sourceYearId"
                 options={yearsList}
                 className="form-item-width"
                 fullWidth
                 margin="normal"
               />
-              <FormikControl
+              {/*<FormikControl
                 control="year"
-                label={"Rocznik docelowy"}
+                label={"Wydarzenie docelowe"}
                 name="year"
                 className="form-item-width"
                 excluded={excludedYears}
                 fullWidth
                 margin="normal"
-              />
+                    />*/}
               <FormikControl
                 control="input"
                 type="text"
-                label={"Hasło rocznika"}
+                label={"Nazwa wydarzenia"}
                 name="yearTopic"
                 className="form-item-width"
                 fullWidth
@@ -123,7 +123,7 @@ function Copy({ history }) {
               />
               <FormikControl
                 control="muiSelect"
-                label={"Ilość kolumn w Menu"}
+                label={"Liczba kolumn w menu"}
                 name="columnsCount"
                 options={columnsCount}
                 fullWidth
@@ -136,7 +136,7 @@ function Copy({ history }) {
                   name="isActive"
                   className="form-item-width"
                   margin="normal"
-                  tooltip="Aby wyłączyć aktywuj inny rocznik"
+                  tooltip="Aby wyłączyć aktywuj inne wydarzenie"
                 />
               </div>
             </div>
@@ -155,7 +155,7 @@ function Copy({ history }) {
                 text={"Anuluj"}
                 icon={MuiBtnType.Cancel}
                 onClick={() => {
-                  history.push({ pathname: "/years" });
+                  history.push({ pathname: "/events" });
                 }}
               />
             </div>

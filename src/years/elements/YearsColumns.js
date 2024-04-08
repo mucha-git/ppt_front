@@ -16,10 +16,6 @@ function KolumnaImgSrc() {
           <div className="d-flex justify-content-start">
             <div className="ml-2">
               <div>
-                <strong>Rocznik: </strong>
-                {row.year}
-              </div>
-              <div>
                 <strong>Aktywny: </strong>
                 <span className={row.isActive ? "text-success" : "text-danger"}>
                   {row.isActive ? "Tak" : "Nie"}

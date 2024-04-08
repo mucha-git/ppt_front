@@ -3,7 +3,7 @@ export * from "./alert.service";
 export * from "./views.service";
 export * from "./elements.service";
 export * from "./maps.service";
-export * from "./pilgrimages.service";
+export * from "./applications.service";
 export * from "./years.service";
 export * from "./mapPins.service";
 export * from "./oneSignal.service";

@@ -12,7 +12,7 @@ function Overview({ match }) {
     <div className="p-4 box-shadow-main">
       <div className="container">
         <div>
-          <h2>Roczniki</h2>
+          <h2>Wydarzenia</h2>
         </div>
 
         {user.role == Role.Manager && (
@@ -20,7 +20,7 @@ function Overview({ match }) {
             <div className="d-flex align-items-center">
               <MuiButton
                 icon={MuiBtnType.Add}
-                text="Dodaj nowy rocznik"
+                text="Dodaj nowe wydarzenie"
                 className="p-2 pr-4 pl-4"
                 onClick={() =>
                   history.push({

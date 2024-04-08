@@ -49,7 +49,9 @@ export const TextEditor = ({
         editorState={editorState}
         wrapperClassName="custom-wrapper"
         editorClassName="custom-editor"
+        editorStyle={{ minHeight: '400px' }}
         onEditorStateChange={onEditorStateChange}
+        stripPastedStyles={true}
         toolbar={{
           inline: { options: ["bold", "italic", "underline"] },
           blockType: { className: "d-none" },
