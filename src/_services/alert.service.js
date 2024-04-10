@@ -1,6 +1,9 @@
 import { Subject } from "rxjs";
+import React from 'react';
 import { filter } from "rxjs/operators";
-import { enqueueSnackbar } from "notistack";
+import { enqueueSnackbar, closeSnackbar } from "notistack";
+import MuiButton from "../_components/MuiButton" 
+import { MuiBtnType } from "../_helpers/MuiBtnType";
 
 const alertSubject = new Subject();
 const defaultId = "default-alert";
@@ -37,11 +40,13 @@ function error(message, options) {
 }
 
 function info(message, options) {
-  enqueueSnackbar(message, { variant: "info" });
+  enqueueSnackbar(message, { ...options, variant: "info", style: { whiteSpace: 'pre-line' }, action:(snackbarId) => (
+      <MuiButton icon={MuiBtnType.Close} onClick={() => closeSnackbar(snackbarId)} />
+  ) });
 }
 
 function warn(message, options) {
-  enqueueSnackbar(message, { variant: "warning" });
+  enqueueSnackbar(message, {  variant: "warning" });
 }
 
 // core alert method

@@ -15,7 +15,7 @@ import { faPlus,
     faXmark,
     faCheck,
     faCopy,
-    faFileExport } from '@fortawesome/free-solid-svg-icons'
+    faFileExport, faClose } from '@fortawesome/free-solid-svg-icons'
     import {  } from '@fortawesome/free-regular-svg-icons'
     import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
     import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined';
@@ -53,5 +53,6 @@ export const MuiBtnType = {
     Yes: {icon: <FontAwesomeIcon icon={faCheck} />, color: BtnColors.inverseGreen},
     No: {icon: <FontAwesomeIcon icon={faXmark} />, color: BtnColors.inverseRed},
     Copy: {icon: <FontAwesomeIcon icon={faFileExport} />, color: BtnColors.orange},
-    CopyYear: {icon: <FontAwesomeIcon icon={faCopy} />, color: BtnColors.green}
+    CopyYear: {icon: <FontAwesomeIcon icon={faCopy} />, color: BtnColors.green},
+    Close: {icon: <FontAwesomeIcon icon={faClose} />, color: BtnColors.transparentWhite}
 }

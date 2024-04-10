@@ -3,6 +3,7 @@ import { Editor } from "react-draft-wysiwyg";
 import { convertToRaw, ContentState, EditorState, RichUtils } from "draft-js";
 import draftToHtml from "draftjs-to-html";
 import htmlToDraft from "html-to-draftjs";
+import {alertService} from "../../_services/index"
 
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
@@ -51,6 +52,10 @@ export const TextEditor = ({
         editorClassName="custom-editor"
         editorStyle={{ minHeight: '400px' }}
         onEditorStateChange={onEditorStateChange}
+        handlePastedText={() => {
+          alertService.info("Wklejony tekst zawiera formatowanie, które zostało wyczyszczone.\nAby dodać formatowanie skorzystaj z opcji dostępnych w edytorze.", {persist: true})
+          return true
+        }}
         stripPastedStyles={true}
         toolbar={{
           inline: { options: ["bold", "italic", "underline"] },
