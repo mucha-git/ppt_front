@@ -24,7 +24,7 @@ import { strokeThick } from "../_helpers/strokeThick";
 import CloudUploadOutlinedIcon from "@mui/icons-material/CloudUploadOutlined";
 
 function AddEdit({ history, popup, close, lista, setLista, yearId }) {
-  const { updateMaps, mapPins, set, elements } = useContext(AppContext);
+  const { updateMaps, mapPins, devices, set, elements } = useContext(AppContext);
   let location = useLocation();
   const isAddMode = location.state.row == null || popup ? true : false;
   let { row } = location.state;
@@ -107,12 +107,14 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
         strokeColor: "#00ff00",
         strokeWidth: 5,
         mapSrc: "",
+        deviceId: null
       }
     : {
         name: row.name,
         strokeColor: row.strokeColor,
         strokeWidth: row.strokeWidth,
         mapSrc: row.mapSrc,
+        deviceId: row.deviceId == undefined? null : row.deviceId
       };
 
   const validationSchema = Yup.object({
@@ -505,6 +507,17 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                       name="mapSrc"
                       className="form-item-width"
                       wymagane={true}
+                      fullWidth
+                      margin="normal"
+                    />
+                    <FormikControl
+                      control="muiSelect"
+                      label={"Urzadzenie Gps"}
+                      name="deviceId"
+                      options={[{key: "Brak urządzenia", value: null}, ...devices.map(a => {
+                        return {key: a.name, value: a.id}}
+                      )]}
+                      className="form-item-width"
                       fullWidth
                       margin="normal"
                     />

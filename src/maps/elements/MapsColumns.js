@@ -6,18 +6,24 @@ export const kolumny = {
   KolumnaAkcje,
 };
 
-function KolumnaMapSrc() {
+function KolumnaMapSrc(devicesList) {
   return {
     dataField: "mapSrc",
     text: "Mapa",
     formatter: (cell, row) => {
       return (
         <DefaultTableView text={row.name} displayOrder={false}>
-          {cell != null && cell.startsWith("http") ? (
-            <iframe width={600} height={400} src={cell}></iframe>
-          ) : (
-            "Aby wyświetlić podgląd mapy trzeba podać wartość pola src z udostępnienia mapy na stronie"
-          )}
+          <div>
+            <strong>Urządzenie Gps: </strong>
+            {row.deviceId? devicesList?.find(a => a.id == row.deviceId).name : "Brak urządzenia"}
+          </div>
+          <div>
+            {cell != null && cell.startsWith("http") ? (
+              <iframe width={600} height={400} src={cell}></iframe>
+            ) : (
+              "Aby wyświetlić podgląd mapy trzeba podać wartość pola src z udostępnienia mapy na stronie"
+            )}
+          </div>
         </DefaultTableView>
       );
     },

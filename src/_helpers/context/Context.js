@@ -8,6 +8,7 @@ import {
   applicationsService,
   yearsService,
   accountService,
+  gpsService
 } from "../../_services";
 import { Role } from "../role";
 export const Context = createContext({});
@@ -22,6 +23,8 @@ export const Provider = (props) => {
     mapPins: initialMapPins,
     maps: initialMaps,
     elements: initialElements,
+    groups: initialGroups,
+    devices: initialDevices,
     set: initialSet,
     children,
   } = props;
@@ -35,12 +38,18 @@ export const Provider = (props) => {
   const [maps, setMaps] = useState(initialMaps);
   const [elements, setElements] = useState(initialElements);
   const [set, setSet] = useState(initialSet);
+  const [groups, setGroups] = useState(initialGroups);
+  const [devices, setDevices] = useState(initialDevices);
+  let groupId = null;
 
   async function setContext() {
     let id = await updateApplications();
     if (accountService.userValue.role != Role.Admin) {
       setData(id);
+    } else {
+      setAdminData();
     }
+
     setSet(true);
   }
 
@@ -50,11 +59,30 @@ export const Provider = (props) => {
     updateElements(a);
     updateMaps(a);
     updateMapPins(a);
+    updateDevices();
+  }
+
+  function setAdminData() {
+    updateGpsGroups()
+  }
+
+  function updateGpsGroups() {
+    gpsService.getGroups().then((a) => {
+      setGroups(a);
+      return a;
+    });
   }
 
   function updateViews(a) {
     viewsService.getViews(a).then((a) => {
       setViews(a);
+      return a;
+    });
+  }
+
+  function updateDevices() {
+    gpsService.getDevices(groupId).then((a) => {
+      setDevices(a);
       return a;
     });
   }
@@ -82,6 +110,7 @@ export const Provider = (props) => {
     let ret = 0;
     await applicationsService.getApplications().then((p) => {
       setApplications(p);
+      groupId = p[0].groupId;
       if (accountService.userValue.role != Role.Admin) {
         setYears(p[0].years);
         ret = p[0].years[p[0].years.length - 1].id;
@@ -98,6 +127,8 @@ export const Provider = (props) => {
     setMapPins([]);
     setMaps([]);
     setElements([]);
+    setGroups[[]];
+    setDevices([]);
     setSet(false);
   };
 
@@ -122,6 +153,11 @@ export const Provider = (props) => {
     years,
     updateYears,
     yearId,
+    devices,
+    setDevices,
+    groups,
+    updateGpsGroups,
+    setAdminData,
     setData,
     setContext,
     resetContext,
@@ -142,6 +178,8 @@ Provider.propTypes = {
   elements: PropTypes.array,
   applications: PropTypes.array,
   years: PropTypes.array,
+  groups: PropTypes.array,
+  devices: PropTypes.array
 };
 
 Provider.defaultProps = {
@@ -151,6 +189,8 @@ Provider.defaultProps = {
   elements: [],
   applications: [],
   years: [],
+  groups: [],
+  devices: [],
   yearId: null,
   set: false,
 };

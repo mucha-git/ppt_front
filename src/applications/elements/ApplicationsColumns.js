@@ -33,7 +33,7 @@ function KolumnaIsActive() {
   };
 }
 
-function KolumnaLogoSrc() {
+function KolumnaLogoSrc(groupsList) {
   return {
     dataField: "logoSrc",
     text: "Logo",
@@ -43,6 +43,10 @@ function KolumnaLogoSrc() {
           <div>
             <strong>Aktywna: </strong>
             {row.isActive ? "Tak" : "Nie"}
+          </div>
+          <div>
+            <strong>Grupa urządzeń: </strong>
+            {row.groupId!=null? groupsList?.find(a => a.id == row.groupId).name: "grak grupy"}
           </div>
           <div>
             {cell != null ? <img src={cell} height={100} /> : "brak grafiki"}

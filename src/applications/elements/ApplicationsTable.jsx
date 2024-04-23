@@ -6,7 +6,7 @@ import { Actions } from "./ApplicationsActions";
 import { AppContext } from "../../_helpers/context";
 
 function ApplicationsTable({ path }) {
-  const { applications, isSet } = useContext(AppContext);
+  const { applications, groups, isSet } = useContext(AppContext);
   useEffect(() => {
     isSet();
   }, []);
@@ -15,7 +15,7 @@ function ApplicationsTable({ path }) {
     return <Actions cell={cell} row={row} path={path} />;
   };
 
-  const columns = [kolumny.KolumnaLogoSrc(), kolumny.KolumnaAkcje(akcje)];
+  const columns = [kolumny.KolumnaLogoSrc(groups), kolumny.KolumnaAkcje(akcje)];
 
   return (
     <BootstrapTable
