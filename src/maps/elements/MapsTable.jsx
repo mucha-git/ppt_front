@@ -7,7 +7,6 @@ import { AppContext } from "../../_helpers/context";
 
 function MapsTable({ yearId, path }) {
   const { maps, devices } = useContext(AppContext);
-  console.log(devices)
   const [filteredMaps, setFilteredMaps] = useState(viewFilter(maps));
   useEffect(() => {
     setFilteredMaps(viewFilter(maps));

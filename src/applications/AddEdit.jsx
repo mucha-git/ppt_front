@@ -46,7 +46,6 @@ function AddEdit({ history }) {
   });
 
   const onSubmitApplication = (formik) => {
-    console.log("weszlo")
     let values = formik.values;
     if (values.oneSignal == "") values.oneSignal = null;
     if (values.oneSignalApiKey == "") values.oneSignalApiKey = null;
