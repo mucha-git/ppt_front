@@ -107,14 +107,16 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
         strokeColor: "#00ff00",
         strokeWidth: 5,
         mapSrc: "",
-        deviceId: null
+        deviceId: null,
+        pinId: null
       }
     : {
         name: row.name,
         strokeColor: row.strokeColor,
         strokeWidth: row.strokeWidth,
         mapSrc: row.mapSrc,
-        deviceId: row.deviceId == undefined? null : row.deviceId
+        deviceId: row.deviceId == undefined? null : row.deviceId,
+        pinId: row.deviceId == undefined? null : row.pinId,
       };
 
   const validationSchema = Yup.object({
@@ -124,6 +126,11 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
     mapSrc: Yup.string().required("Pole jest wymagane"),
     strokeColor: Yup.string().required("Pole jest wymagane"),
     strokeWidth: Yup.number().required("Pole jest wymagane"),
+    pinId: Yup.number().when("deviceId", {
+      is: null,
+      then: (fieldSchema) => fieldSchema.nullable(),
+      otherwise: (fieldSchema) => fieldSchema.required("Pole jest wymagane")
+    })
   });
 
   const onSubmitMaps = (formik, openNew) => {
@@ -521,6 +528,17 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                       fullWidth
                       margin="normal"
                     />
+                    {formik.values.deviceId != null && <FormikControl
+                      control="muiSelect"
+                      label={"Pinezka urzadzenie Gps"}
+                      name="pinId"
+                      options={[{key: "Brak pinezki", value: null}, ...mapPins.map(a => {
+                        return {key: a.name, value: a.id}}
+                      )]}
+                      className="form-item-width"
+                      fullWidth
+                      margin="normal"
+                    />}
                     {isAddMode && (
                       <DropzoneAreaBase
                         Icon={CloudUploadOutlinedIcon}
