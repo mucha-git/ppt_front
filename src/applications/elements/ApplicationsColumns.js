@@ -46,7 +46,7 @@ function KolumnaLogoSrc(groupsList) {
           </div>
           <div>
             <strong>Grupa urządzeń: </strong>
-            {row.groupId!=null? groupsList?.find(a => a.id == row.groupId).name: "grak grupy"}
+            {(row.groupId != null && row.groupId != undefined)? groupsList?.find(a => a.id == row.groupId).name: "grak grupy"}
           </div>
           <div>
             {cell != null ? <img src={cell} height={100} /> : "brak grafiki"}
