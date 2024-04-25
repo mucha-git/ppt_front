@@ -155,6 +155,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
   });
 
   const onSubmitMaps = (formik, openNew) => {
+    formik.isValid
     let values = formik.values;
     if (!map) {
       alertService.error("Nie wczytano pliku mapy!!");
@@ -436,7 +437,8 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
         initialValues={initialValues}
         validationSchema={validationSchema}
         validateOnChange={true}
-        isInitialValid={!isAddMode}
+        validateOnMount={!isAddMode}
+        //isInitialValid={!isAddMode || (isAddMode &&)}
         onSubmit={() => {}}
       >
         {(formik) => (
