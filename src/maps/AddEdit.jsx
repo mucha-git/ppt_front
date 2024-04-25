@@ -689,11 +689,11 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                           );
                           formik.setFieldValue(
                             "pinId",
-                            mapPins[0]?.id
+                            val.target.value != null ? mapPins[0]?.id : null
                           )
                           formik.setFieldValue(
                             "gpsTitle",
-                            devices.find(d => d.id == val.target.value).name
+                            val.target.value != null ? devices.find(d => d.id == val.target.value).name : null
                           )
                         }}
                       />
