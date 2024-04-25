@@ -110,8 +110,8 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
         deviceId: null,
         pinId: null,
         gpsTitle: "",
-        gpsNavigationText: "",
-        gpsNavigationColor: ""
+        gpsNavigationText: "Przejdź do nawigacji",
+        gpsNavigationColor: "#000000"
       }
     : {
         name: row.name,
@@ -121,8 +121,8 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
         deviceId: row.deviceId == undefined? null : row.deviceId,
         pinId: row.deviceId == undefined? null : row.pinId,
         gpsTitle: row.deviceId == undefined? "" : row.gpsTitle,
-        gpsNavigationText: row.deviceId == undefined? "" : row.gpsNavigationText,
-        gpsNavigationColor: row.deviceId == undefined? "" : row.gpsNavigationColor
+        gpsNavigationText: row.deviceId == undefined? "Przejdź do nawigacji" : row.gpsNavigationText,
+        gpsNavigationColor: row.deviceId == undefined? "#000000" : row.gpsNavigationColor
       };
 
   const validationSchema = Yup.object({
@@ -682,6 +682,20 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                         className="form-item-width"
                         fullWidth
                         margin="normal"
+                        onChange={(val) => {
+                          formik.setFieldValue(
+                            "deviceId",
+                            val.target.value
+                          );
+                          formik.setFieldValue(
+                            "pinId",
+                            mapPins[0]?.id
+                          )
+                          formik.setFieldValue(
+                            "gpsTitle",
+                            devices.find(d => d.id == val.target.value).name
+                          )
+                        }}
                       />
                       {formik.values.deviceId != null && <>
                         <div className="pt-3">
@@ -693,9 +707,9 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                               control="muiSelect"
                               label={"Ikonka znacznika"}
                               name="pinId"
-                              options={[{key: "Brak pinezki", value: null}, ...mapPins.map(a => {
+                              options={mapPins.map(a => {
                                 return {key: a.name, value: a.id}}
-                              )]}
+                              )}
                               className="form-item-width"
                               fullWidth
                               wymagane={formik.values.deviceId != null}
