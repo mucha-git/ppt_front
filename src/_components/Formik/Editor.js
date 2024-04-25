@@ -54,7 +54,7 @@ export const TextEditor = ({
         onEditorStateChange={onEditorStateChange}
         handlePastedText={() => {
           alertService.info("Wklejony tekst zawiera formatowanie, które zostało wyczyszczone.\nAby dodać formatowanie skorzystaj z opcji dostępnych w edytorze.", {persist: true})
-          return true
+          return false;
         }}
         stripPastedStyles={true}
         toolbar={{

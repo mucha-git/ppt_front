@@ -108,7 +108,10 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
         strokeWidth: 5,
         mapSrc: "",
         deviceId: null,
-        pinId: null
+        pinId: null,
+        gpsTitle: null,
+        gpsNavigationText: null,
+        gpsNavigationColor: null
       }
     : {
         name: row.name,
@@ -117,6 +120,9 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
         mapSrc: row.mapSrc,
         deviceId: row.deviceId == undefined? null : row.deviceId,
         pinId: row.deviceId == undefined? null : row.pinId,
+        gpsTitle: row.deviceId == undefined? null : row.gpsTitle,
+        gpsNavigationText: row.deviceId == undefined? null : row.gpsNavigationText,
+        gpsNavigationColor: row.deviceId == undefined? null : row.gpsNavigationColor
       };
 
   const validationSchema = Yup.object({
@@ -130,7 +136,22 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
       is: null,
       then: (fieldSchema) => fieldSchema.nullable(),
       otherwise: (fieldSchema) => fieldSchema.required("Pole jest wymagane")
-    })
+    }),
+    gpsTitle: Yup.string().when("deviceId", {
+      is: null,
+      then: (fieldSchema) => fieldSchema.nullable(),
+      otherwise: (fieldSchema) => fieldSchema.required("Pole jest wymagane")
+    }),
+    gpsNavigationText: Yup.string().when("deviceId", {
+      is: null,
+      then: (fieldSchema) => fieldSchema.nullable(),
+      otherwise: (fieldSchema) => fieldSchema.required("Pole jest wymagane")
+    }),
+    gpsNavigationColor: Yup.string().when("deviceId", {
+      is: null,
+      then: (fieldSchema) => fieldSchema.nullable(),
+      otherwise: (fieldSchema) => fieldSchema.required("Pole jest wymagane")
+    }),
   });
 
   const onSubmitMaps = (formik, openNew) => {
@@ -493,6 +514,13 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                         disabled={tabDisabled}
                         style={{ outline: "none" }}
                       />
+                      <Tab
+                        label="GPS"
+                        value={"2"}
+                        classes={"map-tab"}
+                        disabled={tabDisabled && devices.length > 0}
+                        style={{ outline: "none" }}
+                      />
                     </TabList>
                   </Box>
                   <TabPanel value={"0"}>
@@ -517,28 +545,6 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                       fullWidth
                       margin="normal"
                     />
-                    <FormikControl
-                      control="muiSelect"
-                      label={"Urzadzenie Gps"}
-                      name="deviceId"
-                      options={[{key: "Brak urządzenia", value: null}, ...devices.map(a => {
-                        return {key: a.name, value: a.id}}
-                      )]}
-                      className="form-item-width"
-                      fullWidth
-                      margin="normal"
-                    />
-                    {formik.values.deviceId != null && <FormikControl
-                      control="muiSelect"
-                      label={"Pinezka urzadzenie Gps"}
-                      name="pinId"
-                      options={[{key: "Brak pinezki", value: null}, ...mapPins.map(a => {
-                        return {key: a.name, value: a.id}}
-                      )]}
-                      className="form-item-width"
-                      fullWidth
-                      margin="normal"
-                    />}
                     {isAddMode && (
                       <DropzoneAreaBase
                         Icon={CloudUploadOutlinedIcon}
@@ -655,6 +661,77 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                       headerClasses="headerClassesMarkers"
                       bodyClasses="bodyClassesMarkers"
                     />
+                  </TabPanel>
+                  <TabPanel value={"2"} disabled={tabDisabled && devices.length > 0}>
+                    <FormikControl
+                        control="muiSelect"
+                        label={"Urzadzenie GPS"}
+                        name="deviceId"
+                        options={[{key: "Brak urządzenia", value: null}, ...devices.map(a => {
+                          return {key: a.name, value: a.id}}
+                        )]}
+                        className="form-item-width"
+                        fullWidth
+                        margin="normal"
+                      />
+                      {formik.values.deviceId != null && <>
+                        <div className="pt-3">
+                          <h5>Szczegóły znacznika</h5>
+                        </div>
+                        <div className="d-flex justify-content-center">
+                          <div className="w-50">
+                            <FormikControl
+                              control="muiSelect"
+                              label={"Ikonka znacznika"}
+                              name="pinId"
+                              options={[{key: "Brak pinezki", value: null}, ...mapPins.map(a => {
+                                return {key: a.name, value: a.id}}
+                              )]}
+                              className="form-item-width"
+                              fullWidth
+                              wymagane={formik.values.deviceId != null}
+                              margin="normal"
+                            />
+                          </div>
+                          <div className="w-50 ml-2">
+                            <FormikControl
+                              control="input"
+                              type="text"
+                              label={"Tytuł znacznika"}
+                              name="gpsTitle"
+                              className="form-item-width"
+                              wymagane={formik.values.deviceId != null}
+                              fullWidth
+                              margin="normal"
+                            />
+                          </div>
+                        </div>
+                        <div className="d-flex justify-content-center">
+                          <div className="w-50">
+                            <FormikControl
+                              control="input"
+                              type="text"
+                              label={"Opis linku do nawigacji"}
+                              name="gpsNavigationText"
+                              className="form-item-width"
+                              wymagane={formik.values.deviceId != null}
+                              fullWidth
+                              margin="normal"
+                            />
+                          </div>
+                          <div className="w-50 ml-2">
+                            <FormikControl
+                              control="color"
+                              label={"Kolor linku do nawigacji"}
+                              name="gpsNavigationColor"
+                              className="w-100"
+                              wymagane={formik.values.deviceId != null}
+                              fullWidth
+                              margin="normal"
+                            />
+                          </div>
+                        </div>
+                      </>}
                   </TabPanel>
                 </TabContext>
               </Box>
