@@ -109,9 +109,9 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
         mapSrc: "",
         deviceId: null,
         pinId: null,
-        gpsTitle: null,
-        gpsNavigationText: null,
-        gpsNavigationColor: null
+        gpsTitle: "",
+        gpsNavigationText: "",
+        gpsNavigationColor: ""
       }
     : {
         name: row.name,
@@ -120,9 +120,9 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
         mapSrc: row.mapSrc,
         deviceId: row.deviceId == undefined? null : row.deviceId,
         pinId: row.deviceId == undefined? null : row.pinId,
-        gpsTitle: row.deviceId == undefined? null : row.gpsTitle,
-        gpsNavigationText: row.deviceId == undefined? null : row.gpsNavigationText,
-        gpsNavigationColor: row.deviceId == undefined? null : row.gpsNavigationColor
+        gpsTitle: row.deviceId == undefined? "" : row.gpsTitle,
+        gpsNavigationText: row.deviceId == undefined? "" : row.gpsNavigationText,
+        gpsNavigationColor: row.deviceId == undefined? "" : row.gpsNavigationColor
       };
 
   const validationSchema = Yup.object({
@@ -135,22 +135,22 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
     pinId: Yup.number().when("deviceId", {
       is: null,
       then: (fieldSchema) => fieldSchema.nullable(),
-      otherwise: (fieldSchema) => fieldSchema.required("Pole jest wymagane")
+      otherwise: (fieldSchema) => fieldSchema.typeError('Pole jest wymagane').required("Pole jest wymagane")
     }),
     gpsTitle: Yup.string().when("deviceId", {
       is: null,
       then: (fieldSchema) => fieldSchema.nullable(),
-      otherwise: (fieldSchema) => fieldSchema.required("Pole jest wymagane")
+      otherwise: (fieldSchema) => fieldSchema.min(1, "Pole jest wymagane").required("Pole jest wymagane")
     }),
     gpsNavigationText: Yup.string().when("deviceId", {
       is: null,
       then: (fieldSchema) => fieldSchema.nullable(),
-      otherwise: (fieldSchema) => fieldSchema.required("Pole jest wymagane")
+      otherwise: (fieldSchema) => fieldSchema.min(1, "Pole jest wymagane").required("Pole jest wymagane")
     }),
     gpsNavigationColor: Yup.string().when("deviceId", {
       is: null,
       then: (fieldSchema) => fieldSchema.nullable(),
-      otherwise: (fieldSchema) => fieldSchema.required("Pole jest wymagane")
+      otherwise: (fieldSchema) => fieldSchema.min(1, "Pole jest wymagane").required("Pole jest wymagane")
     }),
   });
 
@@ -167,6 +167,13 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
     values.strokeWidth = parseInt(values.strokeWidth);
     values.delta = delta;
     values.longitude = longitude;
+    if(values.deviceId == null){
+      values.pinId=null
+      values.gpsTitle=null
+      values.gpsNavigationText=null
+      values.gpsNavigationColor=null
+    }
+    
     if (isAddMode) {
       popup
         ? (values.yearId = yearId)

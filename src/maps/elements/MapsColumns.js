@@ -14,7 +14,7 @@ function KolumnaMapSrc(devicesList) {
       return (
         <DefaultTableView text={row.name} displayOrder={false}>
           <div>
-            <strong>Urządzenie Gps: </strong>
+            <strong>Urządzenie GPS: </strong>
             {row.deviceId? devicesList?.find(a => a.id == row.deviceId).name : "Brak urządzenia"}
           </div>
           <div>
