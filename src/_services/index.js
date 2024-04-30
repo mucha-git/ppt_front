@@ -7,3 +7,4 @@ export * from "./applications.service";
 export * from "./years.service";
 export * from "./mapPins.service";
 export * from "./oneSignal.service";
+export * from "./gps.service";

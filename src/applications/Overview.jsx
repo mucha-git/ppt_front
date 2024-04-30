@@ -1,12 +1,17 @@
-import React from "react";
+import React, {useContext, useLayoutEffect} from "react";
 import { ApplicationsTable } from "./elements/ApplicationsTable";
 import MuiButton from "../_components/MuiButton";
 import { MuiBtnType } from "../_helpers/MuiBtnType";
 import { accountService } from "../_services";
 import { Role, history } from "../_helpers";
+import { AppContext } from "../_helpers/context";
 
 function Overview({ match }) {
   const { path } = match;
+  const { isSet } = useContext(AppContext);
+  useLayoutEffect(() => {
+    isSet();
+  }, []);
   const user = accountService.userValue;
   return (
     <div className="p-4 box-shadow-main">

@@ -11,7 +11,7 @@ import { MuiBtnType } from "../_helpers/MuiBtnType";
 import { Role } from "../_helpers";
 
 function AddEdit({ history }) {
-  const { updateApplications } = useContext(AppContext);
+  const { updateApplications, groups } = useContext(AppContext);
   const user = accountService.userValue;
   let location = useLocation();
   const isAddMode = location.state == undefined;
@@ -24,6 +24,7 @@ function AddEdit({ history }) {
         logoSrc: null,
         oneSignal: "",
         oneSignalApiKey: "",
+        groupId: null
       }
     : {
         name: row.name,
@@ -31,6 +32,7 @@ function AddEdit({ history }) {
         logoSrc: row.logoSrc,
         oneSignal: row.oneSignal,
         oneSignalApiKey: row.oneSignalApiKey,
+        groupId: row.groupId
       };
 
   const validationSchema = Yup.object({
@@ -44,7 +46,6 @@ function AddEdit({ history }) {
   });
 
   const onSubmitApplication = (formik) => {
-    console.log("weszlo")
     let values = formik.values;
     if (values.oneSignal == "") values.oneSignal = null;
     if (values.oneSignalApiKey == "") values.oneSignalApiKey = null;
@@ -186,6 +187,17 @@ function AddEdit({ history }) {
                   margin="normal"
                 />
               </div>
+              <FormikControl
+                  control="muiSelect"
+                  label={"Grupa Gps"}
+                  name="groupId"
+                  options={[{key: "Brak grupy", value: null}, ...groups.map(a => {
+                    return {key: a.name, value: a.id}}
+                  )]}
+                  className="form-item-width"
+                  fullWidth
+                  margin="normal"
+                />
             </div>
             <div className="d-flex flex-row-reverse bg-light pl-5 pr-5 pt-3 pb-3">
               <MuiButton
