@@ -8,7 +8,8 @@ import {
   applicationsService,
   yearsService,
   accountService,
-  gpsService
+  gpsService,
+  oneSignalService
 } from "../../_services";
 import { Role } from "../role";
 export const Context = createContext({});
@@ -26,6 +27,7 @@ export const Provider = (props) => {
     groups: initialGroups,
     devices: initialDevices,
     set: initialSet,
+    oneSignalAppBundleId: initialOneSignalAppBundleId,
     children,
   } = props;
 
@@ -40,6 +42,7 @@ export const Provider = (props) => {
   const [set, setSet] = useState(initialSet);
   const [groups, setGroups] = useState(initialGroups);
   const [devices, setDevices] = useState(initialDevices);
+  const [oneSignalAppBundleId, setOneSignalAppBundleId] = useState(initialOneSignalAppBundleId);
   let groupId = null;
 
   async function setContext() {
@@ -60,6 +63,7 @@ export const Provider = (props) => {
     updateMaps(a);
     updateMapPins(a);
     updateDevices();
+    updateOneSignalAppBundleId();
   }
 
   function setAdminData() {
@@ -70,6 +74,13 @@ export const Provider = (props) => {
     gpsService.getGroups().then((a) => {
       setGroups(a);
       return a;
+    });
+  }
+
+  function updateOneSignalAppBundleId() {
+    oneSignalService.getAppInfo().then((a) => {
+      setOneSignalAppBundleId(a.apns_bundle_id);
+      return a.apns_bundle_id;
     });
   }
 
@@ -130,6 +141,7 @@ export const Provider = (props) => {
     setGroups[[]];
     setDevices([]);
     setSet(false);
+    setOneSignalAppBundleId(null);
   };
 
   function isSet() {
@@ -163,6 +175,7 @@ export const Provider = (props) => {
     resetContext,
     isSet,
     set,
+    oneSignalAppBundleId
   };
 
   // pass the value in provider and return
@@ -193,4 +206,5 @@ Provider.defaultProps = {
   devices: [],
   yearId: null,
   set: false,
+  oneSignalAppBundleId: null
 };

@@ -6,12 +6,11 @@ import { alertService, elementsService } from "@/_services";
 import { useLocation } from "react-router-dom";
 import { ElementType } from "../_helpers/ElementType";
 import { AppContext } from "../_helpers/context";
-import { SetOpenedArray, arrayFromEnum } from "../_helpers";
+import { SetOpenedArray, arrayFromEnum, viewListForNavigation } from "../_helpers";
 import MuiButton from "../_components/MuiButton";
 import { MuiBtnType } from "../_helpers/MuiBtnType";
 import { strokeThick } from "../_helpers/strokeThick";
 import { margins } from "../_helpers/margins";
-import { PopupWindow } from "../views/elements/Popup";
 import { btnTypes, contentTypes, setContentType, getScreenType, setBtnType } from "../_helpers/viewsHelpers"
 
 function AddEdit({ history, popup, close, lista, setLista, yearId }) {
@@ -310,16 +309,6 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
     return arr
   }
 
-  const viewListForNavigation = (parentId = null, list = [], sign = "") => {
-    const currentLvl = viewsList.filter(e => e.viewId == parentId)
-    
-    currentLvl.forEach(element => {
-      list.push({key: sign + element.title, value: element.id})
-      list.concat(viewListForNavigation(element.id, list, sign + "-> "))
-    });
-    //console.log(list)
-    return list
-  }
 
   return (
     <div className="box-shadow-main bg-white">
@@ -607,7 +596,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                     control="muiSelect"
                     label={"Widok"}
                     name="destinationViewId"
-                    options={viewListForNavigation()}
+                    options={viewListForNavigation(viewsList)}
                     className="form-item-width"
                     fullWidth
                     margin="normal"

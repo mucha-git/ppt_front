@@ -4,6 +4,7 @@ import { accountService } from "@/_services";
 export const fetchWrapper = {
   get,
   getNotifications,
+  getAppInfo,
   post,
   postNotifications,
   put,
@@ -27,6 +28,19 @@ function getNotifications(url) {
     headers: {
       accept: "application/json",
       Authorization: `Basic ${user.oneSignalApiKey}`,
+    },
+  };
+  return fetch(url, requestOptions).then(handleResponse);
+}
+
+function getAppInfo(url) {
+  const user = accountService.userValue;
+  const requestOptions = {
+    method: "GET",
+    headers: {
+      accept: "text/plain",
+      Authorization: `Basic ${user.oneSignalApiKey}`,
+      "content-type": "application/json",
     },
   };
   return fetch(url, requestOptions).then(handleResponse);

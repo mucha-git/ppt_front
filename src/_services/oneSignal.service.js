@@ -5,6 +5,7 @@ const baseUrl = `https://onesignal.com/api/v1/notifications`;
 
 export const oneSignalService = {
   getNotifications,
+  getAppInfo,
   create,
   _delete,
 };
@@ -13,6 +14,13 @@ function getNotifications() {
   let user = accountService.userValue;
   return fetchWrapper.getNotifications(
     `${baseUrl}?app_id=${user.oneSignalAppId}&kind=1`
+  );
+}
+
+function getAppInfo() {
+  let user = accountService.userValue;
+  return fetchWrapper.getAppInfo(
+    `https://api.onesignal.com/apps/${user.oneSignalAppId}`
   );
 }
 

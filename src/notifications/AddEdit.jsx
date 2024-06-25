@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
+import { AppContext } from "../_helpers/context";
 import FormikControl from "@/_components/Formik/FormikControl";
 import { alertService } from "@/_services";
 import { oneSignalService, accountService } from "../_services";
@@ -8,14 +9,20 @@ import MuiButton from "../_components/MuiButton";
 import { MuiBtnType } from "../_helpers/MuiBtnType";
 import moment from "moment";
 import dayjs from "dayjs";
+import { viewListForNavigation } from "../_helpers";
+import { redirectionOption } from "../_helpers/redirectionOption";
 
 function AddEdit({ history }) {
+  const { views, oneSignalAppBundleId } = useContext(AppContext);
   const user = accountService.userValue;
   const initialValues = {
     name: "",
     content: undefined,
     headings: undefined,
     send_after: dayjs(Date.now()),
+    redirectionOptionId: 1,
+    destinationViewId: -1,
+    destinationUrl: ""
   };
   const validationSchema = Yup.object({
     name: Yup.string()
@@ -28,6 +35,8 @@ function AddEdit({ history }) {
       .max(500, "Maksymalnie 500 znaków")
       .required("Pole jest wymagane"),
     send_after: Yup.date().required("Pole jest wymagane"),
+    destinationViewId: Yup.number().nullable(),
+    destinationUrl: Yup.string()
   });
 
   const onSubmitNotification = (values) => {
@@ -44,6 +53,7 @@ function AddEdit({ history }) {
         included_segments: ["Subscribed Users"],
         send_after: values.send_after,
         delayed_option: "send_after",
+        url: genetrateNotificationURL(values)
       })
       .then(() => {
         alertService.success("Sukces", {
@@ -52,6 +62,22 @@ function AddEdit({ history }) {
         history.push("/notifications");
       });
   };
+
+  const genetrateNotificationURL = (values) => {
+    return values.redirectionOptionId == 1? genetrateInternalNotificationURL(values.destinationViewId) : values.destinationUrl
+  }
+
+  const genetrateInternalNotificationURL = (id) => {
+    let view = views.find(v => v.id == id);
+    return  view? `${oneSignalAppBundleId}://${getScreenType(view.view.screenType)}/true/${id}/${getHeaderText(view)}/${view.isSearchable}`: `${oneSignalAppBundleId}://`
+  }
+
+  const getHeaderText = (view) => {
+    let headerText = view.headerText? view.headerText : view.title
+    return headerText.replaceAll(' ', "_")
+  }
+
+  const getScreenType = (screenType) => screenType.replace("Screen", "").toLowerCase()
 
   return (
     <div className="box-shadow-main bg-white">
@@ -108,6 +134,40 @@ function AddEdit({ history }) {
                 fullWidth
                 margin="normal"
               />
+              <div className="pt-2">
+                <h5>Przekierowanie z powiadomienia</h5>
+                <FormikControl
+                control="muiSelect"
+                label={"Przekierowanie"}
+                name="redirectionOptionId"
+                options={redirectionOption}
+                className="form-item-width"
+                fullWidth
+                margin="normal"
+              />
+              {formik.values.redirectionOptionId == 1 && 
+                <FormikControl
+                  control="muiSelect"
+                  label={"Widok"}
+                  name="destinationViewId"
+                  options={viewListForNavigation(views)}
+                  className="form-item-width"
+                  fullWidth
+                  margin="normal"
+                /> 
+              }
+              {formik.values.redirectionOptionId == 2 && 
+                <FormikControl
+                  control="input"
+                  type="text"
+                  label={"Link zewnętrzny"}
+                  name="destinationUrl"
+                  className="form-item-width"
+                  fullWidth
+                  margin="normal"
+                />
+              }
+              </div>
               <div className="d-flex justify-content-center">
                 <FormikControl
                   control="dateTime"

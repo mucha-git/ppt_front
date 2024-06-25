@@ -16,26 +16,16 @@ function AddEdit({ history }) {
   let location = useLocation();
   const isAddMode = location.state == undefined;
   let row = isAddMode ? null : location.state.row;
-  /*const excludedYears = isAddMode
-    ? years.map((m) => m.year)
-    : years.filter((f) => f.id != row.id).map((m) => m.year);*/
-  /*const findFirstAcceptableYear = () => {
-    let year = new Date().getFullYear();
-    while (excludedYears.find((y) => y == year)) {
-      year++;
-    }
-    return year.toString();
-  };*/
   const initialValues = isAddMode
     ? {
-        year: 1, //findFirstAcceptableYear(),
+        year: 1,
         yearTopic: "",
         isActive: false,
         imgSrc: null,
         columnsCount: 1
       }
     : {
-        year: 1,//row.year.toString(),
+        year: 1,
         yearTopic: row.yearTopic,
         isActive: row.isActive,
         imgSrc: row.imgSrc,
@@ -43,7 +33,6 @@ function AddEdit({ history }) {
       };
 
   const validationSchema = Yup.object({
-    //year: Yup.string().required("Wymagane"),
     yearTopic: Yup.string().required("Wymagane"),
     isActive: Yup.bool().required("Wymagane"),
     imgSrc: Yup.string().max(1000, "Maksymalnie 1000 znaków").nullable(),
@@ -148,41 +137,12 @@ function AddEdit({ history }) {
                   )}
                 </div>
               </div>
-              { /*isAddMode? (
-                <FormikControl
-                  control="year"
-                  label={"Wydarzenie"}
-                  name="year"
-                  className="form-item-width"
-                  excluded={excludedYears}
-                  fullWidth
-                  margin="normal"
-                />
-              ):
-              (<FormikControl
-                control="input"
-                type="text"
-                label={"Wydarzenie"}
-                name="year"
-                className="form-item-width"
-                fullWidth
-                margin="normal"
-                disabled={true}
-              />)*/}
               <FormikControl
                 control="input"
                 type="text"
                 label={"Nazwa wydarzenia"}
                 name="yearTopic"
                 className="form-item-width"
-                fullWidth
-                margin="normal"
-              />
-              <FormikControl
-                control="muiSelect"
-                label={"Liczba kolumn w menu"}
-                name="columnsCount"
-                options={columnsCount}
                 fullWidth
                 margin="normal"
               />
@@ -197,24 +157,24 @@ function AddEdit({ history }) {
                   tooltip="Aby wyłączyć aktywuj inne wydarzenie"
                 />
               </div>
-              {/* <FormikControl
-                control="input"
-                type="text"
-                label={"Źródło grafiki"}
-                name="imgSrc"
-                className="form-item-width"
+                <FormikControl
+                control="muiSelect"
+                label={"Liczba kolumn w menu"}
+                name="columnsCount"
+                options={columnsCount}
                 fullWidth
                 margin="normal"
               />
-              {formik.values.imgSrc != null && formik.values.imgSrc != "" ? (
+              <div className="d-flex justify-content-center m-3">
+              {console.log(formik.values.columnsCount)}
+              {formik.values.columnsCount>0 &&
                 <img
-                  className="pt-2"
-                  src={formik.values.imgSrc}
-                  width={"100%"}
-                />
-              ) : (
-                ""
-              )} */}
+                    className="pt-2"
+                    src={`https://pliki-pielgrzymappka.pl/pielgrzymappka/DEMO/ASSETS/ukladx${formik.values.columnsCount}.jpg`}
+                    width={"50%"}
+                  />
+              }
+              </div>
             </div>
             <div className="d-flex flex-row-reverse bg-light pl-5 pr-5 pt-3 pb-3">
               <MuiButton

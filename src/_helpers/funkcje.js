@@ -62,3 +62,13 @@ export function SetOpenedArray(array, newId){
   if(array.find( a => a == newId)) return array;
   return [newId].concat(array)
 }
+
+export const viewListForNavigation = (viewsList, parentId = null, list = [], sign = "") => {
+  const currentLvl = viewsList.filter(e => e.viewId == parentId)
+  list.length == 0 && list.push({key: "<== MENU GŁÓWNE ==>", value: -1})
+  currentLvl.forEach(element => {
+    list.push({key: sign + element.title, value: element.id})
+    list.concat(viewListForNavigation(viewsList, element.id, list, sign + "-> "))
+  });
+  return list
+}
