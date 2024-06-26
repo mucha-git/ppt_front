@@ -36,7 +36,7 @@ function Overview({ match }) {
         <div className="titleText">
           <h2>Mapy</h2>
         </div>
-        <div className="d-flex">
+        <div className="d-flex colDirection">
           <div className="mr-auto">
             {years.length > 1 && (
               <FormControl variant="filled" sx={{ m: 1, minWidth: 200 }}>

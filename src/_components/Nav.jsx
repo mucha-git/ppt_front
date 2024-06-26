@@ -163,11 +163,11 @@ function Nav() {
           >
             {renderNavLinks()}
             <div className="nav__close" id="nav-close" onClick={toggleMenu}>
-              <IoClose />
+              <IoClose className="navBtn" />
             </div>
           </div>
           <div className="nav__toggle" id="nav-toggle" onClick={toggleMenu}>
-          <IoMenu />
+          <IoMenu className="navBtn" />
         </div>
       </nav>
       
