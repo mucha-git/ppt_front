@@ -4,9 +4,9 @@ import { NotificationsTable } from "./elements/NotificationsTable";
 function Overview({ match }) {
   const { path } = match;
   return (
-    <div className="p-4 box-shadow-main">
+    <div className="pad-4 box-shadow-main">
       <div className="container">
-        <div>
+        <div className="titleText">
           <h2>Powiadomienia</h2>
         </div>
         <NotificationsTable path={path} />

@@ -1,0 +1,16 @@
+.yearActions{
+    width: 170px;
+}
+
+.colDirection{
+    flex-direction: row;
+}
+
+@media screen and (max-width: 1150px) {
+    .yearActions{
+        width: 70px
+    }
+    .colDirection{
+        flex-direction: column;
+    }
+}

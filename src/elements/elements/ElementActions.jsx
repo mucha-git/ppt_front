@@ -4,11 +4,12 @@ import { AppContext } from "../../_helpers/context";
 import MuiButton from "../../_components/MuiButton";
 import { MuiBtnType } from "../../_helpers/MuiBtnType";
 import { history } from "../../_helpers";
+import "./styles.css";
 
 function Actions(props) {
   const { updateElements } = useContext(AppContext);
   return (
-    <div className={"buttons d-flex"}>
+    <div className={"buttons d-flex align-items-end colDirection"}>
       <MuiButton
         icon={MuiBtnType.Edit}
         showTooltip={true}

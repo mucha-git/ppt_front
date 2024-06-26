@@ -5,12 +5,13 @@ import MuiButton from "../../_components/MuiButton";
 import { MuiBtnType } from "../../_helpers/MuiBtnType";
 import { accountService } from "../../_services";
 import { Role, history } from "../../_helpers";
+import "./styles.css";
 
 function Actions(props) {
   const { updateApplications } = useContext(AppContext);
   const user = accountService.userValue;
   return (
-    <div className={"buttons d-flex justify-content-end"}>
+    <div className={"buttons d-flex justify-content-end align-items-end colDirection"}>
       {user.role == Role.Admin && (
         <MuiButton
           icon={MuiBtnType.Delete}

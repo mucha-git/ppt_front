@@ -1,0 +1,16 @@
+.applicationActions{
+    width: 110px;
+}
+
+.colDirection{
+    flex-direction: row;
+}
+
+@media screen and (max-width: 1150px) {
+    .applicationActions{
+        width: 70px
+    }
+    .colDirection{
+        flex-direction: column;
+    }
+}

@@ -36,21 +36,19 @@ function ViewsTable({ parentViewId, yearId, path, opened }) {
     }
   }, []);
   const akcje = (cell, row, rowIndex) => {
-    return (
-      <Actions
+      return <Actions
         cell={cell}
         row={row}
         path={path}
         setExpanded={setExpanded}
         expanded={expanded}
-      />
-    );
+      />;
   };
 
   const columns = [
     kolumny.KolumnaOrder(),
     kolumny.KolumnaWidok(),
-    kolumny.KolumnaAkcje(akcje),
+    parentViewId? kolumny.KolumnaAkcje(akcje): kolumny.KolumnaAkcjeMain(akcje),
   ];
 
   const rowsNotToExpand = () => {

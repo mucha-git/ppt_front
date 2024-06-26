@@ -1,5 +1,6 @@
 import React from "react";
 import DefaultTableView from "../../_components/DefaultTableView";
+import "./styles.css";
 
 export const kolumny = {
   KolumnaTitle,
@@ -37,7 +38,7 @@ function KolumnaAkcje(akcje) {
     text: "Akcje",
     formatter: akcje,
     classes: "height1 pt-3 pb-3",
-    headerClasses: "header-class",
-    headerStyle: { width: "110px" },
+    headerClasses: "header-class mapPinActions",
+    //headerStyle: { width: "110px" },
   };
 }

@@ -2,10 +2,11 @@ import React from "react";
 import { oneSignalService, alertService } from "@/_services";
 import MuiButton from "../../_components/MuiButton";
 import { MuiBtnType } from "../../_helpers/MuiBtnType";
+import "./styles.css";
 
 function Actions(props) {
   return (
-    <div className={"buttons d-flex justify-content-end"}>
+    <div className={"buttons d-flex justify-content-end align-items-end colDirection"}>
       {!props.cell && props.row.completed_at == null && (
         <MuiButton
           icon={MuiBtnType.Delete}

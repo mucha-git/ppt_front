@@ -1,0 +1,16 @@
+.notificationActions{
+    width: 100px;
+}
+
+.colDirection{
+    flex-direction: row;
+}
+
+@media screen and (max-width: 1150px) {
+    .notificationActions{
+        width: 70px
+    }
+    .colDirection{
+        flex-direction: column;
+    }
+}

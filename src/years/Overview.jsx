@@ -9,9 +9,9 @@ function Overview({ match }) {
   const { path } = match;
   const user = accountService.userValue;
   return (
-    <div className="p-4 box-shadow-main">
+    <div className="pad-4 box-shadow-main">
       <div className="container">
-        <div>
+        <div className="titleText">
           <h2>Wydarzenia</h2>
         </div>
 

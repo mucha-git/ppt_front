@@ -7,7 +7,7 @@ function Views({ match }) {
   const { path } = match;
 
   return (
-    <div className="p-4">
+    <div className="pad-4">
       <div className="container">
         <Switch>
           <Route exact path={path} component={Overview} />

@@ -6,7 +6,7 @@ function Elements({ match }) {
   const { path } = match;
 
   return (
-    <div className="p-4">
+    <div className="pad-4">
       <div className="container">
         <Switch>
           <Route path={`${path}/dodaj`} component={AddEdit} />

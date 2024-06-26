@@ -1,5 +1,6 @@
 import React from "react";
 import { Element } from "./components/Element";
+import "./styles.css";
 
 export const kolumny = {
   KolumnaElement,
@@ -25,8 +26,8 @@ function KolumnaAkcje(akcje) {
     text: "Akcje",
     formatter: akcje,
     classes: "pt-4 pb-4",
-    headerClasses: "header-class",
-    headerStyle: { width: "110px" },
+    headerClasses: "header-class elementActions",
+    //headerStyle: { width: "110px" },
     events: {
       onClick: (e, column, columnIndex, row, rowIndex) => {
         e.stopPropagation();

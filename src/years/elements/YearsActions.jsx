@@ -4,11 +4,12 @@ import MuiButton from "../../_components/MuiButton";
 import { MuiBtnType } from "../../_helpers/MuiBtnType";
 import { yearsService, alertService } from "../../_services";
 import { history } from "../../_helpers";
+import "./styles.css";
 
 function Actions(props) {
   const { updateYears } = useContext(AppContext);
   return (
-    <div className={"buttons d-flex"}>
+    <div className={"buttons d-flex colDirection"}>
       <MuiButton
         icon={MuiBtnType.CopyYear}
         showTooltip={true}

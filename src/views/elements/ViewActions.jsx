@@ -6,6 +6,7 @@ import MuiButton from "../../_components/MuiButton";
 import { MuiBtnType } from "../../_helpers/MuiBtnType";
 import { ListType } from "../../_helpers/ListType";
 import { history } from "../../_helpers";
+import "./styles.css";
 
 function Actions(props) {
   const { updateViews, views, elements } = useContext(AppContext);
@@ -60,9 +61,9 @@ function Actions(props) {
   };
 
   return (
-    <div className={"d-flex align-items-start flex-column h-100"}>
-      <div className="d-flex justify-content-end w-100 h-100">
-        <div className="d-flex">
+    <div className={"d-flex align-items-start colDirection h-100 "}>
+      <div className="d-flex justify-content-end colDirection w-100 h-100">
+        <div className="d-flex colDirection">
           {isInternalType() && (
             <MuiButton
               icon={MuiBtnType.Add}

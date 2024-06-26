@@ -1,5 +1,6 @@
 import React from "react";
 import DefaultTableView from "../../_components/DefaultTableView";
+import "./styles.css";
 
 export const kolumny = {
   KolumnaMapSrc,
@@ -19,7 +20,7 @@ function KolumnaMapSrc(devicesList) {
           </div>
           <div>
             {cell != null && cell.startsWith("http") ? (
-              <iframe width={600} height={400} src={cell}></iframe>
+              <iframe width={450} height={300} src={cell}></iframe>
             ) : (
               "Aby wyświetlić podgląd mapy trzeba podać wartość pola src z udostępnienia mapy na stronie"
             )}
@@ -37,7 +38,7 @@ function KolumnaAkcje(akcje) {
     text: "Akcje",
     formatter: akcje,
     classes: "height1 pt-3 pb-3",
-    headerClasses: "header-class",
-    headerStyle: { width: "110px" },
+    headerClasses: "header-class mapActions",
+    //headerStyle: { width: "110px" },
   };
 }

@@ -1,5 +1,6 @@
 import React from "react";
 import DefaultTableView from "../../_components/DefaultTableView";
+import "./styles.css"
 
 export const kolumny = {
   KolumnaImgSrc,
@@ -36,7 +37,6 @@ function KolumnaAkcje(akcje) {
     text: "Akcje",
     formatter: akcje,
     classes: "height1 pt-3 pb-3",
-    headerClasses: "header-class",
-    headerStyle: { width: "170px" },
+    headerClasses: "header-class yearActions",
   };
 }

@@ -1,6 +1,7 @@
 import React from "react";
 import DefaultTableView from "../../_components/DefaultTableView";
 import moment from "moment";
+import "./styles.css";
 
 export const kolumny = {
   KolumnaData,
@@ -67,7 +68,7 @@ function KolumnaAkcje(akcje) {
         ? "Wysłano"
         : akcje(cell, row),
     classes: "height1 pt-3 pb-3",
-    headerClasses: "header-class",
-    headerStyle: { width: "100px" },
+    headerClasses: "header-class notificationActions",
+    //headerStyle: { width: "100px" },
   };
 }

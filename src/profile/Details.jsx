@@ -8,7 +8,7 @@ function Details({ match }) {
     const user = accountService.userValue;
 
     return (
-        <div>
+        <div className="titleText">
             <h1>Moje konto</h1>
             <p>
                 <strong>Nazwa: </strong> {user.title} {user.firstName} {user.lastName}<br />

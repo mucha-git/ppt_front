@@ -14,10 +14,10 @@ function Overview({ match }) {
   }, []);
   const user = accountService.userValue;
   return (
-    <div className="p-4 box-shadow-main">
+    <div className="pad-4 box-shadow-main">
       <div className="container">
         <div>
-          <h2>Aplikacje</h2>
+          <h2 className="titleText">Aplikacje</h2>
         </div>
         {user.role == Role.Admin && (
           <div className="d-flex justify-content-end">

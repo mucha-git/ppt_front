@@ -24,9 +24,11 @@ function List({ match }) {
     }
 
     return (
-        <div>
-            <h1>Użytkownicy</h1>
-            <p>Lista wszystkich twoich użytkowników:</p>
+        <div className='pad-4 box-shadow-main'>
+            <div className='titleText'>
+                <h1>Użytkownicy</h1>
+                <p>Lista wszystkich twoich użytkowników:</p>
+            </div>
             <Link to={`${path}/add`} className="btn m-1 btn-sm btn-success mb-2">Dodaj użytkownika</Link>
             <table className="table table-striped">
                 <thead>

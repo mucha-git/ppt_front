@@ -1,13 +1,139 @@
 import React, { useState, useEffect, useContext } from "react";
-import { NavLink, Route } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { Role } from "@/_helpers";
 import { accountService, alertService } from "@/_services";
 import { AppContext } from "../_helpers/context";
+import { IoClose, IoMenu } from "react-icons/io5";
 import config from "config";
+import "./NavbarMobile.css";
 
 function Nav() {
   const { resetContext } = useContext(AppContext);
   const [user, setUser] = useState({});
+
+  const [showMenu, setShowMenu] = useState(false);
+
+  const toggleMenu = () => {
+    setShowMenu(!showMenu);
+  };
+
+  const closeMobileMenu = () => {
+    if (window.innerWidth <= 1150) {
+      setShowMenu(false);
+    }
+  };
+
+  const renderNavLinks = () => {
+    const linkClassName = "nav__link";
+    return (
+      <ul className="nav__list">
+        {user.role != Role.Admin && (
+          <li className="nav__item">
+            <NavLink 
+              exact to="/views" 
+              className={linkClassName} 
+              onClick={closeMobileMenu}
+            >
+              Widoki
+            </NavLink>
+          </li>
+        )}
+        {user.role != Role.Admin && (
+          <li className="nav__item">
+            <NavLink 
+              exact to="/maps" 
+              className={linkClassName}
+              onClick={closeMobileMenu}
+            >
+              Mapy
+            </NavLink>
+          </li>
+        )}
+        {user.role != Role.Admin && (
+          <li className="nav__item">
+            <NavLink 
+              exact to="/mapPins" 
+              className={linkClassName} 
+              onClick={closeMobileMenu}
+            >
+              Pinezki Map
+            </NavLink>
+          </li>
+        )}
+        
+        {user.role === Role.Manager && (
+          <li className="nav__item">
+            <NavLink 
+              to="/events" 
+              className={linkClassName} 
+              onClick={closeMobileMenu}
+            >
+              Wydarzenia
+            </NavLink>
+          </li>
+        )}
+        {(user.role === Role.Manager || user.role === Role.User) &&
+          user.oneSignalAppId != null &&
+          user.oneSignalApiKey != null && (
+            <li className="nav__item">
+              <NavLink
+                to="/notifications"
+                className={linkClassName}
+                onClick={closeMobileMenu}
+              >
+                Powiadomienia
+              </NavLink>
+            </li>
+          )}
+          <li className="nav__item">
+          <NavLink 
+            to="/profile" 
+            className={linkClassName} 
+            onClick={closeMobileMenu}
+          >
+            Konto
+          </NavLink>
+        </li>
+        {/* {(user.role === Role.Admin || user.role === Role.Manager) && (
+          <li>
+            <NavLink 
+              to="/admin" 
+              className={linkClassName} 
+              onClick={closeMobileMenu}
+            >
+              Panel Administracyjny
+            </NavLink>
+          </li>
+        )} */}
+        {(user.role === Role.Admin || user.role === Role.Manager) && (
+          <li className="nav__item">
+            <NavLink to={`/admin/users`} 
+              className={linkClassName} 
+              onClick={closeMobileMenu}
+            >
+              Użytkownicy
+            </NavLink>
+          </li>
+        )}
+        {(user.role === Role.Admin) && (
+          <li className="nav__item">
+            <NavLink 
+              to="/applications" 
+              className={linkClassName} 
+              onClick={closeMobileMenu}
+            >
+              Aplikacje
+            </NavLink>
+          </li>
+        )}
+        <li className="nav__item">
+          <a onClick={logout} className={linkClassName}>
+            Wyloguj
+          </a>
+        </li>
+      </ul>
+    );
+  };
 
   useEffect(() => {
     const subscription = accountService.user.subscribe((x) => setUser(x));
@@ -19,6 +145,7 @@ function Nav() {
   }
 
   function logout2() {
+    closeMobileMenu();
     alertService.clear();
     accountService.logout();
     resetContext();
@@ -28,75 +155,26 @@ function Nav() {
   if (!user) return null;
 
   return (
-    <div>
-      <nav className="d-flex p-2 bg-primary text-white">
-        {user.role != Role.Admin && (
-          <NavLink exact to="/views" className="nav-item nav-link text-white">
-            Widoki
-          </NavLink>
-        )}
-        {user.role != Role.Admin && (
-          <NavLink exact to="/maps" className="nav-item nav-link text-white">
-            Mapy
-          </NavLink>
-        )}
-        {user.role != Role.Admin && (
-          <NavLink exact to="/mapPins" className="nav-item nav-link text-white">
-            Pinezki Map
-          </NavLink>
-        )}
-        <NavLink to="/profile" className="nav-item nav-link text-white">
-          Konto
-        </NavLink>
-        {(user.role === Role.Admin || user.role === Role.Manager) && (
-          <NavLink to="/admin" className="nav-item nav-link text-white">
-            Panel Administracyjny
-          </NavLink>
-        )}
-        {(user.role === Role.Admin) && (
-          <NavLink to="/applications" className="nav-item nav-link text-white">
-            Aplikacje
-          </NavLink>
-        )}
-        {user.role === Role.Manager && (
-          <NavLink to="/events" className="nav-item nav-link text-white">
-            Wydarzenia
-          </NavLink>
-        )}
-        {(user.role === Role.Manager || user.role === Role.User) &&
-          user.oneSignalAppId != null &&
-          user.oneSignalApiKey != null && (
-            <NavLink
-              to="/notifications"
-              className="nav-item nav-link text-white"
-            >
-              Powiadomienia
-            </NavLink>
-          )}
-        <a onClick={logout} className="nav-item nav-link">
-          Wyloguj
-        </a>
-
-        <div className="ml-auto" style={{ fontSize: "small" }}>
-          v. 1.{config.version}
+    <header className="header d-flex p-2 bg-primary text-white">
+      <nav className="nav">
+          <div
+            className={`nav__menu  ${showMenu ? "show-menu" : ""}`}
+            id="nav-menu"
+          >
+            {renderNavLinks()}
+            <div className="nav__close" id="nav-close" onClick={toggleMenu}>
+              <IoClose />
+            </div>
+          </div>
+          <div className="nav__toggle" id="nav-toggle" onClick={toggleMenu}>
+          <IoMenu />
         </div>
       </nav>
-      <Route path="/admin" component={AdminNav} />
-    </div>
-  );
-}
-
-function AdminNav({ match }) {
-  const { path } = match;
-
-  return (
-    <nav className="admin-nav navbar navbar-expand navbar-light">
-      <div className="navbar-nav">
-        <NavLink to={`${path}/users`} className="nav-item nav-link">
-          Użytkownicy
-        </NavLink>
+      
+      <div className="ml-auto pr-2" style={{ fontSize: "small" }}>
+        v. 1.{config.version}
       </div>
-    </nav>
+    </header>
   );
 }
 

@@ -31,9 +31,9 @@ function Overview({ match }) {
   };
 
   return (
-    <div className="p-4 box-shadow-main">
+    <div className="pad-4 box-shadow-main">
       <div className="container">
-        <div>
+        <div className="titleText">
           <h2>Mapy</h2>
         </div>
         <div className="d-flex">
