@@ -72,12 +72,11 @@ function AddEdit({ history }) {
 
   const genetrateInternalNotificationURL = (id) => {
     let view = views.find(v => v.id == id);
+    if(!view) return `${oneSignalAppBundleId}://`
     let screenType = getScreenType(view.screenType)
-    return  view? 
-              (screenType=="list"? 
+    return screenType=="list"? 
                 `${oneSignalAppBundleId}://${screenType}/true/${id}/${view.isSearchable}`
-                : `${oneSignalAppBundleId}://${screenType}/true/${id}`)
-              : `${oneSignalAppBundleId}://`
+                : `${oneSignalAppBundleId}://${screenType}/true/${id}`
   }
 
   console.log(viewListForNavigation(views))
