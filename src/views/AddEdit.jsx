@@ -199,7 +199,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
         {(formik) => {
           return (
             <Form>
-              <div className="pl-1 pr-1 pt-1 pb-1">
+              <div className="p-4">
                 <div className="d-flex">
                   <div>
                     {popup ? (
