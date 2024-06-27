@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { AppContext } from "../_helpers/context";
@@ -13,7 +13,10 @@ import { viewListForNavigation } from "../_helpers";
 import { redirectionOption } from "../_helpers/redirectionOption";
 
 function AddEdit({ history }) {
-  const { views, oneSignalAppBundleId } = useContext(AppContext);
+  const { isSet, views, oneSignalAppBundleId } = useContext(AppContext);
+  useEffect(() => {
+    isSet();
+  }, []);
   const user = accountService.userValue;
   const initialValues = {
     name: "",
@@ -69,13 +72,15 @@ function AddEdit({ history }) {
 
   const genetrateInternalNotificationURL = (id) => {
     let view = views.find(v => v.id == id);
-    return  view? `${oneSignalAppBundleId}://${getScreenType(view.view.screenType)}/true/${id}/${getHeaderText(view)}/${view.isSearchable}`: `${oneSignalAppBundleId}://`
+    let screenType = getScreenType(view.screenType)
+    return  view? 
+              (screenType=="list"? 
+                `${oneSignalAppBundleId}://${screenType}/true/${id}/${view.isSearchable}`
+                : `${oneSignalAppBundleId}://${screenType}/true/${id}`)
+              : `${oneSignalAppBundleId}://`
   }
 
-  const getHeaderText = (view) => {
-    let headerText = view.headerText? view.headerText : view.title
-    return headerText.replaceAll(' ', "_")
-  }
+  console.log(viewListForNavigation(views))
 
   const getScreenType = (screenType) => screenType.replace("Screen", "").toLowerCase()
 

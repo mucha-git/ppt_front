@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import FormikControl from "@/_components/Formik/FormikControl";
@@ -14,7 +14,10 @@ import { margins } from "../_helpers/margins";
 import { btnTypes, contentTypes, setContentType, getScreenType, setBtnType } from "../_helpers/viewsHelpers"
 
 function AddEdit({ history, popup, close, lista, setLista, yearId }) {
-  const { updateElements, views, updateViews, elements, maps } = useContext(AppContext);
+  const { updateElements, isSet, views, updateViews, elements, maps } = useContext(AppContext);
+  useEffect(() => {
+    isSet();
+  }, []);
   const [viewsList, setViewsList] = useState(views)
   let location = useLocation();
   const isAddMode = location.state.row == null || popup ? true : false;

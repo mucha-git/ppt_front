@@ -1,4 +1,4 @@
-import React, {useContext, useLayoutEffect} from "react";
+import React, {useContext, useEffect} from "react";
 import { ApplicationsTable } from "./elements/ApplicationsTable";
 import MuiButton from "../_components/MuiButton";
 import { MuiBtnType } from "../_helpers/MuiBtnType";
@@ -9,7 +9,7 @@ import { AppContext } from "../_helpers/context";
 function Overview({ match }) {
   const { path } = match;
   const { isSet } = useContext(AppContext);
-  useLayoutEffect(() => {
+  useEffect(() => {
     isSet();
   }, []);
   const user = accountService.userValue;

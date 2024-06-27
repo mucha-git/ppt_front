@@ -64,7 +64,7 @@ export function SetOpenedArray(array, newId){
 }
 
 export const viewListForNavigation = (viewsList, parentId = null, list = [], sign = "") => {
-  const currentLvl = viewsList.filter(e => e.viewId == parentId)
+  const currentLvl = viewsList.filter(e => e.viewId == parentId && !e.type.includes("External"))
   list.length == 0 && list.push({key: "<== MENU GŁÓWNE ==>", value: -1})
   currentLvl.forEach(element => {
     list.push({key: sign + element.title, value: element.id})

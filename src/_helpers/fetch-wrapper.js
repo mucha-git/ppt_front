@@ -63,7 +63,7 @@ function postNotifications(url, body) {
     headers: {
       accept: "application/json",
       Authorization: `Basic ${user.oneSignalApiKey}`,
-      "content-type": "application/json",
+      "content-type": "application/json; charset=utf-8",
     },
     //credentials: 'include',
     body: JSON.stringify(body),
