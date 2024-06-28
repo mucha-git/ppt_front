@@ -6,7 +6,7 @@
     flex-direction: row;
 }
 
-@media screen and (max-width: 576px) {
+@media screen and (max-width: 992px) {
     .mapPinActions{
         width: 90px
     }

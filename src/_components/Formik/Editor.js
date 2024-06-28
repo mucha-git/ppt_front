@@ -42,7 +42,7 @@ export const TextEditor = ({
     return "not-handled";
   };
   return (
-    <div>
+    <div className="editor">
       <Editor
         handleKeyCommand={handleKeyCommand}
         readOnly={disabled}

@@ -4,7 +4,7 @@ import { AppContext } from "../_helpers/context";
 import MuiButton from "./MuiButton";
 import { MuiBtnType } from "../_helpers/MuiBtnType";
 
-export default function SendToApp() {
+export default function SendToApp({text = "Wyślij do aplikacji", className = "webBtn"}) {
   const { yearId } = useContext(AppContext);
   const saveChangesToApp = () => {
     yearsService.resetYearInRedis({ yearId: yearId }).then(() => {
@@ -15,9 +15,9 @@ export default function SendToApp() {
   return (
     <MuiButton
       icon={MuiBtnType.Send}
-      text={"Wyślij do aplikacji"}
+      text={text}
       onClick={saveChangesToApp}
-      className="p-2 pr-4 pl-4"
+      className={`p-2 pr-4 pl-4 ${className}`}
       data-testid="widoki-wyslij-button"
     />
   );

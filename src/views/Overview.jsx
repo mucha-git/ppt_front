@@ -31,7 +31,7 @@ function Overview({ match, location }) {
         <div className="titleText">
           <h2 data-testid='widoki-title-text'>Widoki</h2>
         </div>
-        <div className="d-flex colDirection">
+        <div className="d-flex">
           <div className="mr-auto d-flex align-items-center">
             {years.length > 1 && (
               <FormControl variant="filled" sx={{ m: 1, minWidth: 200 }}>
@@ -41,6 +41,7 @@ function Overview({ match, location }) {
                 <Select
                   data-testid='widoki-rok-dropdown'
                   value={year}
+                  autoWidth
                   onChange={handleChange}
                 >
                   {years.map((y) => {
@@ -59,7 +60,19 @@ function Overview({ match, location }) {
               icon={MuiBtnType.Add}
               data-testid='widoki-dodajWidok-button'
               text="Dodaj nowy widok"
-              className="p-2 pr-4 pl-4"
+              className="p-2 pr-4 pl-4 webBtn"
+              onClick={() =>
+                history.push({
+                  pathname: `${path}/dodaj`,
+                  state: { yearId: year, parentViewId: null, opened: [] },
+                })
+              }
+            />
+            <MuiButton
+              icon={MuiBtnType.Add}
+              data-testid='widoki-dodajWidok-button'
+              text=""
+              className="p-2 pr-4 pl-4 mobileBtn"
               onClick={() =>
                 history.push({
                   pathname: `${path}/dodaj`,
@@ -70,6 +83,7 @@ function Overview({ match, location }) {
           </div>
           <div className="d-flex align-items-center">
             <SendToApp />
+            <SendToApp text="" className="mobileBtn" />
           </div>
         </div>
         <ViewsTable

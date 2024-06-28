@@ -30,7 +30,7 @@ function Overview({ match }) {
         <div className="titleText">
           <h2>Pinezki map</h2>
         </div>
-        <div className="d-flex colDirection">
+        <div className="d-flex ">
           <div className="mr-auto d-flex align-items-center">
             {years.length > 1 && (
               <FormControl variant="filled" sx={{ m: 1, minWidth: 200 }}>
@@ -58,7 +58,18 @@ function Overview({ match }) {
             <MuiButton
               icon={MuiBtnType.Add}
               text="Dodaj nową pinezkę"
-              className="p-2 pr-4 pl-4"
+              className="p-2 pr-4 pl-4 webBtn"
+              onClick={() =>
+                history.push({
+                  pathname: `${path}/dodaj`,
+                  state: { yearId: year },
+                })
+              }
+            />
+            <MuiButton
+              icon={MuiBtnType.Add}
+              text=""
+              className="p-2 pr-4 pl-4 mobileBtn"
               onClick={() =>
                 history.push({
                   pathname: `${path}/dodaj`,
@@ -69,6 +80,7 @@ function Overview({ match }) {
           </div>
           <div className="d-flex align-items-center">
             <SendToApp />
+            <SendToApp text="" className="mobileBtn" />
           </div>
         </div>
         <MapPinsTable yearId={year} path={path} />

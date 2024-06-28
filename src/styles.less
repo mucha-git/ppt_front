@@ -307,63 +307,91 @@ background-color: #fff !important;
     min-width: 4.7rem!important;
   }
 
+  .mobileBtn{
+    display: block;
+  }
+
+  .webBtn{
+    display: none;
+  }
+
   @media (min-width:576px){
-    .btn{
-      font-size: 1rem!important;
-      min-width: 2.6rem!important;
+    // .btn{
+    //   font-size: 1rem!important;
+    //   min-width: 2.6rem!important;
+    // }
+
+    .container{
+      width: 100%;
+      padding: 1rem;
+      margin: auto;
+      max-width: none;
     }
 
-    h2{
-      font-size: 2rem;
-    }
+    // h2{
+    //   font-size: 2rem;
+    // }
 
-    h5{
-      font-size: 1.25rem;
-    }
+    // h5{
+    //   font-size: 1.25rem;
+    // }
 
-    .pad-4{
-      padding: 1.5rem!important;
-    }
+    // .pad-4{
+    //   padding: 1.5rem!important;
+    // }
 
-    .titleText{
-      padding-left: 0px;
-      padding-top: 0px;
-    }
-    .box-shadow-main {
-      box-shadow: 0px 3px 4px 0px #000;
-    }
+    // .titleText{
+    //   padding-left: 0px;
+    //   padding-top: 0px;
+    // }
+    // .box-shadow-main {
+    //   box-shadow: 0px 3px 4px 0px #000;
+    // }
   }
   
   @media (min-width:768px){
-    // .container{
-    //   padding-left: 0px;
-    //   padding-right: 0px;
-    //   max-width: 100%;
+    .container{
+      width: 100%;
+      padding: 1rem;
+      margin: auto;
+      max-width: none;
+    }
+    // .btn{
+    //   font-size: 1rem!important;
     // }
-    .btn{
-      font-size: 1rem!important;
-    }
 
-    .pad-4{
-      padding: 1.5rem!important;
-    }
+    
 
-    .titleText{
-      padding-left: 0px;
-      padding-top: 0px;
-    }
-    .box-shadow-main {
-      box-shadow: 0px 3px 4px 0px #000;
-    }
+    // .pad-4{
+    //   padding: 1.5rem!important;
+    // }
+
+    // .titleText{
+    //   padding-left: 0px;
+    //   padding-top: 0px;
+    // }
+    // .box-shadow-main {
+    //   box-shadow: 0px 3px 4px 0px #000;
+    // }
   }
   @media (min-width:992px){
     // .container{
-    //   padding-left: 0px;
-    //   padding-right: 0px;
-    //   max-width: 100%;
+    //   width: 100%;
+    //   padding: 1rem;
+    //   margin: auto;
+    //   max-width: none;
     // }
     .btn{
       font-size: 1rem!important;
+      min-width: 1rem!important;
+    }
+
+    .mobileBtn{
+      display: none;
+    }
+
+    .webBtn{
+      display: block;
     }
 
     .pad-4{
@@ -383,6 +411,37 @@ background-color: #fff !important;
     font-size: 3rem;
   }
 
+
+@media screen and (max-width: 992px) {
+  .MuiInputLabel-root,
+  .MuiMenuItem-root,
+  .MuiOutlinedInput-root,
+  .MuiTypography-root,
+  .MuiSwitch-endDecorator,
+  .MuiFormLabel-root,
+  .MuiInputBase-root,
+  .rdw-editor-main,
+  .formLabel   {
+    font-size: 3rem!important;
+  }
+
+  
+
+  
+  .MuiInputLabel-outlined.MuiInputLabel-shrink, .MuiFormLabel-root.MuiInputLabel-shrink,
+  .MuiFormHelperText-root, .MuiButtonBase-root {
+    font-size: 2rem !important;
+  }
+
+  .rdw-option-wrapper{
+    min-width: 50px;
+    height: 50px;
+  }
+
+
+
+}
+
   @media screen and (min-width: 1200px){
     .box-shadow-main {
       box-shadow: 0px 3px 4px 0px #000;
@@ -390,6 +449,7 @@ background-color: #fff !important;
 
     .btn{
       font-size: 1rem!important;
+      min-width: 1rem!important;
     }
 
     .container{

@@ -10,7 +10,7 @@ function HtmlEditor(props) {
   return (
     <div className={className != null ? className : "form-group col"}>
       {inline == null ? (
-        <div>
+        <div className="formLabel">
           <label htmlFor={name}>
             {label}
             {wymagane ? isWymagane() : ""}

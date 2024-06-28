@@ -36,10 +36,10 @@ function Overview({ match }) {
         <div className="titleText">
           <h2>Mapy</h2>
         </div>
-        <div className="d-flex colDirection">
-          <div className="mr-auto">
+        <div className="d-flex ">
+          <div className="mr-auto  d-flex align-items-center">
             {years.length > 1 && (
-              <FormControl variant="filled" sx={{ m: 1, minWidth: 200 }}>
+              <FormControl size="small" variant="filled" sx={{ m: 1, minWidth: 200 }}>
                 <InputLabel id="demo-simple-select-filled-label">
                   Wydarzenie
                 </InputLabel>
@@ -64,7 +64,20 @@ function Overview({ match }) {
             <MuiButton
               icon={MuiBtnType.Add}
               text="Dodaj nową mapę"
-              className="p-2 pr-4 pl-4"
+              className="p-2 pr-4 pl-4 webBtn"
+              onClick={() =>
+                history.push({
+                  pathname: `${path}/dodaj`,
+                  state: { yearId: year },
+                })
+              }
+              disabled={disabled}
+              tooltip={"Musisz najpierw dodać pinezki map"}
+            />
+            <MuiButton
+              icon={MuiBtnType.Add}
+              text=""
+              className="p-2 pr-4 pl-4 mobileBtn"
               onClick={() =>
                 history.push({
                   pathname: `${path}/dodaj`,
@@ -77,6 +90,7 @@ function Overview({ match }) {
           </div>
           <div className="d-flex align-items-center">
             <SendToApp />
+            <SendToApp text="" className="mobileBtn" />
           </div>
         </div>
         <MapsTable yearId={year} path={path} />
