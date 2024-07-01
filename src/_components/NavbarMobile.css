@@ -53,6 +53,30 @@
   }
   
   @media screen and (max-width: 1200px) {
+    .nav__menu {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      background-color: #fff;
+      /* background-color: hsla(0, 0%, 6%, 0.2); */
+      /* backdrop-filter: blur(16px);  */
+      /* -webkit-backdrop-filter: blur(16px);  */
+      width: 80%;
+      height: 100%;
+      padding: 6rem 3rem 0;
+      transition: right 0.4s;
+      z-index: 2;
+    }
+
+    .nav__list {
+        flex-direction: row;
+        column-gap: 2.5rem;
+        list-style-type: none;
+        color: #007bff!important;
+      }
+  }
+
+  @media screen and (max-width: 992px) {
     .navBtn{
       width: 3em;
       height: 3em;
@@ -83,6 +107,8 @@
         color: #007bff!important;
       }
   }
+
+  
   @media screen and (max-width: 300px) {
     .nav__menu {
       padding: 4rem 1rem 2rem;

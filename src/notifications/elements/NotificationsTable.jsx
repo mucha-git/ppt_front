@@ -38,7 +38,19 @@ function NotificationsTable({ path }) {
           <MuiButton
             icon={MuiBtnType.Download}
             text={"Pobierz powiadomienia"}
-            className={"p-2 pr-4 pl-4"}
+            className={"p-2 pr-4 pl-4 webBtn"}
+            disabled={!isLoaded}
+            onClick={() =>{
+              setIsLoaded(false)
+              oneSignalService.getNotifications().then(x => setNotifications(x.notifications)).then(y => setIsLoaded(true))
+            }
+              
+            }
+          />
+          <MuiButton
+            icon={MuiBtnType.Download}
+            text={""}
+            className={"p-2 pr-4 pl-4 mobileBtn"}
             disabled={!isLoaded}
             onClick={() =>{
               setIsLoaded(false)
@@ -52,7 +64,13 @@ function NotificationsTable({ path }) {
           <MuiButton
             icon={MuiBtnType.Add}
             text="Dodaj powiadomienie"
-            className="p-2 pr-4 pl-4"
+            className="p-2 pr-4 pl-4 webBtn"
+            onClick={() => history.push({ pathname: `${path}/dodaj` })}
+          />
+          <MuiButton
+            icon={MuiBtnType.Add}
+            text=""
+            className="p-2 pr-4 pl-4 mobileBtn"
             onClick={() => history.push({ pathname: `${path}/dodaj` })}
           />
         </div>

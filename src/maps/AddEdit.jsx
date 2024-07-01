@@ -443,7 +443,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
       >
         {(formik) => (
           <Form>
-            <div className="p-4">
+            <div className="p-4 flexScreen">
               <div className="d-flex">
                 <div>
                   {popup ? (
@@ -674,7 +674,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                   <TabPanel value={"2"} disabled={tabDisabled && devices.length > 0}>
                     <FormikControl
                         control="muiSelect"
-                        label={"Urzadzenie GPS"}
+                        label={"Urządzenie GPS"}
                         name="deviceId"
                         options={[{key: "Brak urządzenia", value: null}, ...devices.map(a => {
                           return {key: a.name, value: a.id}}
@@ -759,7 +759,7 @@ function AddEdit({ history, popup, close, lista, setLista, yearId }) {
                 </TabContext>
               </Box>
             </div>
-            <div className="d-flex flex-row-reverse bg-light pl-1 pr-1 pt-1 pb-1">
+            <div className="d-flex flex-row-reverse flexButtons bg-light paddingBtn">
               {!popup && isAddMode && (
                 <MuiButton
                   className="pl-5 pr-5 pt-2 pb-2"

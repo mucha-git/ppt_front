@@ -32,21 +32,21 @@ function onAlert(id = defaultId) {
 
 // convenience methods
 function success(message, options) {
-  enqueueSnackbar(message, { variant: "success" });
+  enqueueSnackbar(message, { variant: "success", className:"notistack-snackbar"});
 }
 
 function error(message, options) {
-  enqueueSnackbar(message, { variant: "error" });
+  enqueueSnackbar(message, { variant: "error", className:"notistack-snackbar" });
 }
 
 function info(message, options) {
-  enqueueSnackbar(message, { ...options, variant: "info", style: { whiteSpace: 'pre-line' }, action:(snackbarId) => (
+  enqueueSnackbar(message, { ...options, variant: "info", className:"notistack-snackbar", style: { whiteSpace: 'pre-line' }, action:(snackbarId) => (
       <MuiButton icon={MuiBtnType.Close} onClick={() => closeSnackbar(snackbarId)} />
   ) });
 }
 
 function warn(message, options) {
-  enqueueSnackbar(message, {  variant: "warning" });
+  enqueueSnackbar(message, {  variant: "warning", className:"notistack-snackbar" });
 }
 
 // core alert method

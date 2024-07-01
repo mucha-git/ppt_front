@@ -107,7 +107,7 @@ function AddEdit({ history }) {
       >
         {(formik) => (
           <Form>
-            <div className="pl-1 pr-1 pt-1 pb-1">
+            <div className="paddingBtn flexScreen">
               <div className="d-flex">
                 <div>
                   <h2>
@@ -199,7 +199,7 @@ function AddEdit({ history }) {
                   margin="normal"
                 />
             </div>
-            <div className="d-flex flex-row-reverse bg-light pl-1 pr-1 pt-1 pb-1">
+            <div className="d-flex flex-row-reverse flexButtons bg-light paddingBtn">
               <MuiButton
                 className="pl-5 pr-5 pt-2 pb-2"
                 text={"Zapisz"}

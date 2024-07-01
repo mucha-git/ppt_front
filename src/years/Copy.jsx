@@ -140,7 +140,7 @@ function Copy({ history }) {
                 />
               </div>
             </div>
-            <div className="d-flex flex-row-reverse bg-light pl-1 pr-1 pt-1 pb-1">
+            <div className="d-flex flex-row-reverse bg-light paddingBtn">
               <MuiButton
                 className="pl-5 pr-5 pt-2 pb-2"
                 text={"Zapisz"}

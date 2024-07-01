@@ -2,14 +2,31 @@
     width: 110px;
 }
 
+.pinClass{
+    width:70px;
+}
+
 .colDirection{
     flex-direction: row;
+}
+
+.pinImg{
+    width:20px
 }
 
 @media screen and (max-width: 992px) {
     .mapActions{
         width: 90px
     }
+
+    .pinClass{
+        width:110px;
+    }
+
+    .pinImg{
+        width:40px
+    }
+
     .colDirection{
         flex-direction: column;
     }

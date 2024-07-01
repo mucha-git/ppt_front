@@ -167,7 +167,10 @@ function Nav() {
             </div>
           </div>
           <div className="nav__toggle" id="nav-toggle" onClick={toggleMenu}>
-          <IoMenu className="navBtn" />
+            <div className="d-flex align-items-center">
+              <IoMenu className="navBtn d-flex align-items-center" /><div className="d-flex align-items-center"><h3>&nbsp;&nbsp;aPPT Panel</h3></div>
+            </div>
+          
         </div>
       </nav>
       

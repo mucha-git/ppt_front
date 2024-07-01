@@ -1,4 +1,5 @@
 import React from "react";
+import "../styles.css"
 
 function YoutubePlayerElement({ row }) {
   const playlistSrc =
@@ -6,8 +7,8 @@ function YoutubePlayerElement({ row }) {
       ? "https://www.youtube.com/embed/videoseries?list=" + row.playlist
       : "https://www.youtube.com/embed/" + row.playlist;
   return (
-    <div className="d-flex justify-content-start">
-      <div className="box-shadow p-2 rounded">
+    <div className="d-flex justify-content-start colDirection">
+      <div className=" p-2 rounded">
         <iframe
           width="280"
           className="rounded"

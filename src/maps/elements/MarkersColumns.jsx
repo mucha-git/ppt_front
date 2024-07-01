@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { Type } from "@musicstory/react-bootstrap-table2-editor";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
+import "./styles.css";
 
 export const kolumny = {
   KolumnaTitle,
@@ -41,14 +42,14 @@ function KolumnaDescription() {
 function KolumnaPinId(options) {
   return {
     dataField: "pinId",
-    text: "Pinezka",
+    text: "",
     classes: "tdClassesMarkers p-3",
     formatter: (cell) => {
-      return <img src={options.find((f) => f.id == cell)?.pinSrc} width={20} />;
+      return <img className="pinImg" src={options.find((f) => f.id == cell)?.pinSrc} />;
     },
-    headerStyle: { width: "70px" },
+    headerClasses: "pinClass",
     editable: true,
-    editCellClasses: "editorClassesMarkers",
+    editCellClasses: "editorClassesMarkers pinImg",
     editorRenderer: (
       editorProps,
       value,
@@ -87,7 +88,7 @@ class QualityRanger extends React.Component {
         {options.map((option) => {
           return (
             <MenuItem key={option.id} value={option.id}>
-              <img src={option.pinSrc} width={20} />
+              <img src={option.pinSrc} className="pinImg" />
             </MenuItem>
           );
         })}

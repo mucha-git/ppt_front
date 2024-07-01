@@ -299,12 +299,31 @@ background-color: #fff !important;
     font-size: 4rem;
   }
 
+  h3{
+    font-size: 3.5rem;
+  }
+
+  h4{
+    font-size: 3rem;
+  }
+
   h5{
+    font-size: 2.5rem;
+  }
+
+  h6, .headerClassesMarkers, .rowClassesMarkers, .page-link{
     font-size: 2rem;
   }
 
+  body{
+    font-size: 1.5rem!important;
+  }
+
+  
+
   .btn{
     min-width: 4.7rem!important;
+    margin-bottom: 1rem!important;
   }
 
   .mobileBtn{
@@ -315,11 +334,22 @@ background-color: #fff !important;
     display: none;
   }
 
+  .flexButtons{
+    position: fixed;
+    bottom: 0px;
+    z-index: 3;
+    width: 100%;
+  }
+
+  .flexScreen{
+    margin-bottom: 110px;
+  }
+
+  .paddingBtn{
+    padding: unset;
+  }
+
   @media (min-width:576px){
-    // .btn{
-    //   font-size: 1rem!important;
-    //   min-width: 2.6rem!important;
-    // }
 
     .container{
       width: 100%;
@@ -327,26 +357,6 @@ background-color: #fff !important;
       margin: auto;
       max-width: none;
     }
-
-    // h2{
-    //   font-size: 2rem;
-    // }
-
-    // h5{
-    //   font-size: 1.25rem;
-    // }
-
-    // .pad-4{
-    //   padding: 1.5rem!important;
-    // }
-
-    // .titleText{
-    //   padding-left: 0px;
-    //   padding-top: 0px;
-    // }
-    // .box-shadow-main {
-    //   box-shadow: 0px 3px 4px 0px #000;
-    // }
   }
   
   @media (min-width:768px){
@@ -356,31 +366,13 @@ background-color: #fff !important;
       margin: auto;
       max-width: none;
     }
-    // .btn{
-    //   font-size: 1rem!important;
-    // }
-
-    
-
-    // .pad-4{
-    //   padding: 1.5rem!important;
-    // }
-
-    // .titleText{
-    //   padding-left: 0px;
-    //   padding-top: 0px;
-    // }
-    // .box-shadow-main {
-    //   box-shadow: 0px 3px 4px 0px #000;
-    // }
   }
   @media (min-width:992px){
-    // .container{
-    //   width: 100%;
-    //   padding: 1rem;
-    //   margin: auto;
-    //   max-width: none;
-    // }
+    .paddingBtn{
+      padding-right: 1rem;
+      padding-top: 1rem;
+    }
+
     .btn{
       font-size: 1rem!important;
       min-width: 1rem!important;
@@ -405,6 +397,39 @@ background-color: #fff !important;
     .box-shadow-main {
       box-shadow: 0px 3px 4px 0px #000;
     }
+
+    h2{
+      font-size: 2rem;
+    }
+
+    h3{
+      font-size: 1.75rem;
+    }
+
+    h4{
+      font-size: 1.5rem;
+    }
+  
+    h5{
+      font-size: 1.25rem;
+    }
+
+    h6, .headerClassesMarkers, .rowClassesMarkers, .page-link{
+      font-size: 1rem;
+    }
+
+    body{
+      font-size: 1rem !important;
+    }
+  }
+
+  .flexButtons{
+    position:unset;
+    bottom: unset;
+  }
+
+  .flexScreen{
+    margin-bottom: unset;
   }
 
   .btn{
@@ -424,13 +449,21 @@ background-color: #fff !important;
   .formLabel   {
     font-size: 3rem!important;
   }
-
-  
-
   
   .MuiInputLabel-outlined.MuiInputLabel-shrink, .MuiFormLabel-root.MuiInputLabel-shrink,
   .MuiFormHelperText-root, .MuiButtonBase-root {
     font-size: 2rem !important;
+  }
+
+  .flexButtons{
+    position: fixed;
+    bottom: 0px;
+    z-index: 3;
+    width: 100%;
+  }
+
+  .flexScreen{
+    margin-bottom: 110px;
   }
 
   .rdw-option-wrapper{
@@ -438,7 +471,9 @@ background-color: #fff !important;
     height: 50px;
   }
 
-
+  .notistack-snackbar{
+    font-size: 1.75rem!important;
+  }
 
 }
 
